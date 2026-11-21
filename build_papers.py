@@ -65,8 +65,8 @@ SPECS = [
         "tag": "Human Working-Memory Limits & Brain–AI Phase Transition",
         "highlights": [
             "123 healthy adults (ds008037): empirical Cowan cliff 88.6% → 43.8% (K=2→6); pre-response EEG overload 0.690 AUC",
-            "2D Bandwidth × Latency phase transition at K=12: 320 bps (~265 bps MI) at ≤100 ms jumps 33% → 91.5% (97.4% at K=16)",
-            "Level-4 Strict Outperformance on private human rule: 87.0% vs 23.2% standalone AI (+63.7 pp), CKA 10.8×",
+            "2D Bandwidth × Latency phase transition at K=12: 320 bps (~265 bps MI) at ≤100 ms jumps 33% → 91.5% (97.4% at K=16) & Level-4 Strict Outperformance (+63.7 pp)",
+            "Triple-validated 100-region Functional Human Brain Emulator (post-train CCEP ρ=+0.66, 45/46 TMS-EEG +0.29): Hippocampal Index (100% through K=8, 87.2% K=12) & 4-bit Region 101 (72.1% vs 35.6% Sham) break Cowan's wall",
         ],
         "bibkey": "tahir2026prosthetic",
         "bibtex_title": "From Biological Working-Memory Limits to Co-Adaptive Brain--AI Co-Processing: A Quantitative Proof Ladder",

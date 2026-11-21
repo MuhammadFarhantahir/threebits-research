@@ -1,0 +1,269 @@
+{
+  "empirical_117_healthy_humans_ds008037": {
+    "2": 88.6,
+    "4": 61.5,
+    "6": 43.8
+  },
+  "regimes": {
+    "baseline": {
+      "label": "0. Baseline Human Brain Emulator (bio noise, narrow tracts)",
+      "ccep_rho_post_train": 0.6617,
+      "ccep_partial_rho_post_train": 0.3776,
+      "tmseeg_zeroshot_n46": {
+        "n": 46,
+        "mean_partial_rho": 0.2818,
+        "pos_count": 44
+      },
+      "acc30_by_K": {
+        "2": 75.1,
+        "4": 58.2,
+        "6": 41.6,
+        "8": 37.7,
+        "12": 30.6,
+        "16": 26.4
+      },
+      "acc30_sd_by_K": {
+        "2": 13.7,
+        "4": 22.5,
+        "6": 8.7,
+        "8": 6.5,
+        "12": 3.6,
+        "16": 2.9
+      },
+      "mae_deg_by_K": {
+        "2": 22.1,
+        "4": 35.4,
+        "6": 48.6,
+        "8": 54.9,
+        "12": 63.8,
+        "16": 70.4
+      },
+      "mean_K12_K16_acc30": 28.5
+    },
+    "rewired": {
+      "label": "Control A: Rewired White-Matter Negative Control",
+      "ccep_rho_post_train": -0.0314,
+      "ccep_partial_rho_post_train": -0.0093,
+      "tmseeg_zeroshot_n46": {
+        "n": 46,
+        "mean_partial_rho": 0.0856,
+        "pos_count": 32
+      },
+      "acc30_by_K": {
+        "2": 66.7,
+        "4": 43.2,
+        "6": 34.8,
+        "8": 31.4,
+        "12": 28.2,
+        "16": 23.9
+      },
+      "acc30_sd_by_K": {
+        "2": 8.7,
+        "4": 7.2,
+        "6": 3.0,
+        "8": 2.4,
+        "12": 1.3,
+        "16": 1.8
+      },
+      "mae_deg_by_K": {
+        "2": 26.2,
+        "4": 45.5,
+        "6": 57.3,
+        "8": 61.9,
+        "12": 69.8,
+        "16": 75.3
+      },
+      "mean_K12_K16_acc30": 26.1
+    },
+    "denoise_mod": {
+      "label": "Upgrade 1: Denoising + Optimal ACh/D1 State-Steering",
+      "ccep_rho_post_train": 0.6526,
+      "ccep_partial_rho_post_train": 0.3709,
+      "tmseeg_zeroshot_n46": null,
+      "acc30_by_K": {
+        "2": 59.6,
+        "4": 54.9,
+        "6": 36.7,
+        "8": 33.9,
+        "12": 29.1,
+        "16": 25.5
+      },
+      "acc30_sd_by_K": {
+        "2": 24.3,
+        "4": 23.9,
+        "6": 13.8,
+        "8": 10.8,
+        "12": 6.0,
+        "16": 4.4
+      },
+      "mae_deg_by_K": {
+        "2": 32.1,
+        "4": 40.4,
+        "6": 55.1,
+        "8": 59.3,
+        "12": 67.0,
+        "16": 73.3
+      },
+      "mean_K12_K16_acc30": 27.3
+    },
+    "wm_band": {
+      "label": "Upgrade 2: 4x Inter-Regional White-Matter Bandwidth",
+      "ccep_rho_post_train": 0.6633,
+      "ccep_partial_rho_post_train": 0.378,
+      "tmseeg_zeroshot_n46": null,
+      "acc30_by_K": {
+        "2": 95.8,
+        "4": 89.6,
+        "6": 65.3,
+        "8": 51.0,
+        "12": 40.1,
+        "16": 33.3
+      },
+      "acc30_sd_by_K": {
+        "2": 3.0,
+        "4": 1.0,
+        "6": 8.2,
+        "8": 6.8,
+        "12": 1.6,
+        "16": 1.1
+      },
+      "mae_deg_by_K": {
+        "2": 10.1,
+        "4": 14.2,
+        "6": 28.1,
+        "8": 40.0,
+        "12": 53.3,
+        "16": 62.3
+      },
+      "mean_K12_K16_acc30": 36.7
+    },
+    "pfc_scale": {
+      "label": "Upgrade 3: 4x Prefrontal/Parietal Cortical Expansion",
+      "ccep_rho_post_train": 0.6581,
+      "ccep_partial_rho_post_train": 0.3728,
+      "tmseeg_zeroshot_n46": null,
+      "acc30_by_K": {
+        "2": 22.8,
+        "4": 22.1,
+        "6": 19.2,
+        "8": 22.0,
+        "12": 18.8,
+        "16": 19.4
+      },
+      "acc30_sd_by_K": {
+        "2": 7.1,
+        "4": 5.9,
+        "6": 3.5,
+        "8": 3.3,
+        "12": 3.7,
+        "16": 0.5
+      },
+      "mae_deg_by_K": {
+        "2": 75.5,
+        "4": 77.4,
+        "6": 82.6,
+        "8": 81.6,
+        "12": 84.9,
+        "16": 85.6
+      },
+      "mean_K12_K16_acc30": 19.1
+    },
+    "hipp_up": {
+      "label": "Upgrade 4: High-Precision Hippocampal Associative Index",
+      "ccep_rho_post_train": 0.6598,
+      "ccep_partial_rho_post_train": 0.3781,
+      "tmseeg_zeroshot_n46": null,
+      "acc30_by_K": {
+        "2": 100.0,
+        "4": 100.0,
+        "6": 100.0,
+        "8": 100.0,
+        "12": 87.2,
+        "16": 62.7
+      },
+      "acc30_sd_by_K": {
+        "2": 0.0,
+        "4": 0.0,
+        "6": 0.0,
+        "8": 0.0,
+        "12": 2.9,
+        "16": 1.1
+      },
+      "mae_deg_by_K": {
+        "2": 3.0,
+        "4": 3.2,
+        "6": 3.3,
+        "8": 5.1,
+        "12": 16.1,
+        "16": 27.9
+      },
+      "mean_K12_K16_acc30": 74.9
+    },
+    "region101": {
+      "label": "Upgrade 5: Region 101 Prosthetic Cortex (4-bit on bio brain)",
+      "ccep_rho_post_train": 0.6611,
+      "ccep_partial_rho_post_train": 0.3789,
+      "tmseeg_zeroshot_n46": {
+        "n": 46,
+        "mean_partial_rho": 0.2883,
+        "pos_count": 45
+      },
+      "acc30_by_K": {
+        "2": 98.2,
+        "4": 92.0,
+        "6": 84.4,
+        "8": 82.1,
+        "12": 72.1,
+        "16": 52.3
+      },
+      "acc30_sd_by_K": {
+        "2": 2.5,
+        "4": 11.3,
+        "6": 22.1,
+        "8": 25.3,
+        "12": 24.1,
+        "16": 14.7
+      },
+      "mae_deg_by_K": {
+        "2": 6.9,
+        "4": 9.2,
+        "6": 14.4,
+        "8": 18.8,
+        "12": 28.3,
+        "16": 39.3
+      },
+      "mean_K12_K16_acc30": 62.2
+    },
+    "sham101": {
+      "label": "Control B: Sham Region 101 (permuted neural readout)",
+      "ccep_rho_post_train": 0.6618,
+      "ccep_partial_rho_post_train": 0.3784,
+      "tmseeg_zeroshot_n46": null,
+      "acc30_by_K": {
+        "2": 84.0,
+        "4": 74.2,
+        "6": 50.9,
+        "8": 42.6,
+        "12": 35.6,
+        "16": 29.7
+      },
+      "acc30_sd_by_K": {
+        "2": 21.0,
+        "4": 23.1,
+        "6": 11.7,
+        "8": 5.9,
+        "12": 4.8,
+        "16": 3.2
+      },
+      "mae_deg_by_K": {
+        "2": 16.1,
+        "4": 24.3,
+        "6": 40.6,
+        "8": 48.9,
+        "12": 59.1,
+        "16": 65.9
+      },
+      "mean_K12_K16_acc30": 32.6
+    }
+  }
+}
