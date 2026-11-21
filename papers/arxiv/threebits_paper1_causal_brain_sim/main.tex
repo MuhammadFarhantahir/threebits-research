@@ -1,0 +1,201 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[margin=0.9in]{geometry}
+\usepackage{amsmath,amssymb,booktabs,graphicx,microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{url}
+
+\title{Observational Resting-State Tuning Degrades Causal Electrical-Stimulation Accuracy in Human Whole-Brain Models}
+\author{Muhammad Farhan Tahir\\Threebits Research\\\url{https://threebits.si}}
+\date{21 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Whole-brain dynamical models are widely proposed as \emph{in silico} testbeds ("digital twins") for designing targeted brain stimulation and training closed-loop neural controllers. Standard practice calibrates these models by fitting structural-to-functional parameters to match \textbf{observational resting-state fMRI} correlations. Here we test whether resting-state fMRI calibration improves a whole-brain model's \textbf{causal interventional accuracy} across \textbf{two independent human stimulation modalities}: (1) \textbf{316,366 real human intracranial single-pulse electrical stimulation (SPES) trials} across \textbf{74 neurosurgical patients} (OpenNeuro \texttt{ds004080}, 277,638 non-seizure-onset-zone trials mapped onto 3,219 directed Schaefer-100 cortical region pairs), and (2) \textbf{non-invasive transcranial magnetic stimulation (TMS-EEG)} across \textbf{46 clean healthy adults} spanning prefrontal DLPFC, premotor, parietal, and shoulder sham sites (OpenNeuro \texttt{ds008037}, CC0).
+
+We uncover a sharp inverse trade-off that replicates across both invasive and non-invasive human brain stimulation: an \textbf{untuned 1-parameter Hopf whole-brain model} anchored solely to diffusion MRI structural wiring predicts real human cortico-cortical evoked potential (CCEP) propagation strongly ($\rho = +0.616$, Pearson $r = +0.610$, distance-controlled partial $\rho = +0.311$), outperforming raw structural wiring ($\rho = +0.525$, partial $+0.237$), resting-state fMRI ($\rho = +0.255$, partial $+0.103$), and randomly rewired controls (partial $-0.002$). However, tuning the same Hopf model to match resting-state fMRI ($r: 0.304 \to 0.889$) \textbf{monotonically degrades causal stimulation accuracy} ($\rho: +0.616 \to +0.176$; partial $\rho \mid \text{distance}: +0.311 \to +0.049$; left lateral prefrontal hub \texttt{LH\_Cont\_PFCl\_1}: $+0.561 \to +0.008$) --- even when structural edges remain frozen and only regional excitabilities are tuned ($\rho = +0.383$, partial $+0.050$).
+
+Conversely, calibrating an anatomy-anchored directed Hopf model directly on \textbf{interventional human CCEP data} lifts strictly held-out prediction to \textbf{$\rho = +0.710$, $r = +0.727$, partial $\rho \mid \text{distance} = +0.444$} on 5-fold unseen pairs (and $\rho = +0.622$, partial $+0.319$ when holding out entire stimulated cortical regions; rewired control $\rho = +0.099$). Furthermore, augmenting every cortical region with \textbf{real multi-scale human cellular and molecular priors} --- 19 PET neurotransmitter receptor densities (Hansen et al., 2022, 1,238 healthy adults), 6-band HCP MEG spectral power, and Mesulam laminar hierarchy --- lifts generalization on \textbf{completely unseen stimulated cortical regions} from partial $\rho = +0.319$ to \textbf{\texttt{+0.366}} (Pearson $r: +0.536 \to +0.651$; matched-capacity permuted-biology control \texttt{+0.321}), lifts \textbf{Leave-One-Yeo-7-Network-Out} accuracy (an entire cognitive network never stimulated) from \texttt{+0.337} to \textbf{\texttt{+0.374}}, and reaches \textbf{\texttt{$\rho$ = +0.716, r = +0.744, partial +0.454}} on unseen pairs --- automatically recovering cholinergic facilitation (\texttt{A4B2} $+0.34/+0.37$, \texttt{VAChT} $+0.27/+0.36$) and \texttt{GABAa} inhibitory suppression (\texttt{$-$0.22}). Transferred \textbf{zero-shot} (zero parameters fitted to EEG) to \textbf{non-invasive healthy-human TMS-EEG}, the invasive-CCEP Hopf model predicts distance-controlled scalp propagation positively in \textbf{44 of 46 individual healthy adults} (prefrontal + parietal vs shoulder sham, mean partial $\rho \mid \text{coil distance} = +0.247$--$+0.278$ vs resting-fMRI-tuned $+0.131$, rewired $+0.028$, wrong-site $-0.136$), and across all three stimulation sites including premotor in \texttt{n = 10} adults (\texttt{+0.389}, \texttt{9/9} clean adults vs resting-fMRI-tuned \texttt{$-$0.103}, \texttt{1/9}).
+
+Next, we resolve the rare stability failures observed in unconstrained closed-loop neural stimulation controllers (where unconstrained residual feedback pushed $\rho(A_{\text{cl}}) = 1.0088 > 1$ to \texttt{3,783\%} energy and unconstrained MLP hit $\Delta\text{sync} = +0.365$ on \texttt{HC033}) by introducing \textbf{spectral-radius projection, exact spectral-norm Small-Gain contraction, and machine-verified Discrete-Time Bounded Real Lemma (BRL) quadratic Lyapunov certification ($P \succ 0, M(P) \prec 0$)}. Across \textbf{160 certified runs} (10 runs on the CCEP-calibrated brain + 150 runs across all 50 personalized MICA-MICs brains), \textbf{160/160} receive verified Lyapunov certificates, with \textbf{0/160 energy violations (\texttt{max 97.9\%})}, \textbf{0/160 hypersynchrony excursions (\texttt{max +$\Delta$sync = +0.0226})}, bounded 5-SD impulse recovery, and a \textbf{5$\times$ jump in prefrontal hub gain on the CCEP-calibrated brain (\texttt{+0.0643} / \texttt{+0.0627} vs \texttt{+0.0204} open-loop and \texttt{+0.0127} unconstrained residual)}. Finally, scaling real human intracranial closed-loop memory modeling to \textbf{15 patients (4,500 words, 1,142 real closed-loop stimulations, OpenNeuro \texttt{ds005557}/\texttt{ds005558})} confirms reliable real-time memory-state decoding (\texttt{0.603 $\pm$ 0.018} ROC AUC, $p = 0.0001$, \texttt{14/15} above chance; null \texttt{0.492}) and stark target specificity: stimulating deep hippocampal or insular targets consistently impairs recall (\textbf{\texttt{$-$8.46 pp} across \texttt{3/3} patients}, Mann-Whitney $p = 0.0035$ vs lateral temporal cortex), underscoring why causally calibrated simulators and certified-safe multi-site controllers are prerequisite to reliable human cognitive control.
+
+\end{abstract}
+\section{Introduction}
+Using artificial neural networks to steer human brain dynamics --- first for clinical memory restoration and neurorehabilitation, and eventually toward extending human cognitive capacity --- requires a safe \emph{in silico} simulator in which stimulation policies can be designed and stress-tested before touching human tissue. Because synapse-level human connectomics remains limited to roughly $1\text{ mm}^3$ of cortex, practical whole-brain simulators operate at the regional scale (typically 68--400 cortical parcels), coupling regional neural-mass or Hopf oscillators via diffusion MRI tractography (Deco et al., 2017; 2019).
+
+A central, largely untested assumption in whole-brain modeling is that \textbf{better observational fit to resting-state fMRI yields a better causal model of electrical perturbation}. Prior work in small invertebrate circuits (Prinz et al., 2004) showed that disparate parameter sets produce identical resting rhythms while responding differently to perturbation. Here we test this assumption directly at whole-brain scale in humans, combining five open human neuroimaging and electrophysiology datasets:
+
+\begin{enumerate}
+\item \textbf{HCP group connectome \& resting fMRI} (ENIGMA Toolbox, Schaefer-100, BSD-3-Clause) --- baseline structural wiring and resting-state functional connectivity.
+\item \textbf{UMCU 74-patient human CCEP atlas} (OpenNeuro \texttt{ds004080}, van Blooijs et al., 2023, CC0) --- 316,366 directed real human single-pulse electrical stimulation trials for causal validation and causal calibration.
+\item \textbf{Monash healthy-human non-invasive TMS-EEG} (OpenNeuro \texttt{ds008037}, Biabani \& Rogasch, CC0) --- 46 clean healthy adults across prefrontal DLPFC \texttt{[-46, 33, 34]}, premotor \texttt{[-23, 4, 63]}, parietal \texttt{[-26, -69, 63]}, and shoulder sham controls testing zero-shot invasive-to-non-invasive transfer.
+\item \textbf{MICA-MICs 50-adult individual connectomes} (Royer et al., 2022, CC0) --- personalized whole-brain models and 500+ closed-loop stimulation controllers across linear and supercritical nonlinear Hopf regimes.
+\item \textbf{UPenn / DARPA RAM closed-loop human memory stimulation} (OpenNeuro \texttt{ds005557} / \texttt{ds005558}, Ezzyat et al., 2018, CC0) --- 40 sessions (23 patients, 11,604 words) plus multi-band iEEG causal policy analysis across 15 patients (4,500 words, 1,142 real closed-loop stimulations).
+\end{enumerate}
+\section{Methods}
+\subsection{Region-Level Linear and Supercritical Nonlinear Hopf Whole-Brain Models}
+Each of $N = 100$ cortical regions (Schaefer 7-Network atlas) is modeled as a complex Hopf (Stuart-Landau) oscillator $z_j = x_j + i y_j$ at intrinsic frequency $f = 0.05\text{ Hz}$ ($\omega = 2\pi f$) with diffusive coupling $W \in \mathbb{R}_{\ge 0}^{N\times N}$ and regional damping $d_j > 0$:
+
+\begin{equation*}\frac{dz_j}{dt} = \big(-(1-\alpha)d_j + i\omega\big) z_j - \gamma_j |z_j|^2 z_j + \sum_{k=1}^N W_{jk}(z_k - z_j) + u_j(t) + \eta_j(t)\end{equation*}
+\begin{itemize}
+\item \textbf{Linear regime ($\alpha = 0, \gamma_j = 0$):} Letting $K = \operatorname{diag}(W\mathbf{1}) - W + \operatorname{diag}(d)$, the exact resting-state covariance and integrated impulse response (Green's function) are both given in closed form by $G = K^{-1}$. Advancing exact 1-second discrete steps via matrix exponential and continuous Lyapunov noise covariance matches exact analytical functional connectivity at $r = 0.999$.
+\item \textbf{Supercritical nonlinear regime ($\alpha = 2.0$):} Local linear excitability is supercritical ($a_j = +d_j > 0$), stabilized by exact cubic amplitude saturation $\gamma_j = \alpha d_j / (2\sigma_j^2)$ integrated via Lie operator splitting ($r \mapsto r / \sqrt{1 + 2\gamma_j \Delta t \, r^2}$, 2 substeps/s) and Simpson-quadrature SPD noise covariance. Resting functional connectivity remains closely aligned with empirical fMRI ($r = 0.790$ vs $0.799$ linear on \texttt{HC001}).
+\end{itemize}
+\subsection{Mapping 74 Real Human CCEP Patients to Schaefer-100}
+From OpenNeuro \texttt{ds004080} (\texttt{ccepData\_V2.mat} and 74 \texttt{*\_electrodes.tsv} files), every recording electrode and bipolar stimulation pair midpoint with valid MNI152 coordinates was assigned to its nearest same-hemisphere Schaefer-100 centroid within $25\text{ mm}$ (5,519 electrodes mapped across 74 patients; 316,366 total directed stimulation-recording trials; 277,638 trials excluding seizure-onset-zone electrodes). For each directed cortical pair $(i \to j, i \ne j)$ with $\ge 10$ trials (3,219 non-SOZ pairs; 3,368 all-electrode pairs), empirical propagation probability $P_{\text{CCEP}}(i \to j)$ is the fraction of trials evoking a significant N1 peak (\texttt{13.7--101.6 ms}). Because both electrical propagation and diffusion tractography decay with Euclidean distance, every predictor is evaluated with raw Spearman $\rho$, Pearson $r$, and \textbf{partial Spearman $\rho \mid \text{distance}$} (residualizing ranks against linear and quadratic distance ranks).
+
+\subsection{Causal Calibration and Strict Cross-Validation}
+We define an anatomy-anchored directed Hopf model (\texttt{DirectedHopf}) permitting asymmetric directed gains on nonzero white-matter edges of the HCP connectome ($W_{ij} = W_{ij}^{\text{MRI}} e^{g_{ij}}$) plus regional damping $d_i$, regularized with L2 priors toward $(g_0, 0)$ and fit via trial-weighted binary cross-entropy linking $\log G_{ij}$ to $P_{\text{CCEP}}(i \to j)$. Generalization is evaluated under two strict 5-fold cross-validation protocols plus a randomly rewired connectome negative control: (1) \textbf{5-fold unseen directed pairs} (20\% of directed pairs held out per fold), and (2) \textbf{5-fold unseen stimulated regions} (20\% of stimulated source regions completely held out, with zero stimulations of those regions seen during fitting).
+
+\subsection{Certified-Safe Closed-Loop Control via Bounded Real Lemma Certification}
+Controllers read both oscillator components of 14 frontoparietal control and target regions and drive 3 prefrontal/precentral sites (\texttt{LH\_Cont\_PFCl\_1}, \texttt{RH\_Cont\_PFCl\_2}, \texttt{LH\_DorsAttn\_PrCv\_1}) under a fixed RMS energy budget to maximize the global connectivity of \texttt{7Networks\_LH\_Cont\_PFCl\_1} (an fMRI correlate of fluid intelligence across individuals; Cole et al., 2012) while constraining brain-wide synchrony deviation from resting baseline (\texttt{+50 |sync $-$ sync\_rest|}). To guarantee formal stability, we project the linear closed-loop core strictly inside spectral radius $\rho(A_{\text{cl}}) \le \rho_{\text{safe}} = 1 - 0.35(1 - \rho(A))$, enforce exact spectral-norm Small-Gain contraction $L_{\text{nl,eff}} \|G_{\text{cl}}\|_\infty \le 0.85 < 1$ plus per-step $\tanh$ current saturation on a zero-bias residual MLP ($f_{\text{nl}}(0) = 0$), and explicitly solve the $H_\infty$ Discrete Algebraic Riccati Equation (\texttt{solve\_discrete\_are}) to verify $P \succ 0$ and $\lambda_{\max}(\text{BRL}(P)) < 0$, proving global exponential stability $V(x_{t+1}) - V(x_t) < 0\;\forall x_t \in \mathbb{R}^{2N}$. All stimulators are evaluated on 64 unseen 10-minute test runs with identical noise seeds against zero stimulation.
+
+\section{Results}
+\subsection{Observational Resting-fMRI Tuning Destroys Causal Human Stimulation Accuracy}
+Across 3,219 non-SOZ directed cortical pairs (277,638 real human electrical stimulations across 74 patients; Table 1, Figure 1), the untuned 1-parameter Hopf model predicts real CCEP propagation substantially better than structural MRI or resting fMRI alone after controlling for distance (partial $\rho = +0.311$ vs $+0.237$ and $+0.103$; randomly rewired control $-0.002$). Tuning the model to match observational resting-state fMRI produces monotonic collapse in causal stimulation accuracy.
+
+\begin{table}[htbp]
+\centering
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lcccc}
+\toprule
+Model (non-SOZ human CCEP, 3,219 pairs) & Resting fMRI fit ($r$) & CCEP Spearman $\rho$ & Partial $\rho \mid \text{distance}$ & \texttt{LH\_Cont\_PFCl\_1} hub $\rho$ \\ \midrule
+HCP diffusion MRI wiring alone & --- & +0.525 & +0.237 & +0.309 \\
+HCP resting-state fMRI alone & --- & +0.255 & +0.103 & --- \\
+\textbf{Untuned Hopf (1 param $g$, zero CCEP data)} & 0.304 & \textbf{+0.616} & \textbf{+0.311} & \textbf{+0.561} \\
+Excitability-only Hopf (101 params fit to fMRI) & 0.370 & +0.383 & +0.050 & +0.259 \\
+Anchored Hopf ($L_2\ \lambda = 0.1$, fit to fMRI) & 0.492 & +0.420 & +0.067 & +0.278 \\
+Anchored Hopf ($L_2\ \lambda = 0.01$, fit to fMRI) & 0.688 & +0.385 & +0.060 & +0.378 \\
+Free-tuned Hopf ($L_2\ \lambda = 0.0$, fit to fMRI) & \textbf{0.889} & +0.176 & +0.049 & +0.008 \\
+Randomly rewired Hopf (negative control) & --- & +0.080 & $-$0.002 & $-$0.042 \\
+\bottomrule
+\end{tabular}}
+\end{table}
+Results are consistent when including all electrodes (3,368 pairs: untuned Hopf $\rho = +0.608$, partial $+0.302$) or restricting to pairs with $\ge 20$ trials (2,799 pairs: untuned Hopf $\rho = +0.624$, Pearson $r = +0.625$, partial $+0.307$). Notably, the highest-probability empirical CCEP partner of \texttt{7Networks\_LH\_Cont\_PFCl\_1} across 74 patients is \texttt{7Networks\_LH\_DorsAttn\_PrCv\_1} (34\% evoked probability, 196/580 stimulations) --- one of the exact sites ranked highest by our simulator before observing any stimulation data.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{figures/fig1_ccep_validation.png}
+\caption{Observational resting-state fMRI tuning degrades causal CCEP accuracy across 74 human patients, whereas direct causal calibration lifts held-out accuracy to rho = +0.71.}
+\end{figure}
+\subsection{Direct Causal Calibration on Human CCEP Generalizes Out-of-Sample}
+Calibrating the anatomy-anchored directed Hopf model directly on held-in human CCEP trials substantially improves prediction on unseen cortical pairs and retains an advantage on completely unseen stimulated cortical regions (Table 2).
+
+\begin{table}[htbp]
+\centering
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lcccc}
+\toprule
+Model (5-fold CV, 3,219 non-SOZ directed pairs) & Spearman $\rho$ & Pearson $r$ & Partial $\rho \mid \text{distance}$ & \texttt{LH\_Cont\_PFCl\_1} (87 directed pairs) \\ \midrule
+HCP diffusion MRI wiring alone & +0.525 & +0.454 & +0.237 & --- \\
+Untuned Hopf (1 param $g$) & +0.616 & +0.610 & +0.311 & +0.564 (partial +0.127) \\
+\textbf{CCEP-calibrated Hopf (5-fold unseen pairs)} & \textbf{+0.710} & \textbf{+0.727} & \textbf{+0.444} & \textbf{+0.650 (partial +0.177)} \\
+\textbf{CCEP-calibrated Hopf (5-fold unseen stim regions)} & \textbf{+0.622} & +0.535 & \textbf{+0.319} & \textbf{+0.585 (partial +0.100)} \\
+CCEP-calibrated rewired control (unseen pairs) & +0.099 & +0.090 & +0.129 & +0.133 (partial +0.112) \\
+\bottomrule
+\end{tabular}}
+\end{table}
+\subsection{Multi-Scale Biological Twin: Human Neurotransmitter Receptors, MEG, and Laminar Hierarchy}
+When a cortical region has never been electrically stimulated, uniform-prior Hopf models fall back to a flat isotropic prior. To test whether \textbf{filling missing microscopic gaps with open human cellular biology} improves causal generalization, we aligned \textbf{100/100 Schaefer cortical parcels} (\texttt{median 3.36 mm}) with \textbf{19 PET neurotransmitter receptors} (Hansen et al., 2022, 1,238 healthy humans; 6 PCs capturing \texttt{89.8\%} variance plus explicit excitatory-inhibitory balance \texttt{(NMDA + mGluR5)/2 $-$ GABAa}), \textbf{6-band HCP MEG spectral power}, and \textbf{4-level Mesulam cytoarchitectonic hierarchy} --- parameterizing regional damping, source stimulation susceptibility, outgoing/incoming edge gain, pairwise receptor cosine similarity, and laminar feedforward--feedback directionality (\texttt{\textasciitilde{}47} shared biological parameters in Bio-Only mode, or combined with L2-anchored edge residuals in Full Twin mode), evaluated against a \textbf{matched-capacity Permuted-Biology control} (identical architecture with region labels shuffled across 3 permutations; Table 3, Figure 2):
+
+\begin{table}[htbp]
+\centering
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lcccc}
+\toprule
+Strict Out-of-Sample Benchmark (\texttt{3,219} non-SOZ pairs) & Uniform CCEP-Hopf (no biology) & Permuted-Biology Control (same params) & Multi-Scale Bio-Only (\texttt{\textasciitilde{}47} params) & \textbf{Multi-Scale Bio + Anatomy Twin} \\ \midrule
+\textbf{5-fold unseen stimulated regions} ($\rho$ / $r$ / partial $\rho \mid d$) & +0.622 / +0.536 / +0.319 & +0.626 / +0.539 / +0.321 & \textbf{+0.653 / +0.665 / +0.357} & \textbf{+0.658 / +0.651 / +0.366} \\
+\textbf{Leave-One-Yeo-7-Network-Out} (entire cognitive network unseen) & +0.628 / +0.556 / +0.337 & +0.635 / +0.593 / +0.336 & +0.640 / +0.639 / +0.334 & \textbf{+0.662 / +0.646 / +0.374} \\
+\textbf{5-fold unseen directed pairs} & +0.710 / +0.727 / +0.444 & +0.706 / +0.729 / +0.438 & +0.661 / +0.672 / +0.371 & \textbf{+0.716 / +0.744 / +0.454} \\
+\bottomrule
+\end{tabular}}
+\end{table}
+Across unseen stimulated regions and completely unstimulated cognitive networks (\texttt{SomMot +0.194 $\to$ +0.253}, \texttt{DorsAttn +0.323 $\to$ +0.365}, \texttt{Default +0.400 $\to$ +0.421}), real human biology outperforms both uniform Hopf and the matched-capacity permuted control by \textbf{\texttt{+0.038} to \texttt{+0.047} partial $\rho$} (\texttt{+0.090} to \texttt{+0.115} Pearson $r$). Across the 74-patient empirical CCEP matrix, cholinergic innervation (\texttt{A4B2} outgoing/incoming $\rho = +0.336 / +0.367$, \texttt{VAChT} $+0.274 / +0.356$) and neuromodulators (\texttt{H3} $+0.25/+0.30$, \texttt{MU} $+0.24/+0.28$, \texttt{CB1} $+0.23/+0.28$) strongly facilitate cortical electrical spread, whereas inhibitory \textbf{\texttt{GABAa} density suppresses outgoing spread ($\rho = -0.222$)} and chemically similar regions couple more strongly (\texttt{w\_rcos = +0.0281}).
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{figures/fig6_multiscale_biology.png}
+\caption{Multi-scale human biology (19 PET neurotransmitter receptors, 6-band HCP MEG, Mesulam hierarchy) improves out-of-sample causal generalization on unseen cortical regions and entire unstimulated networks, beating matched-capacity permuted controls and recovering cholinergic amplification vs GABAa suppression.}
+\end{figure}
+\subsection{Zero-Shot Cross-Modality Validation on Healthy-Human Non-Invasive TMS-EEG (\texttt{n = 46} Clean Adults)}
+To test whether causal accuracy transfers from invasive epilepsy stimulation (\texttt{ds004080}) to \textbf{non-invasive stimulation in healthy adults without surgery}, we evaluated all models zero-shot (zero EEG parameters fitted) against sham-subtracted TMS-evoked potentials (\texttt{[+35, +100 ms]} RMS, shoulder sham subtracted, strict \texttt{< 40 $\mu$V} channel QC) across 62 MNI-matched 10-10 scalp electrodes using a fixed physical inverse-square cortical-to-scalp leadfield $L_{e,j} \propto (\|r_e - r_j\|^2 + 20^2)^{-1}$.
+
+\begin{table}[htbp]
+\centering
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lccc}
+\toprule
+Model (zero parameters fit to TMS-EEG) & 3-Site Cohort (\texttt{n = 10}, PFC/Premotor/Parietal) & Clean 3-Site Individuals (\texttt{n = 9}) & Scaled 2-Site Cohort (\texttt{n = 46} clean adults, PFC + Parietal) \\ \midrule
+\textbf{CCEP-calibrated Hopf (invasive $\to$ non-invasive)} & \textbf{+0.389} (PFC +0.234, PM +0.537, Par +0.395) & \textbf{\texttt{+0.326} (\texttt{9/9} > 0)} & \textbf{\texttt{+0.247} (\texttt{44/46} > 0)} \\
+\textbf{Untuned anatomy-Hopf (1 param $g$)} & \textbf{+0.420} (PFC +0.320, PM +0.648, Par +0.292) & \textbf{\texttt{+0.315} (\texttt{9/9} > 0)} & \texttt{+0.219} (\texttt{42/46} > 0) \\
+Resting-fMRI-tuned Hopf (observational) & $-$0.103 (PFC +0.304, PM $-$0.635, Par +0.022) & \texttt{$-$0.107} (\texttt{1/9} > 0) & \texttt{+0.131} (\texttt{34/46} > 0) \\
+Rewired white-matter control & $-$0.013 & \texttt{$-$0.015} (\texttt{5/9} > 0) & \texttt{+0.028} (\texttt{26/46} > 0) \\
+Wrong-site negative control (permuted sites) & $-$0.254 & \texttt{$-$0.165} (\texttt{0/9} > 0) & \texttt{$-$0.136} (\texttt{9/46} > 0) \\
+Coil-distance-only null (no connectome) & $-$0.004 & \texttt{+0.003} (\texttt{4/9} > 0) & --- \\
+\bottomrule
+\end{tabular}}
+\end{table}
+The invasive-CCEP Hopf model ranks \#1 individually across all \texttt{n = 46} clean healthy adults (\texttt{44/46} positive, \texttt{+0.247} mean partial $\rho \mid \text{coil distance}$), nearly doubling resting-fMRI-tuned Hopf (\texttt{+0.131}) and confirming that causal brain-stimulation geometry transfers zero-shot from clinical intracranial recordings to non-invasive healthy human cortex.
+
+\subsection{Certified-Safe Closed-Loop Stimulation Control (\texttt{160/160} Lyapunov Certificates)}
+\begin{enumerate}
+\item \textbf{50-person baseline study (350 trained stimulators) \& transfer:} Under the resting-synchrony safety rule, open-loop \texttt{fixed rhythm} drops to 11\% energy and fails ($\Delta = -0.002$, clear gain in 2/50). Closed-loop \texttt{linear} achieves mean $\Delta = +0.064$ (median $+0.063$, clear gain in every seed for 37/50, max person-mean $|\Delta\text{sync}| = 0.019$, $r = -0.87$ with baseline hub strength), and a single leave-one-out group-average linear matrix retains $+0.046$ (\textbf{76\% of personalized mean gain}; channel-permuted control $-0.142$). Unconstrained \texttt{network} achieves only $+0.019$ and exhibits \textbf{1 runaway-synchrony failure in 150 runs} (\texttt{HC033} seed 1: $\Delta\text{sync} = +0.365$, energy 101\%). On the CCEP-calibrated brain, unconstrained \texttt{ResidualNetwork} seed 1 pushed $\rho(A_{\text{cl}}) = 1.0088 > 1$ with nonlinear Lipschitz norm $L_{\text{nl}} = 17.52$, blowing up to \texttt{3,783\%} test energy (Figure 3).
+\item \textbf{Machine-verified Bounded Real Lemma (BRL) Lyapunov Certification (\texttt{160/160} certified):}
+\end{enumerate}
+\begin{itemize}
+\item \textbf{74-patient CCEP-calibrated brain (5 seeds each):} Eliminating unstable eigenvalue chasing yields \textbf{\texttt{10/10} BRL Lyapunov certificates}, \textbf{\texttt{0/10} energy or synchrony violations}, and stabilizes gradient optimization --- lifting prefrontal hub gain to \textbf{\texttt{+0.0643} (\texttt{SafeLinear}, max energy \texttt{93\%}, max $|\Delta\text{sync}| = 0.0013$)} and \textbf{\texttt{+0.0627} (\texttt{SafeResidual}, max energy \texttt{77\%}, max $|\Delta\text{sync}| = 0.0013$)}, which is \textbf{3.1$\times$ open-loop (\texttt{+0.0204}) and 5$\times$ unconstrained residual (\texttt{+0.0127})}. Under a 5-SD mid-run cortical impulse stress test, \texttt{SafeResidual} recovers cleanly (\texttt{1.05} post-recovery RMS state at \texttt{56\%} energy vs \texttt{1.20} at \texttt{94\%} for unconstrained residual and \texttt{1.00} for unstimulated rest).
+\item \textbf{All 50 MICA-MICs personal brains $\times$ 3 seeds (\texttt{150} \texttt{SafeResidual} runs):} \textbf{\texttt{150/150} machine-verified BRL Lyapunov certificates}, \textbf{\texttt{0/150} energy violations (\texttt{max 97.9\%})}, \textbf{\texttt{0/150} hypersynchrony excursions (\texttt{max +$\Delta$sync = +0.0226}; \texttt{HC033} drops from \texttt{+0.365} to \texttt{$\le$ +0.0128})}, and mean hub gain \texttt{+0.0296} (56\% above unconstrained \texttt{network} \texttt{+0.019}).
+\item \textbf{Supercritical nonlinear Hopf brains ($\alpha = 2.0$, 6 stratified individuals $\times$ 2 seeds):} \texttt{SafeLinear} achieves \textbf{\texttt{+0.1066}} (\texttt{max |$\Delta$sync| = 0.0211}, \texttt{max energy = 100\%}) and \texttt{SafeResidual} maintains \textbf{\texttt{+0.0995}} (\texttt{med +0.1067}, \texttt{max |$\Delta$sync| = 0.0168}) while hard-capping peak per-step current to \textbf{\texttt{2.92 E}} (half of \texttt{SafeLinear}'s \texttt{5.73 E}).
+\end{itemize}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{figures/fig2_closedloop_control.png}
+\caption{Closed-loop stimulation outperforms open-loop across 50 personalized human brain models, transfers universally (76\%), and maintains bounded control under nonlinear supercritical dynamics.}
+\end{figure}
+\subsection{Scaling Real Human Closed-Loop Memory Modeling to 15 Patients}
+Across 40 real human closed-loop verbal-memory sessions (23 patients, 11,604 words, OpenNeuro \texttt{ds005557}/\texttt{ds005558}), overall recall on stimulation vs control lists is mixed (\texttt{26.0\%} vs \texttt{27.3\%} in FR3; \texttt{26.3\%} vs \texttt{28.3\%} in catFR3). Scaling multi-band iEEG extraction and out-of-fold pre-state matching to \textbf{15 unique patients (4,500 words, 1,142 real closed-loop stimulations)} sharing identical \texttt{1.43--1.60 s} stimulation timing establishes three clinical findings (Figure 4):
+
+\begin{enumerate}
+\item \textbf{Reliable real-time cognitive-state decoding:} Held-out list-level recall prediction reaches \textbf{\texttt{0.603 $\pm$ 0.018} ROC AUC} for L2 logistic regression ($p = 0.0001$, above chance in \textbf{\texttt{14/15}} patients; top \texttt{R1166D} \texttt{0.723}, \texttt{R1274T} \texttt{0.669}) and \textbf{\texttt{0.581 $\pm$ 0.022}} for causal Temporal GRU ($p = 0.0035$, \texttt{13/15} above chance; top \texttt{R1166D} \texttt{0.739}, \texttt{R1274T} \texttt{0.721}), against a 20-permutation shuffled null of \textbf{\texttt{0.492}} and \textbf{\texttt{0.684} mean AUC agreement} with the hospital's online closed-loop trigger (up to \texttt{0.860}).
+\item \textbf{Stark anatomical target specificity:} Comparing stimulated low-state words against out-of-fold matched low-state control words (sanity-checked on unstimulated high-state LTC words: \texttt{+0.37 pp}), stimulating \textbf{deep hippocampal or insular targets} (\texttt{R1161E} CA1 \texttt{$-$9.3 pp}, \texttt{R1247P} DG \texttt{$-$6.3 pp}, \texttt{R1145J} insula \texttt{$-$9.9 pp}) \textbf{consistently impairs human memory (\texttt{$-$8.46 pp} mean, \texttt{3/3} negative, Mann-Whitney $p = 0.0035$ vs LTC; post-stim neural shift $\Delta z = -1.17\text{ SD}$)}. By contrast, single-site \textbf{lateral temporal cortex (LTC, \texttt{n = 10}, 747 stims)} averages near zero (\texttt{+0.01 $\pm$ 1.30 pp}) with wide individual spread (\texttt{+7.5 pp} to \texttt{$-$4.4 pp}).
+\item \textbf{Offline causal policy evaluation (leave-one-patient-out):} Because indiscriminate single-site stimulation averages \texttt{$-$1.49 pp} across the 15-patient cohort, a strictly held-out LOPO site-aware policy avoids \textbf{\texttt{6/7} strongly harmful (\texttt{< $-$3 pp}) sessions}, improving expected low-state recall by \textbf{\texttt{+1.20 pp}} over the hospital trigger (\texttt{$-$0.29 pp} vs \texttt{$-$1.49 pp}; permuted-site control \texttt{$-$0.42 pp}).
+\end{enumerate}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{figures/fig4_safe_tmseeg_memory.png}
+\caption{Certified-safe Lyapunov closed-loop control (160/160 certificates), zero-shot non-invasive healthy-human TMS-EEG validation, and 15-patient real human intracranial closed-loop memory policy.}
+\end{figure}
+\section{Limitations \& Honest Scope}
+\begin{itemize}
+\item \textbf{Proxy vs intelligence:} \texttt{7Networks\_LH\_Cont\_PFCl\_1} global connectivity is a resting-fMRI correlate of fluid intelligence across individuals (\textasciitilde{}10\% variance; Cole et al., 2012). Nobody has demonstrated causal intelligence enhancement in healthy humans via brain stimulation, and we make no such claim.
+\item \textbf{Scale \& physiology:} Regional Hopf oscillators capture mesoscale propagation and oscillation, not single-neuron spiking, neuromodulation, or synaptic plasticity. CCEP N1 probability reflects fast evoked propagation (\texttt{13--100 ms}) in neurosurgical epilepsy patients (mitigated by excluding seizure-onset-zone electrodes and independently validated zero-shot on healthy-human TMS-EEG in \texttt{ds008037}).
+\item \textbf{Safety scope:} Our Bounded Real Lemma Lyapunov certificates prove global exponential stability of the discrete-time linear-regime brain plus nonlinear residual feedback (\texttt{160/160} certified, \texttt{0/160} energy or hypersynchrony excursions). Extending formal Lyapunov/control-barrier certificates to full supercritical nonlinear oscillators with model-plant mismatch and real-time disturbance observers remains essential before closed-loop human trials.
+\end{itemize}
+\section*{Ethics Statement, Data \& Code Availability, and Competing Interests}
+\begin{itemize}
+\item \textbf{Ethics Statement:} This work is a secondary computational analysis of publicly available, de-identified human neuroimaging and electrophysiology datasets released under CC0 or BSD-3-Clause open licences (\texttt{OpenNeuro ds004080}, \texttt{ds008037}, \texttt{ds005557}, \texttt{ds005558}; \texttt{MICA-MICs}; \texttt{ENIGMA HCP}). No new human or animal experiments were conducted.
+\item \textbf{Data \& Code Availability:} All source datasets are publicly accessible via their OpenNeuro/Zenodo/OSF DOIs listed in References. Reproducible analysis scripts, figure generators, and benchmark logs are publicly archived at \url{https://github.com/MuhammadFarhantahir/threebits-research} and \url{https://threebits.si/papers/.}
+\item \textbf{Competing Interests:} Muhammad Farhan Tahir is the founder of Threebits, an early-stage research initiative developing neural decoders and brain-interface software. No external funding influenced these analyses.
+\end{itemize}
+\section*{References}
+\begin{enumerate}
+\item Biabani, M. \& Rogasch, N. C. (2025). The neural dynamics of working memory and transcranial magnetic stimulation. \emph{OpenNeuro} \texttt{ds008037} (CC0). \url{https://openneuro.org/datasets/ds008037}
+\item Cole, M. W., Yarkoni, T., Repovs, G., Anticevic, A., \& Braver, T. S. (2012). Global connectivity of prefrontal cortex predicts cognitive control and intelligence. \emph{Journal of Neuroscience}, 32(26):8988--8999. \url{https://doi.org/10.1523/JNEUROSCI.0536-12.2012}
+\item Deco, G., Kringelbach, M. L., Jirsa, V. K., \& Ritter, P. (2017). The dynamics of resting fluctuations in the brain: metastability and its dynamical cortical core. \emph{Scientific Reports}, 7:3095. \url{https://doi.org/10.1038/s41598-017-03073-5}
+\item Deco, G., Cruzat, J., Cabral, J., Tagliazucchi, E., Laufs, H., Logothetis, N. K., \& Kringelbach, M. L. (2019). Awakening: Predicting external stimulation to force transitions between different brain states. \emph{PNAS}, 116(36):18088--18097. \url{https://doi.org/10.1073/pnas.1905534116}
+\item Ezzyat, Y. et al. (2018). Closed-loop stimulation of temporal cortex rescues functional networks and improves memory. \emph{Nature Communications}, 9:365 (OpenNeuro \texttt{ds005557} / \texttt{ds005558}, CC0). \url{https://doi.org/10.1038/s41467-017-02753-0}
+\item Hansen, J. Y. et al. (2022). Mapping neurotransmitter systems to the structural and functional organization of the human neocortex. \emph{Nature Neuroscience}, 25:1569--1581. \url{https://doi.org/10.1038/s41593-022-01186-3}
+\item Larivière, S. et al. (2021). The ENIGMA Toolbox: multiscale neural contextualization of multisite neuroimaging datasets. \emph{Nature Methods}, 18:698--700. \url{https://doi.org/10.1038/s41592-021-01186-4}
+\item Prinz, A. A., Bucher, D., \& Marder, E. (2004). Similar network activity from disparate circuit parameters. \emph{Nature Neuroscience}, 7:1345--1352. \url{https://doi.org/10.1038/nn1352}
+\item Royer, J. et al. (2022). An open MRI dataset for multiscale neuroscience (MICA-MICs). \emph{Scientific Data}, 9:569. \url{https://doi.org/10.1038/s41597-022-01682-y}
+\item van Blooijs, D. et al. (2023). Developmental trajectory of transmission speed in the human brain. \emph{Nature Neuroscience}, 26:537--541 (OpenNeuro \texttt{ds004080}, CC0). \url{https://doi.org/10.1038/s41593-023-01272-0}
+\end{enumerate}
+
+\end{document}

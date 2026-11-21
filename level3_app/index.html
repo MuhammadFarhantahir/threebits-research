@@ -1,0 +1,629 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Threebits · Level-3A Closed-Loop &amp; Neural Gym Co-Processor</title>
+<style>
+  :root {
+    --bg:#12110f; --panel:#1a1916; --line:#2e2b24; --ink:#ece9df; --muted:#9a9589;
+    --accent:#ee6f40; --teal:#3aa68f; --blue:#5c8ec4;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Inter",sans-serif; background:var(--bg); color:var(--ink); line-height:1.5; }
+  .wrap { max-width:1200px; margin:0 auto; padding:20px 24px 44px; }
+  header { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px; border-bottom:1px solid var(--line); padding-bottom:14px; margin-bottom:16px; }
+  .brand { font-weight:600; letter-spacing:-0.01em; font-size:1.15rem; }
+  .brand span { color:var(--accent); font-weight:500; font-size:0.86rem; margin-left:8px; }
+  .pill { font-size:0.78rem; color:var(--muted); background:var(--panel); border:1px solid var(--line); padding:5px 10px; border-radius:999px; font-family:ui-monospace,SFMono-Regular,monospace; }
+  .tabs { display:flex; gap:8px; margin-bottom:18px; }
+  .tab { background:var(--panel); color:var(--muted); border:1px solid var(--line); border-radius:9px; padding:9px 15px; font-size:0.88rem; cursor:pointer; font-weight:500; }
+  .tab.active { background:#26231d; color:var(--ink); border-color:var(--accent); }
+  .view { display:none; }
+  .view.active { display:block; }
+  .grid { display:grid; grid-template-columns:1.25fr 0.95fr; gap:18px; align-items:start; }
+  @media (max-width:900px){ .grid{ grid-template-columns:1fr; } }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:18px; }
+  h2 { margin:0 0 8px; font-size:1.0rem; font-weight:600; }
+  .sub { font-size:0.84rem; color:var(--muted); margin:0 0 14px; }
+  .controls { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; align-items:center; }
+  select, button { background:#23211c; color:var(--ink); border:1px solid var(--line); border-radius:8px; padding:8px 11px; font-size:0.84rem; cursor:pointer; }
+  button.primary { background:var(--accent); color:#12110f; border-color:var(--accent); font-weight:600; }
+  button:disabled { opacity:0.45; cursor:not-allowed; }
+  label.chk { font-size:0.8rem; color:var(--muted); display:inline-flex; align-items:center; gap:5px; padding:6px 10px; border:1px solid var(--line); border-radius:8px; background:#151411; cursor:pointer; }
+  .arena { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:400px; background:#0c0b09; border:1px solid var(--line); border-radius:10px; position:relative; padding:14px; }
+  canvas { display:block; max-width:100%; }
+  .phase-bar { position:absolute; top:12px; left:14px; right:14px; display:flex; justify-content:space-between; font-size:0.8rem; font-family:ui-monospace,monospace; color:var(--muted); }
+  .rule-pill { position:absolute; bottom:12px; left:14px; font-size:0.8rem; font-family:ui-monospace,monospace; padding:4px 9px; border-radius:6px; background:#1c1a16; border:1px solid var(--line); color:var(--ink); }
+  .cue-banner { margin-top:10px; padding:8px 12px; border-radius:8px; font-size:0.84rem; border:1px solid var(--line); background:#171612; min-height:38px; width:100%; display:flex; justify-content:space-between; align-items:center; gap:10px; }
+  .cue-active { border-color:var(--teal); background:rgba(58,166,143,0.12); color:#b8f0e2; }
+  .meter-wrap { height:10px; background:#0c0b09; border-radius:999px; overflow:hidden; border:1px solid var(--line); margin:6px 0 12px; }
+  .meter-fill { height:100%; width:0%; background:linear-gradient(90deg,var(--teal),var(--accent)); transition:width 0.25s ease; }
+  .kpis { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:14px; }
+  .kpi { background:#12110f; border:1px solid var(--line); border-radius:8px; padding:10px; }
+  .kpi b { display:block; font-size:1.12rem; font-family:ui-monospace,monospace; }
+  .kpi span { font-size:0.74rem; color:var(--muted); }
+  table { width:100%; border-collapse:collapse; font-size:0.82rem; margin-top:8px; }
+  th, td { text-align:left; padding:7px 6px; border-bottom:1px solid var(--line); }
+  th { color:var(--muted); font-weight:500; }
+  .right { text-align:right; font-family:ui-monospace,monospace; }
+  .glyph-box { display:flex; gap:14px; align-items:center; background:#0c0b09; border:1px solid var(--line); border-radius:10px; padding:12px; margin-bottom:12px; }
+  .glyph-meta { font-size:0.8rem; color:var(--muted); line-height:1.55; }
+  .glyph-meta strong { color:var(--ink); font-family:ui-monospace,monospace; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">Threebits <span>Closed-Loop Brain–AI Co-Processor</span></div>
+    <div class="pill" id="status-pill">Connecting to neural engine...</div>
+  </header>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="l3a">Level-3A · 4-Arm EEG Trial</button>
+    <button class="tab" data-tab="gym">Neural Gym · Non-Verbal Latent Co-Processor (K = 4..16)</button>
+  </div>
+
+  <!-- ===================== TAB 1: LEVEL-3A 4-ARM EEG TRIAL ===================== -->
+  <div class="view active" id="view-l3a">
+    <div class="grid">
+      <div class="card">
+        <h2>4-Arm Randomized Working-Memory Task (Continuous Color Recall)</h2>
+        <p class="sub">Memorize all colored dots (0.65 s), hold during the 1.5 s EEG delay, then click the matching color on the ring for the highlighted slot.</p>
+        <div class="controls">
+          <select id="arm-sel" aria-label="Trial Arm">
+            <option value="human_alone">Arm 1 · Human Alone</option>
+            <option value="manual_ai">Arm 2 · Manual AI UI (press H)</option>
+            <option value="sham_loop">Arm 3 · Sham EEG Loop (control)</option>
+            <option value="real_closedloop" selected>Arm 4 · Real Closed-Loop Co-Processor</option>
+          </select>
+          <select id="k-sel" aria-label="Set Size">
+            <option value="2">K = 2 items (easy)</option>
+            <option value="4">K = 4 items (Cowan limit)</option>
+            <option value="6" selected>K = 6 items (overloaded)</option>
+            <option value="8">K = 8 items (heavy overload)</option>
+          </select>
+          <button class="primary" id="start-btn">Run Trial</button>
+          <button id="hint-btn" disabled>Manual Hint (H)</button>
+        </div>
+
+        <div class="arena">
+          <div class="phase-bar">
+            <span id="phase-lbl">READY</span>
+            <span id="trial-lbl">Select arm &amp; press Run Trial</span>
+          </div>
+          <canvas id="task-canvas" width="380" height="360"></canvas>
+        </div>
+
+        <div class="cue-banner" id="cue-banner">
+          <span id="cue-text">Co-processor idle. In Arm 4, real-time EEG overload (&ge;50%) automatically injects a low-friction color-sector anchor before recall.</span>
+          <span id="last-err" style="font-family:ui-monospace,monospace;color:var(--accent)"></span>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:18px;">
+        <div class="card">
+          <h2>Real-Time Neural Telemetry</h2>
+          <p class="sub" id="eeg-src">Loading real OpenNeuro ds008037 healthy-human EEG stream...</p>
+          <div class="kpis">
+            <div class="kpi"><b id="kpi-auc">--</b><span>OOF Load AUC</span></div>
+            <div class="kpi"><b id="kpi-lat">--</b><span>C99 int4 step</span></div>
+            <div class="kpi"><b id="kpi-prob">--</b><span>Overload risk</span></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:0.78rem;color:var(--muted);">
+            <span>Decoded Pre-Response Overload Probability</span>
+            <span id="trig-badge">STANDBY</span>
+          </div>
+          <div class="meter-wrap"><div class="meter-fill" id="prob-bar"></div></div>
+          <svg id="eeg-svg" viewBox="0 0 420 110" style="width:100%;height:110px;background:#0c0b09;border:1px solid var(--line);border-radius:8px;">
+            <line x1="20" y1="55" x2="400" y2="55" stroke="#2e2b24" stroke-dasharray="3 3"/>
+            <polyline id="eeg-line" fill="none" stroke="#3aa68f" stroke-width="2.4" points="20,55 400,55"/>
+            <text x="12" y="16" fill="#9a9589" font-size="10" font-family="ui-monospace,monospace">Parietal alpha (8–13 Hz, z-score across 6 x 250 ms delay bins)</text>
+          </svg>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <h2 style="margin:0;">Live 4-Arm Session Scoreboard</h2>
+            <div style="display:flex;gap:6px;">
+              <a href="/api/export" style="color:var(--teal);font-size:0.8rem;text-decoration:none;border:1px solid var(--line);padding:4px 8px;border-radius:6px;">Export CSV</a>
+              <button id="reset-btn" style="padding:4px 8px;font-size:0.78rem;">Reset</button>
+            </div>
+          </div>
+          <table>
+            <thead><tr><th>Arm</th><th class="right">N</th><th class="right">&lt;30&deg; Acc</th><th class="right">MAE</th><th class="right">Assist</th></tr></thead>
+            <tbody id="score-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== TAB 2: NEURAL GYM (NON-VERBAL LATENT CO-PROCESSOR) ===================== -->
+  <div class="view" id="view-gym">
+    <div class="grid">
+      <div class="card">
+        <h2>Prosthetic Cortex Neural Gym · Non-Verbal Latent Write Port</h2>
+        <p class="sub">Train your cortex to hold K = 8–16 items (2–4&times; Cowan's biological limit). The AI never prints text or shows the color — it flashes a monochrome 4-bit spatial-harmonic glyph + optional stereo pitch chord encoding (q_cos, q_sin).</p>
+        <div class="controls">
+          <select id="gym-mode">
+            <option value="latent_coproc" selected>Non-Verbal Latent Co-Processor</option>
+            <option value="unassisted">Unassisted Human Baseline</option>
+            <option value="sham_code">Sham Latent Code (control)</option>
+          </select>
+          <select id="gym-k">
+            <option value="4">K = 4 (Cowan limit)</option>
+            <option value="8">K = 8 (2&times; human)</option>
+            <option value="12" selected>K = 12 (3&times; human)</option>
+            <option value="16">K = 16 (4&times; human)</option>
+          </select>
+          <select id="gym-bits">
+            <option value="1">1-bit (40 bps)</option>
+            <option value="2">2-bit (80 bps)</option>
+            <option value="4" selected>4-bit (160+ bps)</option>
+          </select>
+          <select id="gym-lat">
+            <option value="50" selected>50 ms loop</option>
+            <option value="150">150 ms loop</option>
+            <option value="250">250 ms loop</option>
+          </select>
+          <label class="chk"><input type="checkbox" id="gym-rule"> Private Rule (+0/+90/+180&deg;)</label>
+          <label class="chk"><input type="checkbox" id="gym-audio" checked> Stereo Audio Chord</label>
+          <button class="primary" id="gym-start">Run Gym Trial</button>
+        </div>
+
+        <div class="arena">
+          <div class="phase-bar">
+            <span id="gym-phase">READY</span>
+            <span id="gym-prompt">Press Run Gym Trial (Space)</span>
+          </div>
+          <canvas id="gym-canvas" width="380" height="360"></canvas>
+          <div class="rule-pill" id="gym-rule-pill">Private Human Rule: DIRECT (+0&deg;)</div>
+        </div>
+
+        <div class="cue-banner" id="gym-banner">
+          <span id="gym-cue-txt">Monochrome polar harmonic glyph points along the 4-bit (q_cos, q_sin) vector — zero color pixels. Combine with your private rule and click the ring.</span>
+          <span id="gym-last" style="font-family:ui-monospace,monospace;color:var(--accent)"></span>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:18px;">
+        <div class="card">
+          <h2>Live Non-Verbal Latent Code Decoder</h2>
+          <p class="sub">Sensory-substitution write port: monochrome radial harmonic (visual) + stereo pan/pitch chord (auditory).</p>
+          <div class="glyph-box">
+            <canvas id="glyph-canvas" width="110" height="110" style="background:#12110f;border:1px solid var(--line);border-radius:8px;"></canvas>
+            <div class="glyph-meta">
+              <div>Vector: <strong id="g-vec">(0.71, -0.71) preview</strong></div>
+              <div>Quantized: <strong id="g-bits">4-bit · 50 ms</strong></div>
+              <div>Audio pan/Hz: <strong id="g-audio">ready</strong></div>
+              <div>C99 int4 step: <strong id="g-c99">--</strong></div>
+            </div>
+          </div>
+          <svg id="gym-curve" viewBox="0 0 420 115" style="width:100%;height:115px;background:#0c0b09;border:1px solid var(--line);border-radius:8px;">
+            <line x1="20" y1="91" x2="400" y2="91" stroke="#2e2b24" stroke-dasharray="3 3"/>
+            <text x="12" y="16" fill="#9a9589" font-size="10" font-family="ui-monospace,monospace">Co-adaptation curve: error deg (orange = co-proc, blue = alone)</text>
+            <text x="348" y="88" fill="#6b675b" font-size="9" font-family="ui-monospace,monospace">30° target</text>
+            <polyline id="gym-poly-coproc" fill="none" stroke="#ee6f40" stroke-width="2.2" points=""/>
+            <polyline id="gym-poly-unass" fill="none" stroke="#5c8ec4" stroke-width="1.8" stroke-dasharray="4 3" points=""/>
+          </svg>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <h2 style="margin:0;">Neural Gym Co-Adaptation Scoreboard</h2>
+            <div style="display:flex;gap:6px;">
+              <a href="/api/export_gym" style="color:var(--teal);font-size:0.8rem;text-decoration:none;border:1px solid var(--line);padding:4px 8px;border-radius:6px;">Export CSV</a>
+              <button id="gym-reset" style="padding:4px 8px;font-size:0.78rem;">Reset</button>
+            </div>
+          </div>
+          <table>
+            <thead><tr><th>Mode</th><th class="right">N</th><th class="right">&lt;30&deg; Acc</th><th class="right">MAE</th><th class="right">Human+AI bits/s</th></tr></thead>
+            <tbody id="gym-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ---------- Tab Switching ---------- */
+function selectTab(tabName){
+  document.querySelectorAll(".tab").forEach(b => b.classList.toggle("active", b.dataset.tab === tabName));
+  document.querySelectorAll(".view").forEach(v => v.classList.toggle("active", v.id === "view-" + tabName));
+  try {
+    const u = new URL(window.location.href);
+    u.searchParams.set("tab", tabName);
+    window.history.replaceState(null, "", u.toString());
+  } catch(_) {}
+}
+document.querySelectorAll(".tab").forEach(btn => {
+  btn.onclick = () => selectTab(btn.dataset.tab);
+});
+const initTab = new URLSearchParams(window.location.search).get("tab");
+if(initTab === "gym" || window.location.hash === "#gym") selectTab("gym");
+
+function hslColor(deg){ return `hsl(${((deg%360)+360)%360}, 82%, 56%)`; }
+function circErr(a,b){ let d = ((a-b+180)%360+360)%360 - 180; return Math.abs(d); }
+
+/* ---------- Web Audio Stereo Binaural Latent Chord ---------- */
+let audioCtx = null;
+function playLatentChord(qCos, qSin){
+  if(!document.getElementById("gym-audio").checked) return;
+  try {
+    if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const now = audioCtx.currentTime;
+    const osc = audioCtx.createOscillator();
+    const osc2 = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    const pan = audioCtx.createStereoPanner ? audioCtx.createStereoPanner() : null;
+    const freq = 390 - qSin * 150; // 540 Hz (top) .. 240 Hz (bottom)
+    osc.type = "sine"; osc.frequency.setValueAtTime(freq, now);
+    osc2.type = "triangle"; osc2.frequency.setValueAtTime(freq * 1.5, now);
+    gain.gain.setValueAtTime(0.001, now);
+    gain.gain.exponentialRampToValueAtTime(0.12, now + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.0008, now + 0.16);
+    if(pan){
+      pan.pan.setValueAtTime(Math.max(-1, Math.min(1, qCos)), now);
+      osc.connect(gain); osc2.connect(gain); gain.connect(pan); pan.connect(audioCtx.destination);
+    } else {
+      osc.connect(gain); osc2.connect(gain); gain.connect(audioCtx.destination);
+    }
+    osc.start(now); osc2.start(now); osc.stop(now + 0.17); osc2.stop(now + 0.17);
+  } catch(_) {}
+}
+
+/* ---------- Monochrome Polar Harmonic Micro-Glyph (Zero Color Pixels!) ---------- */
+function drawMonochromeGlyph(canvasCtx, cx, cy, rMax, qCos, qSin, active){
+  canvasCtx.save();
+  canvasCtx.strokeStyle = "#3a3730"; canvasCtx.lineWidth = 1;
+  canvasCtx.beginPath(); canvasCtx.arc(cx, cy, rMax, 0, Math.PI*2); canvasCtx.stroke();
+  canvasCtx.beginPath(); canvasCtx.moveTo(cx-rMax, cy); canvasCtx.lineTo(cx+rMax, cy);
+  canvasCtx.moveTo(cx, cy-rMax); canvasCtx.lineTo(cx, cy+rMax); canvasCtx.stroke();
+  if(active){
+    const ang = Math.atan2(qSin, qCos);
+    const mag = Math.min(1, Math.hypot(qCos, qSin));
+    // Polar harmonic cardioid ripple purely in monochrome white/gray!
+    canvasCtx.beginPath();
+    for(let i=0; i<=72; i++){
+      const th = (i / 72) * Math.PI * 2;
+      const lobe = Math.pow(0.5 * (1 + Math.cos(th - ang)), 3);
+      const rr = rMax * (0.22 + 0.72 * mag * lobe);
+      const px = cx + Math.cos(th) * rr, py = cy + Math.sin(th) * rr;
+      if(i===0) canvasCtx.moveTo(px, py); else canvasCtx.lineTo(px, py);
+    }
+    canvasCtx.closePath();
+    canvasCtx.fillStyle = "rgba(236, 233, 223, 0.18)";
+    canvasCtx.fill();
+    canvasCtx.strokeStyle = "#ece9df"; canvasCtx.lineWidth = 2.0; canvasCtx.stroke();
+    // Sharp monochrome vector tick
+    canvasCtx.beginPath();
+    canvasCtx.moveTo(cx, cy);
+    canvasCtx.lineTo(cx + Math.cos(ang)*rMax*0.92, cy + Math.sin(ang)*rMax*0.92);
+    canvasCtx.strokeStyle = "#ffffff"; canvasCtx.lineWidth = 2.2; canvasCtx.stroke();
+  }
+  canvasCtx.restore();
+}
+
+/* ===================== TAB 1: LEVEL-3A 4-ARM EEG TRIAL LOGIC ===================== */
+const cvs = document.getElementById("task-canvas"), ctx = cvs.getContext("2d");
+const CX = 190, CY = 185, RING_R = 128, DOT_R = 82;
+let state = { phase:"idle", items:[], targetIdx:0, arm:"real_closedloop", k:6, respStart:0, assisted:false, decodeInfo:null, sectorCenter:null };
+
+function drawColorRing(c2d, highlightSectorDeg){
+  for(let d=0; d<360; d+=2){
+    c2d.beginPath();
+    c2d.arc(CX, CY, RING_R, (d-1)*Math.PI/180, (d+2)*Math.PI/180);
+    c2d.strokeStyle = hslColor(d); c2d.lineWidth = 18; c2d.stroke();
+  }
+  if(highlightSectorDeg !== null){
+    c2d.beginPath();
+    c2d.arc(CX, CY, RING_R + 16, (highlightSectorDeg-25)*Math.PI/180, (highlightSectorDeg+25)*Math.PI/180);
+    c2d.strokeStyle = "#3aa68f"; c2d.lineWidth = 6; c2d.stroke();
+  }
+}
+
+function render(){
+  ctx.clearRect(0,0,cvs.width,cvs.height);
+  if(state.phase === "encode"){
+    for(const it of state.items){
+      ctx.beginPath(); ctx.arc(it.x, it.y, 15, 0, Math.PI*2);
+      ctx.fillStyle = hslColor(it.deg); ctx.fill();
+      ctx.strokeStyle = "#ece9df"; ctx.lineWidth = 1.5; ctx.stroke();
+    }
+  } else if(state.phase === "delay"){
+    ctx.fillStyle = "#9a9589"; ctx.font = "22px ui-monospace,monospace"; ctx.textAlign = "center";
+    ctx.fillText("+", CX, CY + 7);
+    if(state.sectorCenter !== null){
+      ctx.beginPath(); ctx.arc(CX, CY, 44, (state.sectorCenter-25)*Math.PI/180, (state.sectorCenter+25)*Math.PI/180);
+      ctx.strokeStyle = "#3aa68f"; ctx.lineWidth = 5; ctx.stroke();
+    }
+  } else if(state.phase === "respond"){
+    drawColorRing(ctx, state.sectorCenter);
+    state.items.forEach((it, i) => {
+      ctx.beginPath(); ctx.arc(it.x, it.y, i === state.targetIdx ? 15 : 9, 0, Math.PI*2);
+      ctx.fillStyle = i === state.targetIdx ? "#ece9df" : "#2e2b24"; ctx.fill();
+      if(i === state.targetIdx){ ctx.strokeStyle = "#ee6f40"; ctx.lineWidth = 3; ctx.stroke(); }
+    });
+  } else {
+    ctx.fillStyle = "#6b675b"; ctx.font = "14px Inter,sans-serif"; ctx.textAlign = "center";
+    ctx.fillText("Press Run Trial to begin", CX, CY);
+  }
+}
+
+function updateEegPlot(trace){
+  if(!trace || !trace.length) return;
+  const pts = trace.map((v, i) => `${(28 + (i / Math.max(trace.length - 1, 1)) * 364).toFixed(1)},${Math.max(22, Math.min(98, 58 - v * 20)).toFixed(1)}`).join(" ");
+  document.getElementById("eeg-line").setAttribute("points", pts);
+}
+
+function renderScoreboard(stats){
+  const labels = { human_alone:"Arm 1 · Human Alone", manual_ai:"Arm 2 · Manual AI", sham_loop:"Arm 3 · Sham EEG", real_closedloop:"Arm 4 · Real Closed-Loop" };
+  document.getElementById("score-body").innerHTML = Object.keys(labels).map(k => {
+    const a = stats.arms[k] || {n:0};
+    return `<tr><td>${labels[k]}</td><td class="right">${a.n}</td><td class="right">${a.acc30 ?? "--"}${a.acc30!==null?"%":""}</td><td class="right">${a.mae_deg ?? "--"}${a.mae_deg!==null?"&deg;":""}</td><td class="right">${a.trigger_rate ?? "--"}${a.trigger_rate!==null?"%":""}</td></tr>`;
+  }).join("");
+}
+
+function renderGymScoreboard(gs){
+  if(!gs) return;
+  const labels = { unassisted:"Unassisted Human", sham_code:"Sham Latent Code", latent_coproc:"Non-Verbal Co-Processor" };
+  document.getElementById("gym-body").innerHTML = Object.keys(labels).map(k => {
+    const m = gs.modes[k] || {n:0};
+    return `<tr><td>${labels[k]}</td><td class="right">${m.n}</td><td class="right">${m.acc30 ?? "--"}${m.acc30!==null?"%":""}</td><td class="right">${m.mae_deg ?? "--"}${m.mae_deg!==null?"&deg;":""}</td><td class="right">${m.bits_per_sec ?? "--"}</td></tr>`;
+  }).join("");
+  const drawLine = (id, modeKey) => {
+    const pts = (gs.recent || []).filter(r => r.mode === modeKey);
+    const s = pts.map((r, i) => {
+      const x = 24 + (i / Math.max(pts.length - 1, 1)) * 372;
+      const y = 104 - Math.min(180, r.err_deg) / 180 * 78;
+      return `${x.toFixed(1)},${y.toFixed(1)}`;
+    }).join(" ");
+    document.getElementById(id).setAttribute("points", s);
+  };
+  drawLine("gym-poly-coproc", "latent_coproc");
+  drawLine("gym-poly-unass", "unassisted");
+}
+
+async function refreshStatus(){
+  try {
+    const r = await fetch("/api/status").then(x=>x.json());
+    document.getElementById("status-pill").textContent = `C99 int4: ${r.c99_latency_us} µs · ROM ${r.chip_rom_kb} kB`;
+    document.getElementById("eeg-src").textContent = r.source;
+    document.getElementById("kpi-auc").textContent = r.decoder_auc_oof.toFixed(3);
+    document.getElementById("kpi-lat").textContent = `${r.c99_latency_us} µs`;
+    document.getElementById("g-c99").textContent = `${r.c99_latency_us} µs`;
+    renderScoreboard(r.stats);
+    renderGymScoreboard(r.gym_stats);
+  } catch(e) {
+    document.getElementById("status-pill").textContent = "Server offline";
+  }
+}
+
+async function runTrial(){
+  if(state.phase !== "idle") return;
+  const arm = document.getElementById("arm-sel").value;
+  const k = parseInt(document.getElementById("k-sel").value, 10);
+  const items = [], baseRot = Math.random() * Math.PI * 2;
+  for(let i=0; i<k; i++){
+    const a = baseRot + (i / k) * Math.PI * 2;
+    items.push({ x: CX + Math.cos(a)*DOT_R, y: CY + Math.sin(a)*DOT_R, deg: Math.floor(Math.random()*360) });
+  }
+  state = { phase:"encode", items, targetIdx:Math.floor(Math.random()*k), arm, k, respStart:0, assisted:false, decodeInfo:null, sectorCenter:null };
+  document.getElementById("start-btn").disabled = true;
+  document.getElementById("hint-btn").disabled = true;
+  document.getElementById("phase-lbl").textContent = `ENCODE (K=${k})`;
+  document.getElementById("trial-lbl").textContent = "Memorize all colors";
+  document.getElementById("cue-banner").classList.remove("cue-active");
+  render();
+
+  setTimeout(async () => {
+    state.phase = "delay";
+    document.getElementById("phase-lbl").textContent = "RETENTION DELAY (1.5 s EEG)";
+    document.getElementById("trial-lbl").textContent = "Decoding pre-response neural state...";
+    render();
+    const dec = await fetch("/api/decode_delay", { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({arm, set_size:k}) }).then(x=>x.json());
+    state.decodeInfo = dec;
+    document.getElementById("kpi-lat").textContent = `${dec.c99_latency_us} µs`;
+    document.getElementById("kpi-prob").textContent = `${Math.round(dec.overload_prob*100)}%`;
+    document.getElementById("prob-bar").style.width = `${Math.round(dec.overload_prob*100)}%`;
+    updateEegPlot(dec.alpha_trace);
+    if(dec.trigger_coprocessor){
+      state.assisted = true;
+      state.sectorCenter = (state.items[state.targetIdx].deg + (Math.random()*24 - 12) + 360) % 360;
+      document.getElementById("trig-badge").textContent = arm === "sham_loop" ? "SHAM TRIGGERED" : "CO-PROCESSOR TRIGGERED";
+      document.getElementById("cue-banner").classList.add("cue-active");
+      document.getElementById("cue-text").textContent = arm === "sham_loop"
+        ? "Sham loop triggered an anchor from permuted EEG state."
+        : `Closed-loop overload detected (${Math.round(dec.overload_prob*100)}%) — memory sector anchor injected before recall.`;
+      render();
+    } else {
+      document.getElementById("trig-badge").textContent = "NO TRIGGER";
+      document.getElementById("cue-text").textContent = arm === "manual_ai" ? "Press H or click Manual Hint if needed." : "No automatic intervention on this trial.";
+    }
+    setTimeout(() => {
+      state.phase = "respond"; state.respStart = performance.now();
+      document.getElementById("phase-lbl").textContent = "RESPOND";
+      document.getElementById("trial-lbl").textContent = "Click the matching color on the outer ring";
+      if(arm === "manual_ai") document.getElementById("hint-btn").disabled = false;
+      render();
+    }, 1100);
+  }, 650);
+}
+
+function triggerManualHint(){
+  if(state.phase !== "respond" || state.arm !== "manual_ai" || state.assisted) return;
+  state.assisted = true;
+  state.sectorCenter = (state.items[state.targetIdx].deg + (Math.random()*24 - 12) + 360) % 360;
+  document.getElementById("cue-banner").classList.add("cue-active");
+  document.getElementById("cue-text").textContent = "Manual AI anchor requested (+motor/decision latency).";
+  document.getElementById("hint-btn").disabled = true;
+  render();
+}
+
+cvs.addEventListener("click", async (ev) => {
+  if(state.phase !== "respond") return;
+  const rect = cvs.getBoundingClientRect();
+  const x = (ev.clientX - rect.left) * (cvs.width / rect.width) - CX;
+  const y = (ev.clientY - rect.top) * (cvs.height / rect.height) - CY;
+  if(Math.hypot(x, y) < RING_R - 30) return;
+  const reported = ((Math.atan2(y, x) * 180 / Math.PI) + 360) % 360;
+  const target = state.items[state.targetIdx].deg;
+  const err = circErr(reported, target), rt = Math.round(performance.now() - state.respStart);
+  state.phase = "idle";
+  document.getElementById("start-btn").disabled = false;
+  document.getElementById("hint-btn").disabled = true;
+  document.getElementById("phase-lbl").textContent = "LOGGED";
+  document.getElementById("last-err").textContent = `Error: ${err.toFixed(1)}° (${rt} ms)`;
+  render();
+  const stats = await fetch("/api/log_trial", {
+    method:"POST", headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({ arm:state.arm, set_size:state.k, target_deg:target, reported_deg:Math.round(reported),
+      err_deg:Number(err.toFixed(2)), rt_ms:rt, assisted:state.assisted,
+      overload_prob:state.decodeInfo ? state.decodeInfo.overload_prob : 0,
+      c99_latency_us:state.decodeInfo ? state.decodeInfo.c99_latency_us : 0 })
+  }).then(x=>x.json());
+  renderScoreboard(stats);
+});
+
+/* ===================== TAB 2: NEURAL GYM LOGIC ===================== */
+const gcvs = document.getElementById("gym-canvas"), gctx = gcvs.getContext("2d");
+const glcvs = document.getElementById("glyph-canvas"), glctx = glcvs.getContext("2d");
+let gym = { phase:"idle", items:[], targetIdx:0, mode:"latent_coproc", k:12, bits:4, lat:50, ruleDeg:0, code:null, respStart:0 };
+
+function renderGym(){
+  gctx.clearRect(0,0,gcvs.width,gcvs.height);
+  if(gym.phase === "encode"){
+    const radDot = gym.k >= 12 ? 10 : 13;
+    for(const it of gym.items){
+      gctx.beginPath(); gctx.arc(it.x, it.y, radDot, 0, Math.PI*2);
+      gctx.fillStyle = hslColor(it.deg); gctx.fill();
+      gctx.strokeStyle = "#ece9df"; gctx.lineWidth = 1.2; gctx.stroke();
+    }
+  } else if(gym.phase === "delay"){
+    gctx.fillStyle = "#9a9589"; gctx.font = "22px ui-monospace,monospace"; gctx.textAlign = "center";
+    gctx.fillText("+", CX, CY + 7);
+  } else if(gym.phase === "respond"){
+    drawColorRing(gctx, null);
+    // Draw queried slot + monochrome latent harmonic glyph in center (zero color hints!)
+    gym.items.forEach((it, i) => {
+      gctx.beginPath(); gctx.arc(it.x, it.y, i === gym.targetIdx ? 12 : 6, 0, Math.PI*2);
+      gctx.fillStyle = i === gym.targetIdx ? "#ece9df" : "#26231e"; gctx.fill();
+      if(i === gym.targetIdx){ gctx.strokeStyle = "#ee6f40"; gctx.lineWidth = 2.5; gctx.stroke(); }
+    });
+    if(gym.code && gym.code.active){
+      drawMonochromeGlyph(gctx, CX, CY, 44, gym.code.q_cos, gym.code.q_sin, true);
+    }
+  } else {
+    gctx.fillStyle = "#6b675b"; gctx.font = "14px Inter,sans-serif"; gctx.textAlign = "center";
+    gctx.fillText("Press Run Gym Trial (K = 4..16)", CX, CY);
+  }
+}
+
+async function runGymTrial(){
+  if(gym.phase !== "idle") return;
+  const mode = document.getElementById("gym-mode").value;
+  const k = parseInt(document.getElementById("gym-k").value, 10);
+  const bits = parseInt(document.getElementById("gym-bits").value, 10);
+  const lat = parseInt(document.getElementById("gym-lat").value, 10);
+  const useRule = document.getElementById("gym-rule").checked;
+  const ruleChoices = [0, 90, 180];
+  const ruleDeg = useRule ? ruleChoices[Math.floor(Math.random()*ruleChoices.length)] : 0;
+
+  const items = [], baseRot = Math.random() * Math.PI * 2;
+  const rRing = k >= 12 ? 92 : 84;
+  for(let i=0; i<k; i++){
+    const a = baseRot + (i / k) * Math.PI * 2;
+    items.push({ x: CX + Math.cos(a)*rRing, y: CY + Math.sin(a)*rRing, deg: Math.floor(Math.random()*360) });
+  }
+  gym = { phase:"encode", items, targetIdx:Math.floor(Math.random()*k), mode, k, bits, lat, ruleDeg, code:null, respStart:0 };
+  document.getElementById("gym-start").disabled = true;
+  document.getElementById("gym-phase").textContent = `ENCODE (K=${k})`;
+  document.getElementById("gym-prompt").textContent = `Memorize ${k} colors`;
+  document.getElementById("gym-rule-pill").textContent = ruleDeg === 0 ? "Private Human Rule: DIRECT (+0°)" : `Private Human Rule: ROTATE +${ruleDeg}°`;
+  document.getElementById("gym-banner").classList.remove("cue-active");
+  renderGym();
+
+  setTimeout(() => {
+    gym.phase = "delay";
+    document.getElementById("gym-phase").textContent = "DELAY (0.9 s)";
+    document.getElementById("gym-prompt").textContent = "Holding memory...";
+    renderGym();
+    setTimeout(async () => {
+      gym.phase = "respond";
+      gym.respStart = performance.now();
+      document.getElementById("gym-phase").textContent = `RESPOND (lat ${lat} ms)`;
+      document.getElementById("gym-prompt").textContent = ruleDeg === 0 ? "Click matching color on ring" : `Apply +${ruleDeg}° mental rotation, then click ring`;
+      renderGym();
+
+      // Fetch 4-bit quantized non-verbal latent code from server and inject after simulated loop latency!
+      const rawDeg = gym.items[gym.targetIdx].deg;
+      const code = await fetch("/api/encode_latent", {
+        method:"POST", headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({ target_deg:rawDeg, mode, bits, latency_ms:lat })
+      }).then(x=>x.json());
+
+      setTimeout(() => {
+        if(gym.phase !== "respond") return;
+        gym.code = code;
+        glctx.clearRect(0,0,glcvs.width,glcvs.height);
+        drawMonochromeGlyph(glctx, 55, 55, 44, code.q_cos, code.q_sin, code.active);
+        document.getElementById("g-vec").textContent = `(${code.q_cos.toFixed(2)}, ${code.q_sin.toFixed(2)})`;
+        document.getElementById("g-bits").textContent = `${bits}-bit · ${lat} ms (${code.channel_bps || 0} bps)`;
+        document.getElementById("g-c99").textContent = `${code.c99_latency_us} µs`;
+        if(code.active){
+          const hz = Math.round(390 - code.q_sin * 150);
+          document.getElementById("g-audio").textContent = `pan ${code.q_cos>=0?"+":""}${code.q_cos.toFixed(2)} · ${hz} Hz`;
+          playLatentChord(code.q_cos, code.q_sin);
+          document.getElementById("gym-banner").classList.add("cue-active");
+          document.getElementById("gym-cue-txt").textContent = mode === "sham_code"
+            ? "Sham monochrome latent glyph injected (uncorrelated angle)."
+            : `Non-verbal ${bits}-bit latent vector injected at +${lat} ms — decode glyph & apply your private rule.`;
+        } else {
+          document.getElementById("g-audio").textContent = "OFF (unassisted)";
+          document.getElementById("gym-cue-txt").textContent = "Unassisted human trial — no AI co-processor signal.";
+        }
+        renderGym();
+      }, lat);
+    }, 900);
+  }, 800);
+}
+
+gcvs.addEventListener("click", async (ev) => {
+  if(gym.phase !== "respond") return;
+  const rect = gcvs.getBoundingClientRect();
+  const x = (ev.clientX - rect.left) * (gcvs.width / rect.width) - CX;
+  const y = (ev.clientY - rect.top) * (gcvs.height / rect.height) - CY;
+  if(Math.hypot(x, y) < RING_R - 30) return;
+  const reported = ((Math.atan2(y, x) * 180 / Math.PI) + 360) % 360;
+  const trueTarget = (gym.items[gym.targetIdx].deg + gym.ruleDeg) % 360;
+  const err = circErr(reported, trueTarget), rt = Math.round(performance.now() - gym.respStart);
+  gym.phase = "idle";
+  document.getElementById("gym-start").disabled = false;
+  document.getElementById("gym-phase").textContent = "LOGGED";
+  document.getElementById("gym-last").textContent = `Error: ${err.toFixed(1)}° (${rt} ms)`;
+  renderGym();
+  const gs = await fetch("/api/log_gym", {
+    method:"POST", headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({ mode:gym.mode, set_size:gym.k, rule_deg:gym.ruleDeg, bits:gym.bits, latency_ms:gym.lat,
+      target_deg:trueTarget, reported_deg:Math.round(reported), err_deg:Number(err.toFixed(2)), rt_ms:rt,
+      c99_latency_us:gym.code ? gym.code.c99_latency_us : 0 })
+  }).then(x=>x.json());
+  renderGymScoreboard(gs);
+});
+
+document.getElementById("start-btn").onclick = runTrial;
+document.getElementById("hint-btn").onclick = triggerManualHint;
+document.getElementById("reset-btn").onclick = async () => { renderScoreboard(await fetch("/api/reset_log", {method:"POST"}).then(x=>x.json())); };
+document.getElementById("gym-start").onclick = runGymTrial;
+document.getElementById("gym-reset").onclick = async () => { renderGymScoreboard(await fetch("/api/reset_gym", {method:"POST"}).then(x=>x.json())); };
+window.addEventListener("keydown", e => {
+  if(e.key.toLowerCase() === "h") triggerManualHint();
+  if(e.code === "Space" && document.getElementById("view-gym").classList.contains("active")){ e.preventDefault(); runGymTrial(); }
+});
+drawMonochromeGlyph(glctx, 55, 55, 44, 0.71, -0.71, true);
+render(); renderGym(); refreshStatus();
+</script>
+</body>
+</html>

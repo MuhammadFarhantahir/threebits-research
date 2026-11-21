@@ -1,0 +1,397 @@
+{
+  "unseen_stim_regions_5fold": {
+    "untuned_hopf": {
+      "spearman": 0.6155,
+      "pearson": 0.6104,
+      "partial_spearman": 0.3112
+    },
+    "uniform_ccep_hopf": {
+      "spearman": 0.6224,
+      "pearson": 0.5355,
+      "partial_spearman": 0.3192
+    },
+    "multiscale_bio_only": {
+      "spearman": 0.6525,
+      "pearson": 0.6654,
+      "partial_spearman": 0.3573
+    },
+    "multiscale_bio_full": {
+      "spearman": 0.6581,
+      "pearson": 0.6507,
+      "partial_spearman": 0.3664
+    },
+    "permuted_bio_only_ctrl": {
+      "spearman": 0.6256,
+      "pearson": 0.6118,
+      "partial_spearman": 0.3231
+    },
+    "permuted_bio_full_ctrl": {
+      "spearman": 0.6261,
+      "pearson": 0.5391,
+      "partial_spearman": 0.3212
+    }
+  },
+  "leave_one_network_out": {
+    "overall_uniform_ccep": {
+      "spearman": 0.6279,
+      "pearson": 0.5555,
+      "partial_spearman": 0.3368
+    },
+    "overall_bio_only": {
+      "spearman": 0.6404,
+      "pearson": 0.6393,
+      "partial_spearman": 0.3335
+    },
+    "overall_bio_full": {
+      "spearman": 0.6616,
+      "pearson": 0.6457,
+      "partial_spearman": 0.374
+    },
+    "overall_shuf_ctrl": {
+      "spearman": 0.6349,
+      "pearson": 0.5933,
+      "partial_spearman": 0.3359
+    },
+    "per_network": {
+      "Cont": {
+        "n_pairs": 408,
+        "uniform_ccep": {
+          "spearman": 0.6516,
+          "pearson": 0.6262,
+          "partial_spearman": 0.4063
+        },
+        "bio_only": {
+          "spearman": 0.6527,
+          "pearson": 0.6809,
+          "partial_spearman": 0.4054
+        },
+        "bio_full": {
+          "spearman": 0.6567,
+          "pearson": 0.6907,
+          "partial_spearman": 0.3992
+        },
+        "shuf_ctrl": {
+          "spearman": 0.6807,
+          "pearson": 0.6626,
+          "partial_spearman": 0.4539
+        }
+      },
+      "Default": {
+        "n_pairs": 759,
+        "uniform_ccep": {
+          "spearman": 0.6433,
+          "pearson": 0.6152,
+          "partial_spearman": 0.4004
+        },
+        "bio_only": {
+          "spearman": 0.636,
+          "pearson": 0.6814,
+          "partial_spearman": 0.4074
+        },
+        "bio_full": {
+          "spearman": 0.6428,
+          "pearson": 0.668,
+          "partial_spearman": 0.4211
+        },
+        "shuf_ctrl": {
+          "spearman": 0.653,
+          "pearson": 0.677,
+          "partial_spearman": 0.4062
+        }
+      },
+      "DorsAttn": {
+        "n_pairs": 594,
+        "uniform_ccep": {
+          "spearman": 0.6478,
+          "pearson": 0.585,
+          "partial_spearman": 0.3233
+        },
+        "bio_only": {
+          "spearman": 0.66,
+          "pearson": 0.664,
+          "partial_spearman": 0.317
+        },
+        "bio_full": {
+          "spearman": 0.6922,
+          "pearson": 0.6829,
+          "partial_spearman": 0.3651
+        },
+        "shuf_ctrl": {
+          "spearman": 0.6492,
+          "pearson": 0.6321,
+          "partial_spearman": 0.2964
+        }
+      },
+      "Limbic": {
+        "n_pairs": 153,
+        "uniform_ccep": {
+          "spearman": 0.6007,
+          "pearson": 0.5401,
+          "partial_spearman": 0.3045
+        },
+        "bio_only": {
+          "spearman": 0.5973,
+          "pearson": 0.6039,
+          "partial_spearman": 0.2708
+        },
+        "bio_full": {
+          "spearman": 0.6222,
+          "pearson": 0.581,
+          "partial_spearman": 0.3189
+        },
+        "shuf_ctrl": {
+          "spearman": 0.6066,
+          "pearson": 0.5405,
+          "partial_spearman": 0.295
+        }
+      },
+      "SalVentAttn": {
+        "n_pairs": 395,
+        "uniform_ccep": {
+          "spearman": 0.6265,
+          "pearson": 0.657,
+          "partial_spearman": 0.3418
+        },
+        "bio_only": {
+          "spearman": 0.5896,
+          "pearson": 0.72,
+          "partial_spearman": 0.243
+        },
+        "bio_full": {
+          "spearman": 0.6332,
+          "pearson": 0.712,
+          "partial_spearman": 0.3225
+        },
+        "shuf_ctrl": {
+          "spearman": 0.6026,
+          "pearson": 0.6492,
+          "partial_spearman": 0.2971
+        }
+      },
+      "SomMot": {
+        "n_pairs": 452,
+        "uniform_ccep": {
+          "spearman": 0.6646,
+          "pearson": 0.6521,
+          "partial_spearman": 0.1939
+        },
+        "bio_only": {
+          "spearman": 0.6829,
+          "pearson": 0.6595,
+          "partial_spearman": 0.2149
+        },
+        "bio_full": {
+          "spearman": 0.6992,
+          "pearson": 0.6757,
+          "partial_spearman": 0.2526
+        },
+        "shuf_ctrl": {
+          "spearman": 0.6716,
+          "pearson": 0.6525,
+          "partial_spearman": 0.1969
+        }
+      },
+      "Vis": {
+        "n_pairs": 458,
+        "uniform_ccep": {
+          "spearman": 0.6738,
+          "pearson": 0.5973,
+          "partial_spearman": 0.3817
+        },
+        "bio_only": {
+          "spearman": 0.6399,
+          "pearson": 0.5368,
+          "partial_spearman": 0.3312
+        },
+        "bio_full": {
+          "spearman": 0.6674,
+          "pearson": 0.6117,
+          "partial_spearman": 0.3712
+        },
+        "shuf_ctrl": {
+          "spearman": 0.674,
+          "pearson": 0.6166,
+          "partial_spearman": 0.3824
+        }
+      }
+    }
+  },
+  "unseen_pairs_5fold": {
+    "uniform_ccep_hopf": {
+      "spearman": 0.7099,
+      "pearson": 0.7265,
+      "partial_spearman": 0.4443
+    },
+    "multiscale_bio_only": {
+      "spearman": 0.6611,
+      "pearson": 0.6716,
+      "partial_spearman": 0.3711
+    },
+    "multiscale_bio_full": {
+      "spearman": 0.7155,
+      "pearson": 0.7435,
+      "partial_spearman": 0.4539
+    },
+    "permuted_bio_full_ctrl": {
+      "spearman": 0.7056,
+      "pearson": 0.7286,
+      "partial_spearman": 0.4377
+    }
+  },
+  "learned_biological_laws": {
+    "receptor_similarity_weight": 0.0281,
+    "laminar_hierarchy_direction_weight": 0.0024,
+    "feature_weights_damping": {
+      "Rec_PC1": 0.1358,
+      "Rec_PC2": -0.0061,
+      "Rec_PC3": 0.0544,
+      "Rec_PC4": -0.0347,
+      "Rec_PC5": -0.0099,
+      "Rec_PC6": -0.0411,
+      "EI_NMDA_mGluR5_minus_GABAa": -0.0319,
+      "MEG_PC1": -0.0468,
+      "MEG_PC2": 0.1418,
+      "MEG_PC3": 0.1221,
+      "Mesulam_Hierarchy": -0.0181
+    },
+    "feature_weights_stim_susceptibility": {
+      "Rec_PC1": -0.0702,
+      "Rec_PC2": 0.0054,
+      "Rec_PC3": -0.0168,
+      "Rec_PC4": 0.0125,
+      "Rec_PC5": 0.0446,
+      "Rec_PC6": 0.0077,
+      "EI_NMDA_mGluR5_minus_GABAa": 0.0203,
+      "MEG_PC1": -0.0164,
+      "MEG_PC2": -0.0734,
+      "MEG_PC3": -0.0398,
+      "Mesulam_Hierarchy": 0.0515
+    },
+    "feature_weights_outgoing_edge": {
+      "Rec_PC1": -0.053,
+      "Rec_PC2": 0.0196,
+      "Rec_PC3": -0.023,
+      "Rec_PC4": 0.0194,
+      "Rec_PC5": 0.0593,
+      "Rec_PC6": 0.0059,
+      "EI_NMDA_mGluR5_minus_GABAa": 0.0399,
+      "MEG_PC1": 0.0261,
+      "MEG_PC2": -0.1136,
+      "MEG_PC3": -0.0755,
+      "Mesulam_Hierarchy": -0.0068
+    },
+    "feature_weights_incoming_edge": {
+      "Rec_PC1": -0.0656,
+      "Rec_PC2": 0.0008,
+      "Rec_PC3": -0.0376,
+      "Rec_PC4": 0.0222,
+      "Rec_PC5": -0.0346,
+      "Rec_PC6": 0.0335,
+      "EI_NMDA_mGluR5_minus_GABAa": 0.0116,
+      "MEG_PC1": 0.0632,
+      "MEG_PC2": -0.0685,
+      "MEG_PC3": -0.0823,
+      "Mesulam_Hierarchy": -0.0334
+    },
+    "individual_receptor_ccep_correlations": {
+      "5HT1a": {
+        "outgoing_ccep_rho": -0.004,
+        "incoming_ccep_rho": 0.102
+      },
+      "5HT1b": {
+        "outgoing_ccep_rho": 0.139,
+        "incoming_ccep_rho": 0.107
+      },
+      "5HT2a": {
+        "outgoing_ccep_rho": -0.137,
+        "incoming_ccep_rho": -0.061
+      },
+      "5HT4": {
+        "outgoing_ccep_rho": -0.01,
+        "incoming_ccep_rho": 0.124
+      },
+      "5HT6": {
+        "outgoing_ccep_rho": -0.143,
+        "incoming_ccep_rho": 0.018
+      },
+      "5HTT": {
+        "outgoing_ccep_rho": -0.184,
+        "incoming_ccep_rho": -0.113
+      },
+      "A4B2": {
+        "outgoing_ccep_rho": 0.336,
+        "incoming_ccep_rho": 0.367
+      },
+      "CB1": {
+        "outgoing_ccep_rho": 0.229,
+        "incoming_ccep_rho": 0.276
+      },
+      "D1": {
+        "outgoing_ccep_rho": -0.072,
+        "incoming_ccep_rho": 0.092
+      },
+      "D2": {
+        "outgoing_ccep_rho": -0.031,
+        "incoming_ccep_rho": 0.137
+      },
+      "DAT": {
+        "outgoing_ccep_rho": -0.102,
+        "incoming_ccep_rho": 0.075
+      },
+      "GABAa": {
+        "outgoing_ccep_rho": -0.222,
+        "incoming_ccep_rho": -0.065
+      },
+      "H3": {
+        "outgoing_ccep_rho": 0.248,
+        "incoming_ccep_rho": 0.304
+      },
+      "M1": {
+        "outgoing_ccep_rho": -0.093,
+        "incoming_ccep_rho": 0.085
+      },
+      "MU": {
+        "outgoing_ccep_rho": 0.243,
+        "incoming_ccep_rho": 0.275
+      },
+      "NAT": {
+        "outgoing_ccep_rho": 0.206,
+        "incoming_ccep_rho": 0.286
+      },
+      "NMDA": {
+        "outgoing_ccep_rho": -0.1,
+        "incoming_ccep_rho": 0.064
+      },
+      "VAChT": {
+        "outgoing_ccep_rho": 0.274,
+        "incoming_ccep_rho": 0.356
+      },
+      "mGluR5": {
+        "outgoing_ccep_rho": 0.099,
+        "incoming_ccep_rho": 0.27
+      }
+    }
+  },
+  "tmseeg_zeroshot": {
+    "untuned_hopf": {
+      "n": 46,
+      "mean_partial_rho": 0.2425,
+      "pos_count": 44
+    },
+    "uniform_ccep_hopf": {
+      "n": 46,
+      "mean_partial_rho": 0.2775,
+      "pos_count": 44
+    },
+    "multiscale_bio_only": {
+      "n": 46,
+      "mean_partial_rho": 0.2218,
+      "pos_count": 44
+    },
+    "multiscale_bio_full": {
+      "n": 46,
+      "mean_partial_rho": 0.2589,
+      "pos_count": 44
+    }
+  }
+}

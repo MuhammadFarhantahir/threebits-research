@@ -1,0 +1,111 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[margin=0.9in]{geometry}
+\usepackage{amsmath,amssymb,booktabs,graphicx,microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{url}
+
+\title{From Biological Working-Memory Limits to Co-Adaptive Brain--AI Co-Processing: A Quantitative Proof Ladder}
+\author{Muhammad Farhan Tahir\\Threebits Research\\\url{https://threebits.si}}
+\date{21 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Can artificial neural networks raise human intelligence beyond biological limits? Human cognition is constrained by three physical bottlenecks: working-memory capacity (\textasciitilde{}4 active chunks; Cowan, 2001), noisy neural encoding, and conscious language I/O (\textasciitilde{}39 bits/s across human languages; Coupé et al., 2019). Here we separate \textbf{biological state-steering} (closed-loop brain stimulation alone) from \textbf{co-adaptive Brain--AI co-processing ("Prosthetic Cortex")} and evaluate both across a quantitative four-level proof ladder anchored in healthy-human data.
+
+First (\textbf{Level 1, healthy adults, zero surgery}, OpenNeuro \texttt{ds008037}, CC0), we extract a 10-task general cognitive ability (\texttt{g}-factor) across \textbf{123 healthy adults} (\texttt{90/90} positive pairwise correlations, PC1 explaining \texttt{37.2\%} of variance) and measure the empirical human working-memory cliff across \textbf{33,299 continuous recall trials (\texttt{n = 117} adults)}: recall precision within $30^\circ$ drops steeply from \textbf{\texttt{88.6\%} (\texttt{15.9$^\circ$} error, \texttt{5.0\%} failure) at $K = 2$} to \textbf{\texttt{61.5\%} (\texttt{38.6$^\circ$}) at $K = 4$} and \textbf{\texttt{43.8\%} (\texttt{57.3$^\circ$}, \texttt{45.0\%} failure) at $K = 6$} (worse at $K = 6$ in \texttt{116/117} adults). Using strictly pre-response scalp EEG (\texttt{[0.00, 1.50 s]} before response screen onset) across \textbf{15 healthy adults (\texttt{3,744} trials)}, a compact causal decoder detects cognitive overload ($K = 6$ vs $2$) at \textbf{\texttt{0.690 $\pm$ 0.033} ROC AUC} ($p = 7.22 \times 10^{-5}$, \texttt{14/15} above chance, up to \texttt{0.916}; null \texttt{0.500}) and within-load pre-response failure weakly at \textbf{\texttt{0.529} GRU AUC} ($p = 0.040$). Critically, an independent unseen replication (\texttt{n = 24} new adults beyond \texttt{n = 22} discovery) shows that scalar single-pulse resting TMS-EEG amplitude does \textbf{not} reliably predict trait \texttt{g} ($\rho = +0.581 \to -0.104$; pooled \texttt{n = 46}: $\rho = +0.228, p = 0.128$), whereas zero-shot invasive-CCEP $\to$ non-invasive TMS-EEG spatial propagation validation scales cleanly across all \textbf{\texttt{n = 46} healthy adults} (\texttt{+0.247} individual mean, positive in \textbf{\texttt{44/46}} vs resting-fMRI-tuned \texttt{+0.131}, rewired \texttt{+0.028}, wrong-site \texttt{$-$0.136}).
+
+Second (*\emph{Level 2, }in silico\emph{ scaling law\textbf{), we couple a noise- and capacity-limited biological cortex calibrated to Cowan's wall to a digital KV-cache attention co-processor via a }4-bit quantized read\textbf{ and }norm-bounded safe write\textbf{ interface --- with }zero direct AI access to raw task stimuli\textbf{. Across $K = 2 \dots 16$ items (3 seeds): (1) }optimal memoryless state-steering\textbf{ lifts biological accuracy by }\texttt{+19\% to +23\%}\textbf{ at $K = 4\text{-}8$ (\texttt{41.6\% $\to$ 51.1\%}, \texttt{30.6\% $\to$ 37.0\%}, \texttt{29.9\% $\to$ 35.7\%}), then hits the biological wall at $K = 12\text{-}16$ (\texttt{21.2\% / 19.7\%}); (2) }conscious-bandwidth tool use (\texttt{40 bits/s}, 200 ms)\textbf{ starves (\texttt{18.1\% / 17.0\%}), matching }sham-interface controls\textbf{ (\texttt{15.5\% / 17.1\%}); (3) }co-adaptive 4-bit Brain--AI co-processing (\texttt{50 ms}, \texttt{537 bits/s} empirical MI)\textbf{ achieves }\texttt{98.7\%} at $K = 12$ and \texttt{97.4\%} at $K = 16$\textbf{; (4) sweeping a $7 \times 5$ }Bandwidth $\times$ Latency phase diagram\textbf{ at $K = 12$ reveals a sharp phase transition from \texttt{18--33\%} ($\le 160\text{ bits/s}$ cap) to }\texttt{83.7--91.5\%}\textbf{ at }\texttt{320 bits/s} cap (\texttt{\textasciitilde{}265 bits/s} MI, \textasciitilde{}7$\times$ human speech)\textbf{ for }\texttt{$\le$ 100 ms} latency\textbf{, collapsing to \texttt{37.8\% / 32.9\%} at \texttt{200--250 ms}; and (5) on a complementary task combining $K = 12$ items with a private embodied human rule invisible to standalone AI, the co-adapted Prosthetic Cortex passes }Strict Outperformance\textbf{ (}\texttt{87.0\%} vs \texttt{23.2\%} AI alone, \texttt{14.8\%} Human alone, \texttt{17.1\%} 40-bps Screen AI, \texttt{16.5\%} Sham; \texttt{+63.7 pp}}*) while increasing across-seed cortical representational coherence \texttt{10.8$\times$} (Linear CKA \texttt{0.059 $\to$ 0.635}).
+
+\end{abstract}
+\section{Methods}
+\subsection{Healthy-Human Behavioral Battery \& Pre-Response EEG Decoding (\texttt{ds008037})}
+From OpenNeuro \texttt{ds008037} (Biabani \& Rogasch, CC0), behavioral logs across 123 healthy adults were aggregated over 10 cognitive tasks (\texttt{wm\_prec2/4/6}, \texttt{nback}, \texttt{bds}, \texttt{sym}, \texttt{opn}, \texttt{sbs}, \texttt{clt}, \texttt{ort}), z-scored, and factored via PCA to extract \texttt{g} (PC1). Working-memory continuous color recall trials (\texttt{K $\in$ {2, 4, 6}}, 33,299 trials across 117 complete adults) were aligned 300/300 between \texttt{events.tsv} and \texttt{beh.tsv}. For 15 adults (\texttt{3,744} trials, 62 scalp channels at 1,000 Hz, 50 Hz notch + 1--45 Hz bandpass), features were extracted strictly within \texttt{[0.00, 1.50 s]} post-array onset (preceding \texttt{response\_screen\_onset $\ge$ 1.517 s} on every trial) into 6 $\times$ 250 ms bins $\times$ 5 spectral bands plus binned ERPs. Out-of-fold decoding used block-level \texttt{GroupKFold} cross-validation (L2 logistic regression and causal GRU) verified against 20-permutation block-shuffled nulls.
+
+\subsection{Co-Adaptive Brain--AI Co-Processor Dynamical Benchmark}
+A biological recurrent cortex ($H_{\text{bio}} = 24$, Gaussian state noise $\sigma = 0.065$) receives sequential spatial-color pairs $(x_t, c_t)$ across $K \in \{2, 4, 6, 8, 12, 16\}$ items, followed by delay steps and a probe $x_q$. Critically, \textbf{the AI co-processor has zero direct access to raw task stimuli}: at each loop step it receives only a straight-through-estimated $b$-bit quantized projection $q_t = Q_b(W_{\text{read}} h_t^{\text{bio}})$ arriving after latency $\tau$, stores latent tokens in an external KV-cache attention memory, and returns a norm-bounded safe write vector $u_t = \text{clip}(W_{\text{write}} a_t, \|u_t\|_2 \le u_{\max})$ to biological cortex. Effective neural read mutual information (bits/s) is estimated directly from quantized channel entropy minus conditional noise entropy divided by step period. Cortical co-adaptation across independent training seeds is quantified using Linear Centered Kernel Alignment (CKA; Kornblith et al., 2019).
+
+\section{Level-1 Healthy-Human Empirical Anchor (\texttt{ds008037}, CC0)}
+\subsection{General Cognitive Ability (\texttt{g}) and Cowan's Working-Memory Cliff (\texttt{n = 123} Adults)}
+Across all 10 behavioral tasks in OpenNeuro \texttt{ds008037}, every single pairwise correlation is positive (\texttt{90/90}, mean $r = +0.294$), with PC1 (\texttt{g}) capturing \texttt{37.2\%} of total cognitive variance and continuous working-memory precision at load 4 loading highest (\texttt{+0.39}). Across \texttt{117} complete adults (\texttt{33,299} trials):
+
+\begin{table}[htbp]
+\centering
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lccc}
+\toprule
+Working-Memory Load ($K$) & Mean Angular Error & Recall Precision ($< 30^\circ$) & High-Error Failure ($> 45^\circ$) \\ \midrule
+\textbf{$K = 2$} & $15.9^\circ$ & \textbf{88.6\%} & 5.0\% \\
+\textbf{$K = 4$} & $38.6^\circ$ & \textbf{61.5\%} & 27.5\% \\
+\textbf{$K = 6$} & $57.3^\circ$ & \textbf{43.8\%} & \textbf{45.0\%} (\texttt{9$\times$} load 2) \\
+\bottomrule
+\end{tabular}}
+\end{table}
+\subsection{Non-Invasive Pre-Response Working-Memory EEG Decoding (\texttt{n = 15} Adults, \texttt{3,744} Trials)}
+\begin{itemize}
+\item \textbf{Overload detection ($K = 6$ vs $2$):} L2 LogReg \textbf{\texttt{0.690 $\pm$ 0.033} ROC AUC} ($p = 7.22 \times 10^{-5}$, \texttt{14/15} above chance; peak \texttt{sub-020 = 0.916}, \texttt{sub-010 = 0.866}, \texttt{sub-008 = 0.851}, \texttt{sub-007 = 0.838}); causal GRU \textbf{\texttt{0.608}} ($p = 0.0042$, \texttt{13/15}); 20-perm null \texttt{0.500}.
+\item \textbf{Within-load imminent failure prediction (zero load confounding):} Causal GRU \textbf{\texttt{0.529}} ($p = 0.040$, \texttt{9/15}, top \texttt{sub-021 = 0.628} / LogReg \texttt{0.654}); null \texttt{0.497}. Comparing scalp EEG (\texttt{0.529}) against intracranial iEEG (\texttt{0.603}, $p = 0.0001$, \texttt{14/15} in RAM \texttt{ds005557}/\texttt{ds005558}) quantifies why non-invasive EEG supports macro-load gating (Level 3A) while high-bandwidth Level-4 prosthetic cognition requires closer-to-cortex sensing or multi-modal non-invasive fusion.
+\end{itemize}
+\subsection{Honest Out-of-Sample Replication of TMS-EEG Markers (\texttt{n = 46} Clean Healthy Adults)}
+\begin{itemize}
+\item \textbf{Null trait-IQ replication (reported transparently):} Although sham-subtracted parietal-to-frontoparietal TMS-EEG amplitude correlated with \texttt{g} in our initial \texttt{n = 22} discovery cohort ($\rho = +0.581, p = 0.0046$; sham $\rho = +0.014$), an immediate independent replication on \textbf{\texttt{n = 24} completely unseen healthy adults} yielded $\rho = -0.104$ ($p = 0.628$; pooled \texttt{n = 46}: $\rho = +0.228, p = 0.128$). Static single-pulse resting TMS amplitude does not reliably predict trait IQ across individuals.
+\item \textbf{Confirmed spatial-propagation transfer (\texttt{n = 46} healthy adults):} Conversely, zero-shot prediction of sham-subtracted healthy-human TMS-EEG scalp topography from our invasive-CCEP Hopf simulator replicates across \textbf{\texttt{44/46} individual healthy adults} (mean partial $\rho \mid \text{coil distance} = +0.247$), nearly doubling resting-fMRI-tuned Hopf (\texttt{+0.131}, \texttt{34/46}) and far exceeding rewired (\texttt{+0.028}, \texttt{26/46}) and wrong-site (\texttt{$-$0.136}, \texttt{9/46}) controls.
+\end{itemize}
+\section{Level-2 Co-Adaptive Brain--AI Scaling Law}
+\subsection{Capacity Curve ($K = 2 \dots 16$, 3 Seeds Each, Zero Direct AI Stimulus Access)}
+\begin{table}[htbp]
+\centering
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lccccccc}
+\toprule
+Regime & $K = 2$ & $K = 4$ & $K = 6$ & $K = 8$ & $K = 12$ & $K = 16$ & Empirical MI @ $K=12$ \\ \midrule
+\emph{Empirical 117 Healthy Humans (\texttt{ds008037})} & \emph{88.6\%} & \emph{61.5\%} & \emph{43.8\%} & --- & --- & --- & --- \\
+Biological Cortex Alone & 98.3\% & 41.6\% & 30.6\% & 29.9\% & 25.5\% & 24.3\% & 0 bits/s \\
+Optimal State-Steering Only (no ext. mem.) & 78.5\% & \textbf{51.1\%} & \textbf{37.0\%} & \textbf{35.7\%} & 21.2\% & 19.7\% & 0 bits/s \\
+40-bps Screen AI Tool (\texttt{200 ms}) & 32.1\% & 27.0\% & 26.0\% & 19.3\% & 18.1\% & 17.0\% & 33 bits/s \\
+Sham-Interface Control (permuted read) & 24.6\% & 17.0\% & 17.4\% & 16.6\% & 15.5\% & 17.1\% & 148 bits/s \\
+\textbf{4-Bit Brain--AI Co-Processor (\texttt{50 ms})} & \textbf{100.0\%} & \textbf{100.0\%} & \textbf{100.0\%} & \textbf{100.0\%} & \textbf{98.7\%} & \textbf{97.4\%} & \textbf{537 bits/s} \\
+\bottomrule
+\end{tabular}}
+\end{table}
+\subsection{Bandwidth $\times$ Latency Phase Transition \& Level-4 Strict Outperformance}
+Crossing from biological/tool performance (\texttt{18--33\%}) into superhuman working-memory capacity (\texttt{84--100\%}) at $K = 12$ requires crossing \textbf{both} a minimum neural interface bandwidth (\textbf{\texttt{> 160 $\to$ 320 bits/s} cap}, \texttt{\textasciitilde{}265 bits/s} empirical MI --- roughly \textbf{7$\times$ human conscious speech}) \textbf{and} a maximum closed-loop latency (\textbf{\texttt{$\le$ 100 ms}} at \texttt{320 bps}, \texttt{$\le$ 200 ms} at \texttt{640--960 bps}, collapsing to \texttt{30--33\%} at \texttt{250 ms}; Figure 1).
+
+On a complementary task combining $K = 12$ items with a 4-way private embodied human goal visible \textbf{only} inside cortex:
+
+\begin{itemize}
+\item \textbf{Human Alone:} \texttt{14.8\%} (\texttt{90.5$^\circ$} MAE) $\cdot$ \textbf{State-Steering:} \texttt{16.5\%} $\cdot$ \textbf{40-bps Screen AI:} \texttt{17.1\%} $\cdot$ \textbf{Sham Loop:} \texttt{16.5\%} $\cdot$ \textbf{Standalone AI (public stream only):} \texttt{23.2\%} (\texttt{68.7$^\circ$} MAE).
+\item \textbf{Co-Adaptive Prosthetic Cortex (\texttt{4-bit read + bounded write, 50 ms, 484 bits/s} MI):} \textbf{\texttt{87.0\%} (\texttt{18.2$^\circ$} MAE; seeds \texttt{[90.4\%, 96.5\%, 74.0\%]}) --- passing Strict Outperformance by \texttt{+63.7 pp}}.
+\item \textbf{Cortical Reorganization (Linear CKA):} Unassisted cortex across seeds is incoherent under $K = 12$ overload (\texttt{CKA = 0.059}), whereas co-adapted cortex converges across independent seeds onto a reproducible interface representation (\texttt{prost-vs-prost CKA = 0.635}, \texttt{10.8$\times$} higher; \texttt{alone-vs-prost = 0.127}).
+\end{itemize}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{figures/fig5_prosthetic_cortex.png}
+\caption{Healthy-human working-memory cliff (n=117) and pre-response EEG overload decoding (n=15), alongside the Level-2 Brain-AI capacity curve, 2D Bandwidth x Latency phase transition (320 bps at <=100 ms), and Level-4 Strict Outperformance (+63.7 pp).}
+\end{figure}
+\section{Limitations \& Next Empirical Gate (Level-3 Human Trials)}
+\begin{itemize}
+\item \textbf{In-silico vs living human co-adaptation:} Level 2 demonstrates the mathematical scaling law and phase transition in a recurrent dynamical neural model; proving genuine cortical co-adaptation in living humans requires longitudinal human experiments.
+\item \textbf{Interactive browser lab \& Level-3A/3B protocols:} An open non-verbal sensory-substitution Neural Gym (\texttt{K = 4--16}, monochrome 4-bit polar harmonic glyph + stereo Web Audio chord + private human rule) and 4-arm healthy-human EEG trial replay are live at \url{https://threebits.si/gym/.} Full pre-registered protocols for \textbf{Experiment 3A} (4-arm randomized EEG Brain--AI Co-Processor trial, zero surgery) and \textbf{Experiment 3B} (double-blind university TMS-EEG closed-loop stimulation pilot) constitute the immediate empirical next gate.
+\end{itemize}
+\section*{Ethics Statement, Data \& Code Availability, and Competing Interests}
+\begin{itemize}
+\item \textbf{Ethics Statement:} Secondary computational analysis of de-identified public human behavioral and EEG/TMS-EEG data (\texttt{OpenNeuro ds008037}, CC0) combined with \emph{in silico} dynamical simulations. No new human subjects data were collected for this preprint.
+\item \textbf{Data \& Code Availability:} Source human data are publicly available on OpenNeuro (\texttt{ds008037}). Reproducible scripts, interactive Neural Gym (including continuous 8-finger sub-verbal burst Shannon throughput), and Level-3 trial protocols are publicly available at \url{https://github.com/MuhammadFarhantahir/threebits-research,} \url{https://threebits.si/papers/,} and \url{https://threebits.si/gym/.}
+\item \textbf{Competing Interests:} Muhammad Farhan Tahir is the founder of Threebits.
+\end{itemize}
+\section*{References}
+\begin{enumerate}
+\item Biabani, M. \& Rogasch, N. C. (2025). The neural dynamics of working memory and transcranial magnetic stimulation. \emph{OpenNeuro} \texttt{ds008037} (CC0). \url{https://openneuro.org/datasets/ds008037}
+\item Coupé, C., Oh, Y. M., Dediu, D., \& Pellegrino, F. (2019). Different languages, similar encoding efficiency: Comparable information rates across the human communicative niche. \emph{Science Advances}, 5(9):eaaw2594. \url{https://doi.org/10.1126/sciadv.aaw2594}
+\item Cowan, N. (2001). The magical number 4 in short-term memory: A reconsideration of mental storage capacity. \emph{Behavioral and Brain Sciences}, 24(1):87--114. \url{https://doi.org/10.1017/S0140525X01003922}
+\item Ezzyat, Y. et al. (2018). Closed-loop stimulation of temporal cortex rescues functional networks and improves memory. \emph{Nature Communications}, 9:365. \url{https://doi.org/10.1038/s41467-017-02753-0}
+\item Kornblith, S., Norouzi, M., Lee, H., \& Hinton, G. (2019). Similarity of neural network representations revisited. \emph{ICML 2019}. \url{https://arxiv.org/abs/1905.00414}
+\end{enumerate}
+
+\end{document}
