@@ -57,7 +57,7 @@
   button:disabled { opacity:0.45; cursor:not-allowed; }
   label.chk { font-size:0.8rem; color:var(--muted); display:inline-flex; align-items:center; gap:5px; padding:6px 10px; border:1px solid var(--line); border-radius:8px; background:#151411; cursor:pointer; }
   .arena { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:400px; background:#0c0b09; border:1px solid var(--line); border-radius:10px; position:relative; padding:14px; }
-  canvas { display:block; max-width:100%; touch-action:manipulation; }
+  canvas { display:block; max-width:100%; height:auto; touch-action:none; }
   .phase-bar { position:absolute; top:12px; left:14px; right:14px; display:flex; justify-content:space-between; gap:8px; font-size:0.78rem; font-family:var(--mono); color:var(--muted); }
   .rule-pill { position:absolute; bottom:12px; left:14px; font-size:0.78rem; font-family:var(--mono); padding:4px 9px; border-radius:6px; background:#1c1a16; border:1px solid var(--line); color:var(--ink); }
   .cue-banner { margin-top:10px; padding:9px 12px; border-radius:8px; font-size:0.83rem; border:1px solid var(--line); background:#171612; min-height:40px; width:100%; display:flex; justify-content:space-between; align-items:center; gap:10px; }
@@ -94,6 +94,7 @@
     </div>
     <div class="header-right">
       <span class="pill" id="status-pill">C99 int4 chip: 14.3 µs/bin · 66.35 kB ROM+SRAM</span>
+      <a class="back-link" href="/brain/">Brain Twin</a>
       <a class="back-link" href="/">&larr; Research paper</a>
     </div>
   </header>
@@ -369,11 +370,25 @@
     <div class="grid">
       <div class="card">
         <h2>Single-Blind 18-Trial Living-Human Co-Adaptation Study (K = 12)</h2>
-        <p class="sub">Runs a counterbalanced, randomized 3-arm protocol at K = 12 (3&times; Cowan's limit): <strong>6 Unassisted</strong>, <strong>6 Sham Latent Code</strong>, and <strong>6 Real 4-bit Non-Verbal Co-Processor</strong> trials (~2.5 minutes). Real vs. Sham arms are blinded until completion to eliminate placebo bias.</p>
+        <p class="sub">Counterbalanced 3-arm test at K = 12 (3&times; Cowan's limit): <strong>6 Unassisted</strong>, <strong>6 Fake Decoy (Sham)</strong>, and <strong>6 Real 4-bit AI Co-Processor</strong> trials (~3 minutes, zero personal info).</p>
+        <div style="background:#0c0b09;border:1px solid #2c3a36;border-left:3px solid #3aa68f;border-radius:8px;padding:11px 13px;margin-bottom:14px;font-size:0.83rem;line-height:1.55;color:#d6d2c6;">
+          <div style="font-family:var(--mono);font-size:0.73rem;text-transform:uppercase;letter-spacing:0.08em;color:#3aa68f;margin-bottom:5px;font-weight:600;">How to Play (Read in 10 Seconds)</div>
+          <ol style="margin:0 0 0 18px;padding:0;">
+            <li style="margin-bottom:3px;"><strong>Step 1:</strong> First click <strong>1. 4-Trial Calibration Warm-Up</strong> (~30 s) to practice, then click <strong>2. Start 18-Trial Study</strong> (~2.5 min).</li>
+            <li style="margin-bottom:3px;"><strong>Step 2:</strong> 12 colored dots flash &rarr; then a <strong>rainbow ring</strong> appears and <strong>one dot lights up white/orange</strong>. Tap that dot's <strong>COLOR on the outer rainbow ring</strong> <em>(do not tap where the dot sits &mdash; tap its color on the outer ring!)</em>.</li>
+            <li style="margin-bottom:3px;"><strong>Step 3 (No arrow vs. White arrow):</strong>
+              <strong>No arrow in the center</strong> &rarr; tap the dot's color from memory.
+              <strong>White arrow in the center</strong> &rarr; <strong>follow the white arrowhead straight out to the outer rainbow ring and tap where it points!</strong> <em>(Half of the arrows are real AI memory hints and half are fake decoys &mdash; blinded until Trial 18, so just follow the arrow whenever it appears. If Private Rule is checked, rotate clockwise by +90&deg; or +180&deg; first.)</em>
+            </li>
+            <li><strong>Step 4:</strong> After each tap, a <span style="color:#3aa68f;font-weight:600;">teal dot</span> shows the true answer vs. your <span style="color:#ee6f40;font-weight:600;">orange dot</span>. At Trial 18 your unblinded score unlocks and submits automatically!</li>
+          </ol>
+        </div>
         <div class="controls">
-          <label class="chk">ID: <input type="text" id="pilot-pid" value="" style="width:82px;background:#0c0b09;color:var(--ink);border:1px solid var(--line);border-radius:5px;padding:2px 6px;font-family:var(--mono);font-size:0.78rem;"></label>
+          <label class="chk">ID: <input type="text" id="pilot-pid" value="" style="width:94px;background:#0c0b09;color:var(--ink);border:1px solid var(--line);border-radius:5px;padding:2px 6px;font-family:var(--mono);font-size:0.78rem;"></label>
           <label class="chk"><input type="checkbox" id="pilot-rule"> Include Private Rule (+0/+90/+180&deg;)</label>
-          <button class="primary" id="pilot-start">Start 18-Trial Study</button>
+          <label class="chk"><input type="checkbox" id="pilot-autosubmit" checked> Auto-submit anonymized trials to Live API on Trial 18</label>
+          <button id="pilot-calib" style="border-color:#3aa68f;color:#3aa68f;">1. 4-Trial Calibration Warm-Up (Unlogged)</button>
+          <button class="primary" id="pilot-start">2. Start 18-Trial Study</button>
           <button id="pilot-abort" disabled>Abort</button>
         </div>
 
@@ -400,14 +415,15 @@
 
       <div style="display:flex;flex-direction:column;gap:18px;">
         <div class="card">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;gap:8px;flex-wrap:wrap;">
             <h2 style="margin:0;">Within-Subject Statistical Report</h2>
-            <div style="display:flex;gap:6px;">
-              <button class="export-btn" id="pilot-export">Export Pilot CSV</button>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <button class="export-btn" id="pilot-submit-api" disabled>Submit to Live API</button>
+              <button class="export-btn" id="pilot-export" disabled>Export CSV (0/18)</button>
               <button id="pilot-reset" style="padding:4px 8px;font-size:0.78rem;">Reset</button>
             </div>
           </div>
-          <p class="sub" id="pilot-status-msg">Complete all 18 trials to unblind arms and compute exact 2,000-permutation p-values.</p>
+          <p class="sub" id="pilot-status-msg">Complete all 18 trials to unblind arms, compute exact 2,000-permutation p-values, and submit to the live cohort API.</p>
           <table>
             <thead><tr><th>Blinded Arm (K = 12)</th><th class="right">N</th><th class="right">&lt;30&deg; Acc</th><th class="right">MAE</th><th class="right">bits/s</th></tr></thead>
             <tbody id="pilot-body"></tbody>
@@ -415,11 +431,27 @@
           <div id="pilot-stats-box" style="margin-top:12px;padding:11px;background:#0c0b09;border:1px solid var(--line);border-radius:8px;font-family:var(--mono);font-size:0.77rem;color:var(--muted);line-height:1.6;">
             Waiting for completed 18-trial study...
           </div>
+          <div id="pilot-api-status" style="margin-top:8px;font-family:var(--mono);font-size:0.74rem;color:var(--muted);">
+            Live API: ready (POST /api/pilot/submit)
+          </div>
         </div>
 
         <div class="card">
-          <h2>Aggregate Across Multiple Participants</h2>
-          <p class="sub" style="margin-bottom:0;">Export each participant's CSV (<code>threebits_pilot_*.csv</code>) into a folder and run <code>python analyze_human_gym_pilot.py pilot_data/</code> from <a href="https://github.com/MuhammadFarhantahir/threebits-research" target="_blank" rel="noopener">threebits-research</a> to generate paired Wilcoxon statistics, Cohen's d, and a publication figure.</p>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;gap:8px;flex-wrap:wrap;">
+            <h2 style="margin:0;">Live Living-Human Cohort API</h2>
+            <div style="display:flex;gap:6px;">
+              <button id="cohort-refresh" style="padding:4px 8px;font-size:0.78rem;">Refresh</button>
+              <a class="export-btn" id="cohort-csv-link" href="/api/pilot/csv" download="threebits_pilot_cohort.csv" style="text-decoration:none;display:inline-flex;align-items:center;">Download Cohort CSV</a>
+            </div>
+          </div>
+          <p class="sub" id="cohort-meta" style="margin-bottom:8px;">Loading live anonymized cohort from <code>/api/pilot/summary</code>...</p>
+          <table>
+            <thead><tr><th>Cohort Arm (Pooled)</th><th class="right">Trials</th><th class="right">&lt;30&deg; Acc</th><th class="right">MAE</th><th class="right">bits/s</th></tr></thead>
+            <tbody id="cohort-body"><tr><td colspan="5" style="color:var(--muted);">No submitted sessions yet — complete 18 trials to record Participant #1!</td></tr></tbody>
+          </table>
+          <div id="cohort-stats-box" style="margin-top:10px;padding:9px 11px;background:#0c0b09;border:1px solid var(--line);border-radius:8px;font-family:var(--mono);font-size:0.74rem;color:var(--muted);line-height:1.55;">
+            CLI sync: <code>python analyze_human_gym_pilot.py --from-api https://threebits.si --out-fig figures/fig_human_pilot.png</code>
+          </div>
         </div>
       </div>
     </div>
@@ -544,18 +576,30 @@ function drawMonochromeGlyph(canvasCtx, cx, cy, rMax, qCos, qSin, active){
     for(let i=0; i<=72; i++){
       const th = (i / 72) * Math.PI * 2;
       const lobe = Math.pow(0.5 * (1 + Math.cos(th - ang)), 3);
-      const rr = rMax * (0.22 + 0.72 * mag * lobe);
+      const rr = rMax * (0.14 + 0.78 * mag * lobe);
       const px = cx + Math.cos(th) * rr, py = cy + Math.sin(th) * rr;
       if(i===0) canvasCtx.moveTo(px, py); else canvasCtx.lineTo(px, py);
     }
     canvasCtx.closePath();
-    canvasCtx.fillStyle = "rgba(236, 233, 223, 0.18)";
+    canvasCtx.fillStyle = "rgba(236, 233, 223, 0.16)";
     canvasCtx.fill();
-    canvasCtx.strokeStyle = "#ece9df"; canvasCtx.lineWidth = 2.0; canvasCtx.stroke();
+    canvasCtx.strokeStyle = "#d9d4c7"; canvasCtx.lineWidth = 1.6; canvasCtx.stroke();
+    // Unambiguous monochrome directional arrow (eliminates 180-deg teardrop-tail polarity flips)
+    const tipX = cx + Math.cos(ang) * rMax * 0.96;
+    const tipY = cy + Math.sin(ang) * rMax * 0.96;
     canvasCtx.beginPath();
     canvasCtx.moveTo(cx, cy);
-    canvasCtx.lineTo(cx + Math.cos(ang)*rMax*0.92, cy + Math.sin(ang)*rMax*0.92);
-    canvasCtx.strokeStyle = "#ffffff"; canvasCtx.lineWidth = 2.2; canvasCtx.stroke();
+    canvasCtx.lineTo(tipX, tipY);
+    canvasCtx.strokeStyle = "#ffffff"; canvasCtx.lineWidth = 2.6; canvasCtx.stroke();
+    const headLen = 10, headAng = 0.45;
+    canvasCtx.beginPath();
+    canvasCtx.moveTo(tipX, tipY);
+    canvasCtx.lineTo(tipX - Math.cos(ang - headAng) * headLen, tipY - Math.sin(ang - headAng) * headLen);
+    canvasCtx.lineTo(tipX - Math.cos(ang + headAng) * headLen, tipY - Math.sin(ang + headAng) * headLen);
+    canvasCtx.closePath();
+    canvasCtx.fillStyle = "#ffffff";
+    canvasCtx.fill();
+    canvasCtx.beginPath(); canvasCtx.arc(cx, cy, 3.2, 0, Math.PI*2); canvasCtx.fill();
   }
   canvasCtx.restore();
 }
@@ -701,7 +745,7 @@ gcvs.addEventListener("pointerdown", (ev) => {
   const rect = gcvs.getBoundingClientRect();
   const x = (ev.clientX - rect.left) * (gcvs.width / rect.width) - CX;
   const y = (ev.clientY - rect.top) * (gcvs.height / rect.height) - CY;
-  if(Math.hypot(x, y) < RING_R - 30) return;
+  if(Math.hypot(x, y) < 32) return;
   const reported = ((Math.atan2(y, x) * 180 / Math.PI) + 360) % 360;
   const trueTarget = (gym.items[gym.targetIdx].deg + gym.ruleDeg) % 360;
   const err = circErr(reported, trueTarget), rt = Math.round(performance.now() - gym.respStart);
@@ -838,7 +882,7 @@ cvs.addEventListener("pointerdown", (ev) => {
   const rect = cvs.getBoundingClientRect();
   const x = (ev.clientX - rect.left) * (cvs.width / rect.width) - CX;
   const y = (ev.clientY - rect.top) * (cvs.height / rect.height) - CY;
-  if(Math.hypot(x, y) < RING_R - 30) return;
+  if(Math.hypot(x, y) < 32) return;
   const reported = ((Math.atan2(y, x) * 180 / Math.PI) + 360) % 360;
   const target = state.items[state.targetIdx].deg;
   const err = circErr(reported, target), rt = Math.round(performance.now() - state.respStart);
@@ -1072,7 +1116,7 @@ function renderPilotCanvas(){
   } else if(pilot.phase === "delay"){
     pctx.fillStyle = "#9a9589"; pctx.font = "22px IBM Plex Mono,monospace"; pctx.textAlign = "center";
     pctx.fillText("+", CX, CY + 7);
-  } else if(pilot.phase === "respond"){
+  } else if(pilot.phase === "respond" || pilot.phase === "feedback"){
     drawColorRing(pctx, null);
     pilot.items.forEach((it, i) => {
       pctx.beginPath(); pctx.arc(it.x, it.y, i === pilot.targetIdx ? 12 : 6, 0, Math.PI*2);
@@ -1082,14 +1126,38 @@ function renderPilotCanvas(){
     if(pilot.code && pilot.code.active){
       drawMonochromeGlyph(pctx, CX, CY, 44, pilot.code.q_cos, pilot.code.q_sin, true);
     }
+    if(pilot.phase === "feedback" && pilot.fb){
+      const rRad = pilot.fb.reported * Math.PI / 180;
+      const tRad = pilot.fb.target * Math.PI / 180;
+      // User's click (orange marker on ring)
+      pctx.beginPath(); pctx.arc(CX + Math.cos(rRad)*RING_R, CY + Math.sin(rRad)*RING_R, 7, 0, Math.PI*2);
+      pctx.fillStyle = "#ee6f40"; pctx.fill();
+      pctx.strokeStyle = "#ffffff"; pctx.lineWidth = 1.6; pctx.stroke();
+      // True target angle (teal marker on ring — still 100% blinded to Real vs Sham!)
+      pctx.beginPath(); pctx.arc(CX + Math.cos(tRad)*RING_R, CY + Math.sin(tRad)*RING_R, 9, 0, Math.PI*2);
+      pctx.fillStyle = "#3aa68f"; pctx.fill();
+      pctx.strokeStyle = "#ffffff"; pctx.lineWidth = 2.0; pctx.stroke();
+    }
   } else {
-    pctx.fillStyle = "#6b675b"; pctx.font = "14px Inter,sans-serif"; pctx.textAlign = "center";
-    pctx.fillText(pilot.rows.length >= 18 ? "Study complete — see report & Export CSV" : "Press Start 18-Trial Study", CX, CY);
+    pctx.fillStyle = "#6b675b"; pctx.font = "13.5px Inter,sans-serif"; pctx.textAlign = "center";
+    const msg = pilot.calibDone
+      ? "Calibration complete! Press '2. Start 18-Trial Study'"
+      : (pilot.rows.length >= 18 ? "Study complete — see report & Live Cohort API" : "Run 4-Trial Warm-Up first, then Start 18-Trial Study");
+    pctx.fillText(msg, CX, CY);
   }
 }
 
 function renderPilotReport(unblinded){
   const rows = loadRows(PILOT_STORE_KEY);
+  const expBtn = document.getElementById("pilot-export");
+  const subBtn = document.getElementById("pilot-submit-api");
+  if(expBtn){
+    expBtn.disabled = rows.length === 0;
+    expBtn.textContent = `Export CSV (${rows.length}/18)`;
+  }
+  if(subBtn){
+    subBtn.disabled = rows.length < 6;
+  }
   const labels = { unassisted:"Arm 1 · Unassisted (K=12)", sham_code:"Arm 2 · Sham Latent Code", latent_coproc:"Arm 3 · Real 4-bit Co-Processor" };
   if(!unblinded && rows.length < 18){
     document.getElementById("pilot-body").innerHTML = Object.keys(labels).map(k =>
@@ -1124,38 +1192,130 @@ function renderPilotReport(unblinded){
   }
 }
 
+async function fetchPilotCohort(){
+  const metaEl = document.getElementById("cohort-meta");
+  const bodyEl = document.getElementById("cohort-body");
+  const boxEl = document.getElementById("cohort-stats-box");
+  if(!metaEl || !bodyEl) return;
+  try {
+    const resp = await fetch("/api/pilot/summary", { cache: "no-store" });
+    if(!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const data = await resp.json();
+    metaEl.innerHTML = `Live anonymized cohort: <strong>N = ${data.n_sessions} session${data.n_sessions === 1 ? "" : "s"}</strong> (${data.n_trials} trials) stored via <code>/api/pilot/submit</code>.`;
+    if(!data.n_trials){
+      bodyEl.innerHTML = `<tr><td colspan="5" style="color:var(--muted);">No submitted sessions yet — complete 18 trials to record Participant #1!</td></tr>`;
+      return;
+    }
+    const labels = { unassisted:"Arm 1 · Unassisted (K=12)", sham_code:"Arm 2 · Sham Latent Code", latent_coproc:"Arm 3 · Real 4-bit Co-Processor" };
+    bodyEl.innerHTML = Object.keys(labels).map(k => {
+      const a = data.arms_pooled[k] || {};
+      if(!a.n) return `<tr><td>${labels[k]}</td><td class="right">0</td><td class="right">--</td><td class="right">--</td><td class="right">--</td></tr>`;
+      return `<tr><td>${labels[k]}</td><td class="right">${a.n}</td><td class="right">${a.acc30.toFixed(1)}%</td><td class="right">${a.mae_deg.toFixed(1)}&deg;</td><td class="right">${a.eff_bps.toFixed(2)}</td></tr>`;
+    }).join("");
+    const pt = data.pooled_tests || {};
+    const pc = data.paired_cohort || {};
+    let lines = [];
+    if(pt.coproc_vs_unassisted_mae_drop_deg !== undefined)
+      lines.push(`Pooled Co-Proc vs Unassisted: <strong>${pt.coproc_vs_unassisted_mae_drop_deg.toFixed(1)}&deg; drop</strong> (perm p = ${pt.coproc_vs_unassisted_perm_p})`);
+    if(pt.coproc_vs_sham_mae_drop_deg !== undefined)
+      lines.push(`Pooled Co-Proc vs Sham: <strong>${pt.coproc_vs_sham_mae_drop_deg.toFixed(1)}&deg; drop</strong> (perm p = ${pt.coproc_vs_sham_perm_p})`);
+    if(pc.n_paired_sham >= 2)
+      lines.push(`Paired cohort (N=${pc.n_paired_sham}): <strong>${pc.mean_mae_drop_vs_sham_deg.toFixed(1)}&deg; drop vs Sham</strong> (paired perm p = ${pc.paired_perm_p_vs_sham})`);
+    lines.push(`CLI: <code>python analyze_human_gym_pilot.py --from-api https://threebits.si --out-fig figures/fig_human_pilot.png</code>`);
+    boxEl.innerHTML = lines.join("<br>");
+  } catch(err) {
+    metaEl.textContent = "Live Cohort API offline in static preview (runs automatically on threebits.si & localhost:8765).";
+  }
+}
+
+let pilotSubmittedKey = null;
+async function submitPilotToApi(force){
+  const rows = loadRows(PILOT_STORE_KEY);
+  const stEl = document.getElementById("pilot-api-status");
+  if(rows.length < 6){
+    if(stEl) stEl.textContent = `Live API: complete at least 6 trials first (${rows.length}/18 done).`;
+    return;
+  }
+  const pid = (rows[0]?.participant_id || pidInput.value || "P-ANON").trim();
+  const sig = `${pid}:${rows.length}:${rows[rows.length-1]?.ts || 0}`;
+  if(!force && pilotSubmittedKey === sig) return;
+  if(stEl) stEl.textContent = "Live API: submitting anonymized trials...";
+  try {
+    const resp = await fetch("/api/pilot/submit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ participant_id: pid, rows }),
+    });
+    const out = await resp.json();
+    if(!resp.ok || !out.ok) throw new Error(out.error || `HTTP ${resp.status}`);
+    pilotSubmittedKey = sig;
+    if(stEl) stEl.innerHTML = `<span style="color:#3aa68f;">Submitted &amp; saved as <code>${out.saved_file}</code> (${out.n_trials} trials · Cohort N=${out.cohort.n_sessions})</span>`;
+    fetchPilotCohort();
+  } catch(err) {
+    if(stEl) stEl.innerHTML = `<span style="color:#ee6f40;">API submit failed (${err.message}) — use Export CSV as backup.</span>`;
+  }
+}
+
 function clearPilotTimers(){ pilot.timers.forEach(t => clearTimeout(t)); pilot.timers = []; }
 
 function runNextPilotTrial(){
   if(!pilot.running) return;
-  if(pilot.idx >= pilot.queue.length){
-    pilot.running = false; pilot.phase = "idle";
+  const totalN = pilot.queue.length;
+  if(pilot.idx >= totalN){
+    const wasCalib = Boolean(pilot.isCalib);
+    pilot.running = false; pilot.phase = "idle"; pilot.fb = null;
+    if(wasCalib) pilot.calibDone = true;
     document.getElementById("pilot-start").disabled = false;
+    document.getElementById("pilot-calib").disabled = false;
     document.getElementById("pilot-abort").disabled = true;
+    if(wasCalib){
+      document.getElementById("pilot-phase").textContent = "CALIBRATED";
+      document.getElementById("pilot-arm-blind").textContent = "WARM-UP DONE (UNLOGGED)";
+      document.getElementById("pilot-prog-txt").textContent = "Calibration 4 / 4 complete — ready for blinded 18-trial study";
+      document.getElementById("pilot-prompt").textContent = "Press '2. Start 18-Trial Study'";
+      document.getElementById("pilot-cue-txt").textContent = "Great! Your brain is calibrated to the polar glyph. Now press '2. Start 18-Trial Study' (remember: half of glyphs will be Sham distractors!).";
+      document.getElementById("pilot-bar").style.width = "100%";
+      renderPilotCanvas();
+      return;
+    }
     document.getElementById("pilot-phase").textContent = "COMPLETE";
     document.getElementById("pilot-arm-blind").textContent = "UNBLINDED";
     document.getElementById("pilot-prog-txt").textContent = "Trial 18 / 18 (complete)";
     document.getElementById("pilot-bar").style.width = "100%";
     renderPilotCanvas();
     renderPilotReport(true);
+    if(document.getElementById("pilot-autosubmit")?.checked){
+      submitPilotToApi(false);
+    }
     return;
   }
   const arm = pilot.queue[pilot.idx];
   const useRule = document.getElementById("pilot-rule").checked;
-  const ruleDeg = useRule ? [0, 90, 180][Math.floor(Math.random()*3)] : 0;
+  let ruleDeg = 0;
+  if(pilot.isCalib){
+    const calRules = useRule ? [0, 0, 90, 180] : [0, 0, 0, 0];
+    ruleDeg = calRules[pilot.idx % calRules.length];
+  } else {
+    ruleDeg = useRule ? [0, 90, 180][Math.floor(Math.random()*3)] : 0;
+  }
   const items = [], baseRot = Math.random() * Math.PI * 2;
   for(let i=0; i<12; i++){
     const a = baseRot + (i / 12) * Math.PI * 2;
     items.push({ x: CX + Math.cos(a)*92, y: CY + Math.sin(a)*92, deg: Math.floor(Math.random()*360) });
   }
   pilot.curArm = arm; pilot.items = items; pilot.targetIdx = Math.floor(Math.random()*12);
-  pilot.ruleDeg = ruleDeg; pilot.code = null; pilot.phase = "encode";
-  document.getElementById("pilot-prog-txt").textContent = `Trial ${pilot.idx + 1} / 18`;
-  document.getElementById("pilot-bar").style.width = `${Math.round((pilot.idx / 18) * 100)}%`;
-  document.getElementById("pilot-arm-blind").textContent = arm === "unassisted" ? "UNASSISTED" : "BLINDED GLYPH (REAL OR SHAM)";
+  pilot.ruleDeg = ruleDeg; pilot.code = null; pilot.fb = null; pilot.phase = "encode";
+  document.getElementById("pilot-prog-txt").textContent = pilot.isCalib ? `Calibration ${pilot.idx + 1} / ${totalN} (unlogged)` : `Trial ${pilot.idx + 1} / ${totalN}`;
+  document.getElementById("pilot-bar").style.width = `${Math.round((pilot.idx / totalN) * 100)}%`;
+  document.getElementById("pilot-arm-blind").textContent = pilot.isCalib ? "REAL 4-BIT CALIBRATION" : (arm === "unassisted" ? "UNASSISTED" : "BLINDED GLYPH (REAL OR SHAM)");
   document.getElementById("pilot-phase").textContent = "ENCODE (K=12)";
   document.getElementById("pilot-prompt").textContent = "Memorize 12 colors";
-  document.getElementById("pilot-rule-pill").textContent = ruleDeg === 0 ? "Private Human Rule: DIRECT (+0°)" : `Private Human Rule: ROTATE +${ruleDeg}°`;
+  document.getElementById("pilot-rule-pill").textContent = ruleDeg === 0 ? "Private Human Rule: DIRECT (+0°)" : `Private Human Rule: ROTATE +${ruleDeg}° (clockwise)`;
+  if(pilot.isCalib){
+    document.getElementById("pilot-cue-txt").textContent = ruleDeg === 0
+      ? "Calibration: Follow the white glyph pointer straight out to the outer color ring and click that spot!"
+      : `Calibration: Follow the white glyph pointer, then rotate +${ruleDeg}° clockwise on the outer ring and click!`;
+  }
   renderPilotCanvas();
 
   pilot.timers.push(setTimeout(() => {
@@ -1166,7 +1326,7 @@ function runNextPilotTrial(){
     pilot.timers.push(setTimeout(() => {
       pilot.phase = "respond"; pilot.respStart = performance.now();
       document.getElementById("pilot-phase").textContent = "RESPOND";
-      document.getElementById("pilot-prompt").textContent = ruleDeg === 0 ? "Click matching color on ring" : `Apply +${ruleDeg}° rotation, then click ring`;
+      document.getElementById("pilot-prompt").textContent = ruleDeg === 0 ? "Click matching color on ring" : `Apply +${ruleDeg}° clockwise, then click ring`;
       renderPilotCanvas();
       const rawDeg = pilot.items[pilot.targetIdx].deg;
       const code = encodeLatentCode(rawDeg, arm, 4, 50);
@@ -1185,26 +1345,48 @@ pcvs.addEventListener("pointerdown", (ev) => {
   const rect = pcvs.getBoundingClientRect();
   const x = (ev.clientX - rect.left) * (pcvs.width / rect.width) - CX;
   const y = (ev.clientY - rect.top) * (pcvs.height / rect.height) - CY;
-  if(Math.hypot(x, y) < RING_R - 30) return;
+  if(Math.hypot(x, y) < 32) return;
   const reported = ((Math.atan2(y, x) * 180 / Math.PI) + 360) % 360;
   const trueTarget = (pilot.items[pilot.targetIdx].deg + pilot.ruleDeg) % 360;
   const err = circErr(reported, trueTarget), rt = Math.round(performance.now() - pilot.respStart);
   const infoBits = Math.max(0, Math.log2(180 / (2 * Math.max(err, 2))));
   const effBps = Number((infoBits / Math.max(rt / 1000, 0.15)).toFixed(2));
-  pilot.phase = "iti";
-  document.getElementById("pilot-last").textContent = `T${pilot.idx+1}: ${err.toFixed(1)}° (${rt} ms)`;
-  const row = {
-    participant_id: (pidInput.value || "P-ANON").trim(),
-    trial_idx: pilot.idx + 1, arm: pilot.curArm, set_size: 12, rule_deg: pilot.ruleDeg,
-    target_deg: trueTarget, reported_deg: Math.round(reported), err_deg: Number(err.toFixed(2)),
-    rt_ms: rt, eff_bps: effBps, ts: Number((Date.now()/1000).toFixed(2))
-  };
-  pilot.rows.push(row);
-  saveRows(PILOT_STORE_KEY, pilot.rows);
+  pilot.phase = "feedback";
+  pilot.fb = { reported, target: trueTarget, err };
+  document.getElementById("pilot-phase").textContent = "FEEDBACK";
+  document.getElementById("pilot-prompt").textContent = `Error: ${err.toFixed(1)}° (teal = target, orange = your click)`;
+  document.getElementById("pilot-last").textContent = `${pilot.isCalib ? "Cal" : "T"}${pilot.idx+1}: ${err.toFixed(1)}° (${rt} ms)`;
+  renderPilotCanvas();
+
+  if(!pilot.isCalib){
+    const row = {
+      participant_id: (pidInput.value || "P-ANON").trim(),
+      trial_idx: pilot.idx + 1, arm: pilot.curArm, set_size: 12, rule_deg: pilot.ruleDeg,
+      target_deg: trueTarget, reported_deg: Math.round(reported), err_deg: Number(err.toFixed(2)),
+      rt_ms: rt, eff_bps: effBps, ts: Number((Date.now()/1000).toFixed(2))
+    };
+    pilot.rows.push(row);
+    saveRows(PILOT_STORE_KEY, pilot.rows);
+    renderPilotReport(false);
+  }
   pilot.idx += 1;
-  renderPilotReport(false);
-  pilot.timers.push(setTimeout(runNextPilotTrial, 450));
+  pilot.timers.push(setTimeout(runNextPilotTrial, pilot.isCalib ? 950 : 620));
 });
+
+function startPilotCalibration(){
+  if(pilot.running) return;
+  clearPilotTimers();
+  pilot = {
+    running:true, isCalib:true, calibDone:false, phase:"idle",
+    queue:["latent_coproc","latent_coproc","latent_coproc","latent_coproc"],
+    idx:0, curArm:"", items:[], targetIdx:0, ruleDeg:0, code:null, fb:null, respStart:0,
+    rows:loadRows(PILOT_STORE_KEY), timers:[]
+  };
+  document.getElementById("pilot-start").disabled = true;
+  document.getElementById("pilot-calib").disabled = true;
+  document.getElementById("pilot-abort").disabled = false;
+  runNextPilotTrial();
+}
 
 function startPilotStudy(){
   if(pilot.running) return;
@@ -1216,10 +1398,12 @@ function startPilotStudy(){
     for(let i=2; i>0; i--){ const j = Math.floor(Math.random()*(i+1)); [tri[i],tri[j]] = [tri[j],tri[i]]; }
     q.push(...tri);
   }
-  pilot = { running:true, phase:"idle", queue:q, idx:0, curArm:"", items:[], targetIdx:0, ruleDeg:0, code:null, respStart:0, rows:[], timers:[] };
+  pilot = { running:true, isCalib:false, calibDone:false, phase:"idle", queue:q, idx:0, curArm:"", items:[], targetIdx:0, ruleDeg:0, code:null, fb:null, respStart:0, rows:[], timers:[] };
   saveRows(PILOT_STORE_KEY, []);
   document.getElementById("pilot-start").disabled = true;
+  document.getElementById("pilot-calib").disabled = true;
   document.getElementById("pilot-abort").disabled = false;
+  document.getElementById("pilot-cue-txt").textContent = "Blinded 18-trial study active: Real vs. Sham glyphs are indistinguishable until Trial 18. Teal dot after each click shows target feedback.";
   renderPilotReport(false);
   runNextPilotTrial();
 }
@@ -1239,20 +1423,24 @@ document.getElementById("burst-export").onclick = () => downloadCSV(
   ["ts","mode","latency_ms","private_rule","hits","total","acc_pct","rate_hz","bps"],
   loadRows(BURST_STORE_KEY)
 );
+document.getElementById("pilot-calib").onclick = startPilotCalibration;
 document.getElementById("pilot-start").onclick = startPilotStudy;
 document.getElementById("pilot-abort").onclick = () => {
-  clearPilotTimers(); pilot.running = false; pilot.phase = "idle";
-  document.getElementById("pilot-start").disabled = false; document.getElementById("pilot-abort").disabled = true;
+  clearPilotTimers(); pilot.running = false; pilot.phase = "idle"; pilot.fb = null;
+  document.getElementById("pilot-start").disabled = false; document.getElementById("pilot-calib").disabled = false; document.getElementById("pilot-abort").disabled = true;
   document.getElementById("pilot-phase").textContent = "ABORTED"; renderPilotCanvas();
 };
 document.getElementById("pilot-reset").onclick = () => {
-  clearPilotTimers(); pilot.running = false; pilot.phase = "idle"; pilot.rows = [];
-  saveRows(PILOT_STORE_KEY, []); document.getElementById("pilot-start").disabled = false;
+  clearPilotTimers(); pilot.running = false; pilot.phase = "idle"; pilot.fb = null; pilot.rows = [];
+  saveRows(PILOT_STORE_KEY, []); document.getElementById("pilot-start").disabled = false; document.getElementById("pilot-calib").disabled = false;
   document.getElementById("pilot-abort").disabled = true; document.getElementById("pilot-bar").style.width = "0%";
   renderPilotCanvas(); renderPilotReport(false);
 };
+document.getElementById("pilot-submit-api").onclick = () => submitPilotToApi(true);
+document.getElementById("cohort-refresh").onclick = fetchPilotCohort;
 document.getElementById("pilot-export").onclick = () => {
   const rows = loadRows(PILOT_STORE_KEY);
+  if(!rows.length) return;
   const pid = (rows[0]?.participant_id || pidInput.value || "anon").replace(/[^a-zA-Z0-9_-]/g, "");
   downloadCSV(
     `threebits_pilot_${pid}.csv`,
@@ -1281,7 +1469,7 @@ window.addEventListener("keydown", e => {
 document.getElementById("kpi-auc").textContent = EEG_DATA.decoder_auc_oof.toFixed(3);
 document.getElementById("kpi-lat").textContent = `${EEG_DATA.c99_bench_us} µs`;
 drawMonochromeGlyph(glctx, 55, 55, 44, 0.71, -0.71, true);
-render(); renderGym(); renderBurst(); renderPilotCanvas(); renderScoreboard(); renderGymScoreboard(); renderBurstHistory(); renderPilotReport(loadRows(PILOT_STORE_KEY).length >= 18);
+render(); renderGym(); renderBurst(); renderPilotCanvas(); renderScoreboard(); renderGymScoreboard(); renderBurstHistory(); renderPilotReport(loadRows(PILOT_STORE_KEY).length >= 18); fetchPilotCohort();
 </script>
 </body>
 </html>

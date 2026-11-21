@@ -36,12 +36,22 @@ from sklearn.preprocessing import StandardScaler
 
 ROOT = Path(__file__).resolve().parent.parent
 APP_DIR = Path(__file__).resolve().parent
+PILOT_DIR = ROOT / "pilot_data"
 LOG_PATH = APP_DIR / "session_log.jsonl"
 GYM_LOG_PATH = APP_DIR / "neural_gym_log.jsonl"
 WM_NPZ = ROOT / "data" / "tmseeg_ds008037" / "wm_features" / "sub-020_wm.npz"
 
+sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "chip"))
 from bench_int4_gru import Int4GRUModelC, build_luts, float_to_mult_shift  # noqa: E402
+from pilot_api_server import (  # noqa: E402
+    MAX_BODY_BYTES,
+    _summarize_rows as _summarize_pilot_rows,
+    compute_pilot_cohort_summary,
+    export_combined_pilot_csv,
+    save_pilot_csv,
+    validate_pilot_submission,
+)
 
 
 class NeuralEngine:
@@ -331,13 +341,65 @@ def make_handler(engine: NeuralEngine):
                 self.send_header("Content-Length", str(len(data)))
                 self.end_headers()
                 self.wfile.write(data)
+            elif route == "/api/pilot/health":
+                summ = compute_pilot_cohort_summary(PILOT_DIR)
+                self._send_json({"ok": True, "n_sessions": summ["n_sessions"], "n_trials": summ["n_trials"]})
+            elif route == "/api/pilot/summary":
+                self._send_json(compute_pilot_cohort_summary(PILOT_DIR))
+            elif route == "/api/pilot/csv":
+                data = export_combined_pilot_csv(PILOT_DIR)
+                self.send_response(200)
+                self.send_header("Content-Type", "text/csv; charset=utf-8")
+                self.send_header("Content-Disposition", "attachment; filename=threebits_pilot_cohort.csv")
+                self.send_header("Content-Length", str(len(data)))
+                self.end_headers()
+                self.wfile.write(data)
+            elif route == "/eeg_data.js":
+                js = (ROOT / "website" / "gym" / "eeg_data.js").read_bytes()
+                self.send_response(200)
+                self.send_header("Content-Type", "application/javascript; charset=utf-8")
+                self.send_header("Content-Length", str(len(js)))
+                self.end_headers()
+                self.wfile.write(js)
             else:
                 self.send_error(404)
 
         def do_POST(self):
-            route = urlsplit(self.path).path
+            route = urlsplit(self.path).path.rstrip("/")
             ln = int(self.headers.get("Content-Length", 0))
+            if ln > MAX_BODY_BYTES:
+                self._send_json({"ok": False, "error": "payload_too_large"}, code=413)
+                return
             payload = json.loads(self.rfile.read(ln) or b"{}")
+            if route == "/api/pilot/submit":
+                try:
+                    pid, clean_rows = validate_pilot_submission(payload)
+                except Exception as exc:
+                    self._send_json({"ok": False, "error": str(exc)}, code=400)
+                    return
+                saved_path = save_pilot_csv(PILOT_DIR, pid, clean_rows)
+                s_arms, s_tests = _summarize_pilot_rows(clean_rows)
+                cohort = compute_pilot_cohort_summary(PILOT_DIR)
+                # Auto-generate updated publication figure & JSON locally
+                try:
+                    from analyze_human_gym_pilot import analyze as run_pilot_analyze, load_pilot_csvs
+                    all_r = load_pilot_csvs(PILOT_DIR)
+                    if all_r:
+                        fig_out = ROOT / "figures" / "fig_human_pilot.png"
+                        summary_full = run_pilot_analyze(all_r, out_fig=fig_out)
+                        (PILOT_DIR / "pilot_summary.json").write_text(json.dumps(summary_full, indent=2))
+                except Exception:
+                    pass
+                self._send_json({
+                    "ok": True,
+                    "saved_file": saved_path.name,
+                    "participant_id": pid,
+                    "n_trials": len(clean_rows),
+                    "session_arms": s_arms,
+                    "session_tests": s_tests,
+                    "cohort": cohort,
+                }, code=201)
+                return
             if route == "/api/decode_delay":
                 res = engine.decode_trial(payload.get("arm", "real_closedloop"), int(payload.get("set_size", 6)))
                 self._send_json(res)

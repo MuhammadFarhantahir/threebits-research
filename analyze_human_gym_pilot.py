@@ -153,9 +153,11 @@ def analyze(rows, out_fig: Path | None = None):
         ax1.spines["right"].set_visible(False)
 
         bps_vals = [summary["arms"].get(a, {}).get("mean_eff_bps", 0) for a in arms]
+        ymax = max(max(bps_vals) * 1.28, 1.0)
         ax2.bar(range(3), bps_vals, color=colors, width=0.58)
         for i, v in enumerate(bps_vals):
-            ax2.text(i, v + 0.1, f"{v:.2f}", ha="center", va="bottom", fontsize=9, fontweight="bold")
+            ax2.text(i, v + ymax * 0.03, f"{v:.2f}", ha="center", va="bottom", fontsize=9, fontweight="bold")
+        ax2.set_ylim(0, ymax)
         ax2.set_xticks(range(3))
         ax2.set_xticklabels(labels)
         ax2.set_ylabel("Effective Human+AI Throughput (bits/s)")
@@ -172,14 +174,31 @@ def analyze(rows, out_fig: Path | None = None):
 
 def main():
     ap = argparse.ArgumentParser(description="Analyze Threebits living-human Neural Gym Pilot CSVs.")
-    ap.add_argument("input_path", type=Path, help="Folder of threebits_pilot_*.csv files or single CSV")
+    ap.add_argument("input_path", nargs="?", type=Path, default=None, help="Folder of threebits_pilot_*.csv files or single CSV")
+    ap.add_argument("--from-api", type=str, default=None, help="Pull live cohort CSV from API base URL (e.g. https://threebits.si)")
     ap.add_argument("--out-fig", type=Path, default=None, help="Optional output PNG figure path")
     ap.add_argument("--out-json", type=Path, default=None, help="Optional output JSON summary path")
     args = ap.parse_args()
 
-    rows = load_pilot_csvs(args.input_path)
+    if args.from_api:
+        import urllib.request
+        url = args.from_api.rstrip("/") + "/api/pilot/csv"
+        save_to = args.input_path or (Path(__file__).resolve().parent / "pilot_data" / "live_cohort.csv")
+        if save_to.is_dir():
+            save_to = save_to / "live_cohort.csv"
+        save_to.parent.mkdir(parents=True, exist_ok=True)
+        with urllib.request.urlopen(url, timeout=15) as resp:
+            save_to.write_bytes(resp.read())
+        rows = load_pilot_csvs(save_to)
+        src_desc = f"{url} (saved to {save_to})"
+    else:
+        if args.input_path is None:
+            raise SystemExit("Provide input_path or --from-api https://threebits.si")
+        rows = load_pilot_csvs(args.input_path)
+        src_desc = str(args.input_path)
+
     if not rows:
-        raise SystemExit(f"No pilot trials found in {args.input_path}")
+        raise SystemExit(f"No pilot trials found in {src_desc}")
     summary = analyze(rows, out_fig=args.out_fig)
     print(json.dumps(summary, indent=2))
     if args.out_json:

@@ -64,9 +64,9 @@ SPECS = [
         "venue_hint": "Target: bioRxiv / arXiv (q-bio.NC, cs.AI) · Journal of Neural Engineering",
         "tag": "Human Working-Memory Limits & Brain–AI Phase Transition",
         "highlights": [
-            "123 healthy adults (ds008037): empirical Cowan cliff 88.6% → 43.8% (K=2→6); pre-response EEG overload 0.690 AUC + live single-blind 18-trial pilot",
-            "Triple-validated 100-region Human Brain Emulator (post-train CCEP ρ=+0.66, 45/46 TMS-EEG +0.29): Hippocampal Index (87.2% K=12) & 4-bit Region 101 (72.1% vs 35.6% Sham) break Cowan's wall",
-            "Multi-hop fluid reasoning (N=10 cycles + private goal, zero-shot D=6* & D=8*): bias-free 4-bit Region 101 hits 100.0% ± 0.0% vs 18.0% biology, 22.6% Sham, & 49.7% Standalone AI cap, with 100.0% frozen-core goal-flip recovery",
+            "123 healthy adults (ds008037): Cowan cliff 88.6% → 43.8% (K=2→6); EEG overload 0.690 AUC; live 100-region Brain Twin (threebits.si/brain/) & single-blind pilot API",
+            "Multi-hop fluid reasoning inside triple-validated 100-region Human Brain Emulator (CCEP ρ=+0.66, 45/46 TMS-EEG +0.29): bias-free 4-bit Region 101 hits 100.0% ± 0.0% zero-shot on unseen D=6*, 8* (+ private goal) vs 18.0% biology, 22.6% Sham, & 49.7% Standalone AI cap",
+            "Zero-replay continual 3-task learning (D=6* multi-hop → shifted K=10 WM → 4-way reflected planning): Threebits Continual Brain hits 100.0% average with 0.0 pp forgetting vs −84.9 pp in a Causal Transformer and −92.1 pp in unprotected Brain+R101",
         ],
         "bibkey": "tahir2026prosthetic",
         "bibtex_title": "From Biological Working-Memory Limits to Co-Adaptive Brain--AI Co-Processing: A Quantitative Proof Ladder",
@@ -195,9 +195,10 @@ def md_to_html_body(md_text: str, fig_prefix: str):
             close_lists()
             cap, src = m_img.group(1), m_img.group(2)
             fname = Path(src).name
+            alt_txt = re.sub(r"[$^_{}]", "", cap)
             out.append(
                 f'<figure class="paper-fig">'
-                f'<img src="{fig_prefix}{fname}" alt="{html.escape(cap)}">'
+                f'<img src="{fig_prefix}{fname}" alt="{html.escape(alt_txt)}">'
                 f'<figcaption>{inline_md_to_html(cap)}</figcaption>'
                 f"</figure>"
             )
@@ -646,6 +647,7 @@ def build_all():
     <a class="mark" href="/"><i aria-hidden="true"><b></b></i>Threebits</a>
     <nav>
       <a href="/papers/">&larr; All Papers</a>
+      <a href="/brain/">Brain Twin</a>
       <a href="/gym/">Neural Gym</a>
       <a href="/">Research Overview</a>
     </nav>
@@ -681,11 +683,12 @@ document.getElementById("copy-bib").onclick = async (e) => {{
         # Card for /papers/index.html
         hi_li = "".join(f"<li>{html.escape(h)}</li>" for h in spec["highlights"])
         pdf_kb = round((PAPERS_DIR / f"{spec['file_stem']}.pdf").stat().st_size / 1024)
+        ver_date = meta_lines[-1] if meta_lines else "Preprint · November 2026"
         cards_html.append(f"""
   <article class="paper-card">
     <div class="kicker">Preprint {spec['num']} · {html.escape(spec['tag'])}</div>
     <h2><a href="{spec['slug']}.html">{html.escape(title)}</a></h2>
-    <p class="byline">Muhammad Farhan Tahir · Threebits Research · 21 November 2026 · <span>{html.escape(spec['venue_hint'])}</span></p>
+    <p class="byline">Muhammad Farhan Tahir · Threebits Research · {html.escape(ver_date)} · <span>{html.escape(spec['venue_hint'])}</span></p>
     <ul class="hi">{hi_li}</ul>
     <div class="actions">
       <a class="btn" href="{spec['slug']}.html">Read Online</a>
@@ -748,6 +751,7 @@ footer {{ margin-top:40px; padding-top:18px; border-top:1px solid var(--line); f
       <a href="/">Overview</a>
       <a href="/#human">Human brain</a>
       <a href="/#results">Decoders</a>
+      <a href="/brain/">Brain Twin</a>
       <a href="/gym/">Neural Gym</a>
       <a href="/#funding">Funding</a>
     </nav>
@@ -758,7 +762,7 @@ footer {{ margin-top:40px; padding-top:18px; border-top:1px solid var(--line); f
   <h1>Threebits <em>research papers</em>.</h1>
   <p class="lede">Working preprints with full methods, negative controls, null replications, publication figures, print-ready PDFs, and arXiv LaTeX source bundles — built entirely on open public human and primate datasets.</p>
   {''.join(cards_html)}
-  <footer>All human and primate datasets analyzed in these preprints are public open-access recordings (OpenNeuro CC0 &amp; DANDI CC-BY-4.0). Open reproducible code: <a href="https://github.com/MuhammadFarhantahir/threebits-research" target="_blank" rel="noopener">GitHub</a>. Last updated 21 November 2026.</footer>
+  <footer>All human and primate datasets analyzed in these preprints are public open-access recordings (OpenNeuro CC0 &amp; DANDI CC-BY-4.0). Open reproducible code: <a href="https://github.com/MuhammadFarhantahir/threebits-research" target="_blank" rel="noopener">GitHub</a>. Last updated 22 November 2026.</footer>
 </main>
 <script>
 document.querySelectorAll(".copy-btn").forEach(btn => {{

@@ -1,0 +1,260 @@
+{
+  "tasks": [
+    "T1_MultiHop_D6_zeroshot",
+    "T2_ShiftedWM_K10",
+    "T3_ReflectedPlan_D2"
+  ],
+  "chance_pct": 10.0,
+  "regimes": {
+    "gru": {
+      "label": "1. Vanilla GRU (task-conditioned, sequential)",
+      "total_params": 302218,
+      "frozen_pct_phase2": 0.0,
+      "frozen_pct_phase3": 0.0,
+      "matrix_mean": [
+        [
+          11.6,
+          10.7,
+          11.1
+        ],
+        [
+          11.7,
+          11.1,
+          9.9
+        ],
+        [
+          11.3,
+          10.9,
+          12.2
+        ]
+      ],
+      "matrix_sd": [
+        [
+          1.9,
+          1.4,
+          0.3
+        ],
+        [
+          1.7,
+          1.2,
+          0.8
+        ],
+        [
+          1.3,
+          0.7,
+          1.3
+        ]
+      ],
+      "final_T1_MultiHop_D6": 11.3,
+      "final_T2_ShiftedWM_K10": 10.9,
+      "final_T3_ReflectedPlan": 12.2,
+      "final_3task_avg": 11.5,
+      "final_3task_sd": 0.2,
+      "mean_forgetting_pp": 0.5,
+      "ccep_rho_post_3tasks": 0.0,
+      "ccep_partial_rho_post_3tasks": 0.0
+    },
+    "transformer": {
+      "label": "2. Causal Transformer (task-conditioned, sequential)",
+      "total_params": 235146,
+      "frozen_pct_phase2": 0.0,
+      "frozen_pct_phase3": 0.0,
+      "matrix_mean": [
+        [
+          90.8,
+          0.3,
+          18.0
+        ],
+        [
+          11.4,
+          100.0,
+          10.4
+        ],
+        [
+          10.1,
+          10.9,
+          13.7
+        ]
+      ],
+      "matrix_sd": [
+        [
+          12.9,
+          0.2,
+          1.6
+        ],
+        [
+          0.2,
+          0.0,
+          1.6
+        ],
+        [
+          0.8,
+          8.2,
+          5.3
+        ]
+      ],
+      "final_T1_MultiHop_D6": 10.1,
+      "final_T2_ShiftedWM_K10": 10.9,
+      "final_T3_ReflectedPlan": 13.7,
+      "final_3task_avg": 11.6,
+      "final_3task_sd": 1.7,
+      "mean_forgetting_pp": 84.9,
+      "ccep_rho_post_3tasks": 0.0,
+      "ccep_partial_rho_post_3tasks": 0.0
+    },
+    "bio_alone": {
+      "label": "3. 100-Region Biological Human Brain Alone",
+      "total_params": 44536,
+      "frozen_pct_phase2": 0.0,
+      "frozen_pct_phase3": 0.0,
+      "matrix_mean": [
+        [
+          19.7,
+          1.8,
+          16.1
+        ],
+        [
+          8.7,
+          98.4,
+          6.3
+        ],
+        [
+          11.5,
+          1.5,
+          58.1
+        ]
+      ],
+      "matrix_sd": [
+        [
+          0.9,
+          0.7,
+          0.4
+        ],
+        [
+          1.0,
+          0.5,
+          0.4
+        ],
+        [
+          0.2,
+          0.7,
+          2.1
+        ]
+      ],
+      "final_T1_MultiHop_D6": 11.5,
+      "final_T2_ShiftedWM_K10": 1.5,
+      "final_T3_ReflectedPlan": 58.1,
+      "final_3task_avg": 23.7,
+      "final_3task_sd": 0.6,
+      "mean_forgetting_pp": 52.6,
+      "ccep_rho_post_3tasks": 0.6615,
+      "ccep_partial_rho_post_3tasks": 0.3799,
+      "tmseeg_n46_post_3tasks": {
+        "n_subjects": 46,
+        "n_positive": 44,
+        "mean_partial_rho": 0.2869
+      }
+    },
+    "r101_unprotected": {
+      "label": "4. 100-Region Brain + 4-bit R101 (unprotected)",
+      "total_params": 68344,
+      "frozen_pct_phase2": 0.0,
+      "frozen_pct_phase3": 0.0,
+      "matrix_mean": [
+        [
+          100.0,
+          0.0,
+          19.4
+        ],
+        [
+          9.2,
+          100.0,
+          7.7
+        ],
+        [
+          15.8,
+          0.0,
+          90.6
+        ]
+      ],
+      "matrix_sd": [
+        [
+          0.0,
+          0.0,
+          0.8
+        ],
+        [
+          1.7,
+          0.0,
+          1.0
+        ],
+        [
+          3.3,
+          0.0,
+          8.6
+        ]
+      ],
+      "final_T1_MultiHop_D6": 15.8,
+      "final_T2_ShiftedWM_K10": 0.0,
+      "final_T3_ReflectedPlan": 90.6,
+      "final_3task_avg": 35.5,
+      "final_3task_sd": 3.9,
+      "mean_forgetting_pp": 92.1,
+      "ccep_rho_post_3tasks": 0.6607,
+      "ccep_partial_rho_post_3tasks": 0.3796
+    },
+    "threebits_continual": {
+      "label": "5. Threebits Continual Brain (Frozen-Core + Receptor Gates)",
+      "total_params": 58247,
+      "frozen_pct_phase2": 96.27,
+      "frozen_pct_phase3": 85.14,
+      "matrix_mean": [
+        [
+          100.0,
+          7.5,
+          12.7
+        ],
+        [
+          100.0,
+          100.0,
+          12.9
+        ],
+        [
+          100.0,
+          100.0,
+          100.0
+        ]
+      ],
+      "matrix_sd": [
+        [
+          0.0,
+          5.7,
+          1.6
+        ],
+        [
+          0.0,
+          0.0,
+          1.9
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "final_T1_MultiHop_D6": 100.0,
+      "final_T2_ShiftedWM_K10": 100.0,
+      "final_T3_ReflectedPlan": 100.0,
+      "final_3task_avg": 100.0,
+      "final_3task_sd": 0.0,
+      "mean_forgetting_pp": 0.0,
+      "ccep_rho_post_3tasks": 0.6609,
+      "ccep_partial_rho_post_3tasks": 0.3797,
+      "tmseeg_n46_post_3tasks": {
+        "n_subjects": 46,
+        "n_positive": 45,
+        "mean_partial_rho": 0.2882
+      }
+    }
+  }
+}

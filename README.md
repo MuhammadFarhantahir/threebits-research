@@ -3,8 +3,9 @@
 **Causally validated human whole-brain simulation, certified-safe closed-loop control, pure-integer sub-8-bit neural implant decoders, and co-adaptive Brain–AI co-processing.**
 
 - **Live Research Overview:** https://threebits.si/
+- **Interactive 100-Region Human Brain Twin:** https://threebits.si/brain/
 - **Preprints (HTML, PDF, arXiv LaTeX, BibTeX):** https://threebits.si/papers/
-- **Live Browser Neural Gym & 4-Arm EEG Replay:** https://threebits.si/gym/
+- **Live Browser Neural Gym, 4-Arm EEG Replay & Single-Blind Pilot:** https://threebits.si/gym/
 - **Author:** Muhammad Farhan Tahir ([LinkedIn](https://www.linkedin.com/in/muhammadfarhantahir/))
 
 ---
@@ -30,7 +31,9 @@
 - **Level-2 Scaling Law & Phase Transition (`brain_ai_coprocessor.py`):** Sweeping bandwidth × latency at `K = 12` reveals a sharp transition at **`320 bits/s` (`~265 bits/s` MI) and `≤ 100 ms`** (`33% → 91.5%`, `97.4%` at `K = 16`), passing **Strict Outperformance** on a complementary private-rule task (**`87.0%` vs `23.2%` standalone AI, `14.8%` human alone; `+63.7 pp`**; cortical CKA `10.8×`).
 - **Triple-Validated 100-Region Functional Human Brain Emulator (`functional_brain_emulator.py`):** Upgrades all 100 cortical parcels into trainable receptor-/MEG-constrained E–I microcircuits anchored to 74-patient CCEP white matter. Even after cognitive training (`K = 2..16` + 4-way executive rotation), it retains **`CCEP ρ = +0.662 (partial +0.378)`** and **`45/46` healthy TMS-EEG (`+0.288`)** vs. rewired controls (`−0.031` / `32/46`), proving that **only clean associative indexing** — an Upgraded Hippocampal Index (`100%` through `K = 8`, `87.2%` at `K = 12`) or a 4-bit **Region 101 Prosthetic Cortex** on the unmodified noisy biological brain (`72.1%` at `K = 12` vs `30.6%` baseline & `35.6%` Sham) — breaks Cowan's wall.
 - **Superhuman Multi-Hop Fluid Reasoning (`superhuman_reasoning_emulator.py`):** Extends the 100-region emulator to compositional relational graph traversal (`N = 10` novel directed cycles + private embodied human goal, trained strictly on `D = 1..4`, tested **zero-shot on `D = 6*` and `D = 8*`**). With an intact biological hippocampus across all brain regimes, a **bias-free 4-bit linear-manifold Region 101 Reasoning Cortex** hits **`100.0% ± 0.0%`** across `D = 1..4` and zero-shot `D = 6*, 8*` vs. `18.0%` biological brain alone, `21.4%` neuromodulatory denoising, `22.6%` Sham 4-bit, and `49.7%` Standalone AI Bayes cap — while preserving post-train `CCEP ρ = +0.661 (+0.380)`, `45/46` healthy TMS-EEG (`+0.2882`), bounded synchrony (`max |Δsync| = 0.0233`), and **`100.0%` frozen-core continual goal-flip recovery** (`90.9%` frozen, `4,528` adapted params, 80 steps).
-- **Level-3 Live Protocol, Single-Blind Pilot & Analysis (`level3_human_trial_protocol.md`, `level3_app/`, `analyze_human_gym_pilot.py`):** Local LSL EEG + real `ds008037` replay server, non-verbal Neural Gym, and **Single-Blind 18-Trial Living-Human Pilot Study** (live at https://threebits.si/gym/?tab=pilot) with single-subject (`N=1`) and cohort (`N≥2`) statistical reporting.
+- **Zero-Replay Continual Multi-Task Learning (`continual_multitask_brain.py`):** Across three output-disjoint cognitive domains learned sequentially with **zero replay** (`T1`: zero-shot `D = 6*` multi-hop reasoning → `T2`: shifted `K = 10` working memory → `T3`: 4-way reflected modular planning; 3 seeds), a task-conditioned 235k **Causal Transformer** suffers **`−84.9 pp` catastrophic forgetting** (`11.6%` final average) and **Unprotected Brain + 4-bit R101** suffers **`−92.1 pp` forgetting** (`35.5%` avg), whereas **Threebits Continual Brain** (`58k` params, `96.3%` frozen on `T2`, `85.1%` on `T3` + PET-receptor-gated prefrontal-motor adapters) achieves **`100.0%` final 3-task average with `0.0 pp` forgetting**, preserving 74-patient CCEP (`+0.661`) and `45/46` healthy TMS-EEG (`+0.2882`).
+- **Interactive 100-Region Human Brain Twin (`brain_twin/` → https://threebits.si/brain/):** Browser lab built directly from the 74-patient CCEP connectome (`ds004080`), 19-receptor PET atlas, HCP MEG timescales, and Mesulam hierarchy — click any of the 100 cortical parcels to trigger a live causal pulse, inspect regional PET neurotransmitter profiles, compare CCEP+PET (`ρ = +0.66`) vs resting-fMRI (`ρ = +0.18`), and toggle Bio Brain (`18%`) vs 4-bit Region 101 (`100%`) live.
+- **Level-3 Live Protocol, Production Pilot API & Analysis (`level3_human_trial_protocol.md`, `level3_app/`, `pilot_api_server.py`, `analyze_human_gym_pilot.py`):** Local LSL EEG + real `ds008037` replay server, non-verbal directional-arrowhead Neural Gym, zero-dependency production Pilot API (`https://threebits.si/api/pilot/`), and **Single-Blind 18-Trial Living-Human Pilot Study** (`https://threebits.si/gym/?tab=pilot`) with single-subject (`N = 1`) and cohort (`N ≥ 2`) statistical reporting.
 
 ---
 
@@ -47,11 +50,15 @@ python chip/bench_int4_gru.py
 # Run the Level-2 Brain–AI Co-Processor scaling law (zero external downloads needed)
 python brain_ai_coprocessor.py
 
-# Run the local Level-3A EEG + Neural Gym app (supports --lsl for live headsets)
+# Run the 100-region continual 3-task benchmark vs. Causal Transformer & GRU
+python continual_multitask_brain.py
+
+# Run the local Level-3A EEG + Neural Gym + Pilot API server (supports --lsl for live headsets)
 python level3_app/server.py --port 8765
 
-# Analyze exported living-human single-blind pilot CSV(s) from https://threebits.si/gym/?tab=pilot
+# Analyze exported living-human single-blind pilot CSV(s) or pull directly from the live Pilot API
 python analyze_human_gym_pilot.py path/to/threebits_pilot_*.csv
+python analyze_human_gym_pilot.py --from-api https://threebits.si/api/pilot/csv
 ```
 
 All human and primate neuroimaging/electrophysiology datasets are open-access public datasets (`OpenNeuro ds004080`, `ds008037`, `ds005557`, `ds005558`; `DANDI 000128`, `000954`; `MICA-MICs`; `ENIGMA HCP`; `Hansen et al. 2022`). Large raw recordings are not stored in this repository; scripts fetch or expect them under `data/`.
