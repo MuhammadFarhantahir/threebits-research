@@ -64,9 +64,9 @@ SPECS = [
         "venue_hint": "Target: bioRxiv / arXiv (q-bio.NC, cs.AI) · Journal of Neural Engineering",
         "tag": "Human Working-Memory Limits & Brain–AI Phase Transition",
         "highlights": [
-            "123 healthy adults (ds008037): empirical Cowan cliff 88.6% → 43.8% (K=2→6); pre-response EEG overload 0.690 AUC",
-            "2D Bandwidth × Latency phase transition at K=12: 320 bps (~265 bps MI) at ≤100 ms jumps 33% → 91.5% (97.4% at K=16) & Level-4 Strict Outperformance (+63.7 pp)",
-            "Triple-validated 100-region Functional Human Brain Emulator (post-train CCEP ρ=+0.66, 45/46 TMS-EEG +0.29): Hippocampal Index (100% through K=8, 87.2% K=12) & 4-bit Region 101 (72.1% vs 35.6% Sham) break Cowan's wall",
+            "123 healthy adults (ds008037): empirical Cowan cliff 88.6% → 43.8% (K=2→6); pre-response EEG overload 0.690 AUC + live single-blind 18-trial pilot",
+            "Triple-validated 100-region Human Brain Emulator (post-train CCEP ρ=+0.66, 45/46 TMS-EEG +0.29): Hippocampal Index (87.2% K=12) & 4-bit Region 101 (72.1% vs 35.6% Sham) break Cowan's wall",
+            "Multi-hop fluid reasoning (N=10 cycles + private goal, zero-shot D=6* & D=8*): bias-free 4-bit Region 101 hits 100.0% ± 0.0% vs 18.0% biology, 22.6% Sham, & 49.7% Standalone AI cap, with 100.0% frozen-core goal-flip recovery",
         ],
         "bibkey": "tahir2026prosthetic",
         "bibtex_title": "From Biological Working-Memory Limits to Co-Adaptive Brain--AI Co-Processing: A Quantitative Proof Ladder",
@@ -78,6 +78,8 @@ SPECS = [
 def tex_to_html(expr: str) -> str:
     """Convert inline/display LaTeX snippets in our 3 manuscripts into crisp HTML math."""
     s = expr.strip()
+    # Protect literal LaTeX braces \{ and \} before stripping grouping braces
+    s = s.replace(r"\{", "\x01LB\x01").replace(r"\}", "\x01RB\x01")
     # Special fractions & nested exponents first
     s = re.sub(r"\\frac\{dz_j\}\{dt\}", "<i>dz</i><sub>j</sub>/<i>dt</i>", s)
     s = re.sub(r"\\frac\{([^{}]+)\}\{([^{}]+)\}", r"(\1)/(\2)", s)
@@ -85,12 +87,13 @@ def tex_to_html(expr: str) -> str:
     s = re.sub(r"\\sum_\{([^{}]+)\}\^\{?([^{}\s]+)\}?", r"∑<sub>\1</sub><sup>\2</sup>", s)
     s = re.sub(r"\\operatorname\{([^{}]+)\}", r"\1", s)
     s = re.sub(r"\\text\{([^{}]+)\}", r"\1", s)
-    s = re.sub(r"\\mathbf\{1\}", "<b>1</b>", s)
+    s = re.sub(r"\\mathbf\{([^{}]+)\}", r"<b>\1</b>", s)
     s = re.sub(r"\\mathbb\{R\}", "ℝ", s)
     s = s.replace(r"e^{g_{ij}}", "<i>e</i><sup>g<sub>ij</sub></sup>")
     repls = [
         (r"\big(", "("), (r"\big)", ")"), (r"\left", ""), (r"\right", ""),
         (r"\log", "log"), (r"\tanh", "tanh"), (r"\max", "max"), (r"\min", "min"),
+        (r"\cos", "cos"), (r"\bmod", " mod "), (r"\ell", "ℓ"), (r"\%", "%"),
         (r"\rho", "ρ"), (r"\alpha", "α"), (r"\gamma", "γ"), (r"\omega", "ω"),
         (r"\sigma", "σ"), (r"\eta", "η"), (r"\lambda", "λ"), (r"\Delta", "Δ"),
         (r"\tau", "τ"), (r"\theta", "θ"), (r"\pi", "π"), (r"\infty", "∞"),
@@ -101,12 +104,13 @@ def tex_to_html(expr: str) -> str:
     ]
     for a, b in repls:
         s = s.replace(a, b)
-    # Superscripts & subscripts (including Unicode like ∞, °)
+    # Superscripts & subscripts (including Unicode like ∞, °, and *)
     s = re.sub(r"\^\{([^{}]+)\}", r"<sup>\1</sup>", s)
     s = re.sub(r"_\{([^{}]+)\}", r"<sub>\1</sub>", s)
-    s = re.sub(r"\^([0-9a-zA-Z°∞+\-]+)", r"<sup>\1</sup>", s)
+    s = re.sub(r"\^([0-9a-zA-Z°∞+\-*]+)", r"<sup>\1</sup>", s)
     s = re.sub(r"_([0-9a-zA-Z∞]+)", r"<sub>\1</sub>", s)
     s = s.replace("{", "").replace("}", "")
+    s = s.replace("\x01LB\x01", "{").replace("\x01RB\x01", "}")
     return f'<span class="math">{s}</span>'
 
 
@@ -199,14 +203,15 @@ def md_to_html_body(md_text: str, fig_prefix: str):
             )
             i += 1
             continue
-        # Table
+        # Table (respect escaped pipes \| inside cells!)
         if s.startswith("|") and i + 1 < len(lines) and lines[i + 1].strip().startswith("|"):
             close_lists()
-            headers = [c.strip() for c in s.strip("|").split("|")]
+            split_row = lambda line: [c.strip().replace(r"\|", "|") for c in re.split(r"(?<!\\)\|", line.strip().strip("|"))]
+            headers = split_row(s)
             i += 2  # skip separator
             rows = []
             while i < len(lines) and lines[i].strip().startswith("|"):
-                rows.append([c.strip() for c in lines[i].strip().strip("|").split("|")])
+                rows.append(split_row(lines[i]))
                 i += 1
             th_html = "".join(f"<th>{inline_md_to_html(h)}</th>" for h in headers)
             body_html = ""
@@ -264,7 +269,7 @@ def escape_tex_text(s: str) -> str:
         "τ": r"$\tau$", "θ": r"$\theta$", "≤": r"$\le$", "≥": r"$\ge$",
         "≠": r"$\ne$", "×": r"$\times$", "±": r"$\pm$", "→": r"$\to$",
         "−": r"$-$", "°": r"$^\circ$", "µ": r"$\mu$", "²": r"$^2$",
-        "∈": r"$\in$", "–": "--", "—": "---", "·": r"$\cdot$", "…": r"\ldots{}",
+        "∈": r"$\in$", "–": "--", "—": "---", "·": r"$\cdot$", "…": r"\ldots{}", "‖": r"$\|$", "ℓ": r"$\ell$",
     }
     out = []
     for ch in s:
@@ -394,11 +399,12 @@ def md_to_arxiv_tex(md_text: str):
             continue
         if s.startswith("|") and i + 1 < len(lines) and lines[i + 1].strip().startswith("|"):
             close_lists()
-            headers = [c.strip() for c in s.strip("|").split("|")]
+            split_row = lambda line: [c.strip().replace(r"\|", "|") for c in re.split(r"(?<!\\)\|", line.strip().strip("|"))]
+            headers = split_row(s)
             i += 2
             rows = []
             while i < len(lines) and lines[i].strip().startswith("|"):
-                rows.append([c.strip() for c in lines[i].strip().strip("|").split("|")])
+                rows.append(split_row(lines[i]))
                 i += 1
             ncols = len(headers)
             colspec = "l" + "c" * (ncols - 1)
@@ -583,7 +589,7 @@ def build_all():
         _, _, web_body = md_to_html_body(md_text, fig_prefix="figures/")
         # Verify zero unrendered LaTeX dollars or commands leaked into HTML
         assert "$" not in re.sub(r"\$\d", "", print_body), f"Unrendered $ found in {spec['slug']}"
-        for bad in (r"\log", r"\tanh", r"\max", "_∞", "e^g"):
+        for bad in (r"\log", r"\tanh", r"\max", r"\cos", r"\bmod", r"\ell", r"\mathbf", r"\%", "_∞", "e^g", "^*"):
             assert bad not in print_body, f"Leaked LaTeX '{bad}' in {spec['slug']}"
 
         bib = make_bibtex(spec)

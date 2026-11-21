@@ -29,7 +29,8 @@
 - **Level-1 Healthy-Human Empirical Anchor (`human_intelligence_wm_eeg.py`, `replicate_tmseeg_g.py`):** Across **123 healthy adults** (`OpenNeuro ds008037`, `33,299` trials), empirical Cowan working-memory recall drops `88.6% → 61.5% → 43.8%` (`K = 2 → 4 → 6`); strictly pre-response scalp EEG detects overload at `0.690` AUC (`p = 7.2×10⁻⁵`, `14/15` adults, up to `0.916`). An initial `n = 22` resting TMS amplitude vs. `g` correlation failed unseen `n = 24` replication (`ρ = −0.104`, reported transparently).
 - **Level-2 Scaling Law & Phase Transition (`brain_ai_coprocessor.py`):** Sweeping bandwidth × latency at `K = 12` reveals a sharp transition at **`320 bits/s` (`~265 bits/s` MI) and `≤ 100 ms`** (`33% → 91.5%`, `97.4%` at `K = 16`), passing **Strict Outperformance** on a complementary private-rule task (**`87.0%` vs `23.2%` standalone AI, `14.8%` human alone; `+63.7 pp`**; cortical CKA `10.8×`).
 - **Triple-Validated 100-Region Functional Human Brain Emulator (`functional_brain_emulator.py`):** Upgrades all 100 cortical parcels into trainable receptor-/MEG-constrained E–I microcircuits anchored to 74-patient CCEP white matter. Even after cognitive training (`K = 2..16` + 4-way executive rotation), it retains **`CCEP ρ = +0.662 (partial +0.378)`** and **`45/46` healthy TMS-EEG (`+0.288`)** vs. rewired controls (`−0.031` / `32/46`), proving that **only clean associative indexing** — an Upgraded Hippocampal Index (`100%` through `K = 8`, `87.2%` at `K = 12`) or a 4-bit **Region 101 Prosthetic Cortex** on the unmodified noisy biological brain (`72.1%` at `K = 12` vs `30.6%` baseline & `35.6%` Sham) — breaks Cowan's wall.
-- **Level-3 Live Protocol & App (`level3_human_trial_protocol.md`, `level3_app/`):** Local LSL EEG + real `ds008037` replay server and non-verbal Neural Gym (also live at https://threebits.si/gym/).
+- **Superhuman Multi-Hop Fluid Reasoning (`superhuman_reasoning_emulator.py`):** Extends the 100-region emulator to compositional relational graph traversal (`N = 10` novel directed cycles + private embodied human goal, trained strictly on `D = 1..4`, tested **zero-shot on `D = 6*` and `D = 8*`**). With an intact biological hippocampus across all brain regimes, a **bias-free 4-bit linear-manifold Region 101 Reasoning Cortex** hits **`100.0% ± 0.0%`** across `D = 1..4` and zero-shot `D = 6*, 8*` vs. `18.0%` biological brain alone, `21.4%` neuromodulatory denoising, `22.6%` Sham 4-bit, and `49.7%` Standalone AI Bayes cap — while preserving post-train `CCEP ρ = +0.661 (+0.380)`, `45/46` healthy TMS-EEG (`+0.2882`), bounded synchrony (`max |Δsync| = 0.0233`), and **`100.0%` frozen-core continual goal-flip recovery** (`90.9%` frozen, `4,528` adapted params, 80 steps).
+- **Level-3 Live Protocol, Single-Blind Pilot & Analysis (`level3_human_trial_protocol.md`, `level3_app/`, `analyze_human_gym_pilot.py`):** Local LSL EEG + real `ds008037` replay server, non-verbal Neural Gym, and **Single-Blind 18-Trial Living-Human Pilot Study** (live at https://threebits.si/gym/?tab=pilot) with single-subject (`N=1`) and cohort (`N≥2`) statistical reporting.
 
 ---
 
@@ -48,6 +49,9 @@ python brain_ai_coprocessor.py
 
 # Run the local Level-3A EEG + Neural Gym app (supports --lsl for live headsets)
 python level3_app/server.py --port 8765
+
+# Analyze exported living-human single-blind pilot CSV(s) from https://threebits.si/gym/?tab=pilot
+python analyze_human_gym_pilot.py path/to/threebits_pilot_*.csv
 ```
 
 All human and primate neuroimaging/electrophysiology datasets are open-access public datasets (`OpenNeuro ds004080`, `ds008037`, `ds005557`, `ds005558`; `DANDI 000128`, `000954`; `MICA-MICs`; `ENIGMA HCP`; `Hansen et al. 2022`). Large raw recordings are not stored in this repository; scripts fetch or expect them under `data/`.

@@ -1,0 +1,145 @@
+{
+  "n_entities": 10,
+  "chance_pct": 10.0,
+  "standalone_ai_theoretical_cap_pct": 50.0,
+  "regimes": {
+    "bio_alone": {
+      "label": "1. 100-Region Biological Human Brain Alone",
+      "ccep_rho_post_train": 0.6613,
+      "ccep_partial_rho_post_train": 0.3802,
+      "max_delta_sync": 0.1709,
+      "public_graph_acc_D6": 13.6,
+      "acc_by_D": {
+        "1": 93.1,
+        "2": 65.7,
+        "3": 44.8,
+        "4": 31.0,
+        "6": 19.4,
+        "8": 16.5
+      },
+      "acc_sd_by_D": {
+        "1": 0.8,
+        "2": 2.9,
+        "3": 1.8,
+        "4": 0.9,
+        "6": 1.2,
+        "8": 1.7
+      },
+      "zero_shot_D6_D8_mean": 18.0,
+      "tmseeg_n46_post_train": {
+        "n_subjects": 46,
+        "n_positive": 45,
+        "mean_partial_rho": 0.2881
+      }
+    },
+    "denoise_mod": {
+      "label": "2. Denoised + ACh/D1 Neuromodulated Human Brain",
+      "ccep_rho_post_train": 0.6522,
+      "ccep_partial_rho_post_train": 0.3736,
+      "max_delta_sync": 0.1838,
+      "public_graph_acc_D6": 16.2,
+      "acc_by_D": {
+        "1": 94.9,
+        "2": 72.4,
+        "3": 48.9,
+        "4": 36.5,
+        "6": 23.6,
+        "8": 19.2
+      },
+      "acc_sd_by_D": {
+        "1": 0.5,
+        "2": 1.8,
+        "3": 1.2,
+        "4": 1.6,
+        "6": 2.0,
+        "8": 1.5
+      },
+      "zero_shot_D6_D8_mean": 21.4
+    },
+    "ai_standalone": {
+      "label": "3. Standalone AI (100% public graph, blind to private goal)",
+      "ccep_rho_post_train": 0.0,
+      "ccep_partial_rho_post_train": 0.0,
+      "max_delta_sync": 0.0,
+      "public_graph_acc_D6": 100.0,
+      "acc_by_D": {
+        "1": 49.7,
+        "2": 49.7,
+        "3": 49.7,
+        "4": 49.7,
+        "6": 49.7,
+        "8": 49.7
+      },
+      "acc_sd_by_D": {
+        "1": 1.1,
+        "2": 1.1,
+        "3": 1.1,
+        "4": 1.1,
+        "6": 1.1,
+        "8": 1.1
+      },
+      "zero_shot_D6_D8_mean": 49.7
+    },
+    "sham101": {
+      "label": "4. Sham Region 101 Control (intact bio + permuted 4-bit readout)",
+      "ccep_rho_post_train": 0.661,
+      "ccep_partial_rho_post_train": 0.3797,
+      "max_delta_sync": 0.0916,
+      "public_graph_acc_D6": 18.6,
+      "acc_by_D": {
+        "1": 92.4,
+        "2": 79.1,
+        "3": 63.8,
+        "4": 51.3,
+        "6": 27.8,
+        "8": 17.3
+      },
+      "acc_sd_by_D": {
+        "1": 0.6,
+        "2": 1.0,
+        "3": 2.2,
+        "4": 1.9,
+        "6": 3.1,
+        "8": 2.1
+      },
+      "zero_shot_D6_D8_mean": 22.6
+    },
+    "region101": {
+      "label": "5. Human Brain + 4-bit Region 101 Prosthetic Reasoning Cortex",
+      "ccep_rho_post_train": 0.661,
+      "ccep_partial_rho_post_train": 0.3799,
+      "max_delta_sync": 0.0233,
+      "public_graph_acc_D6": 49.7,
+      "acc_by_D": {
+        "1": 100.0,
+        "2": 100.0,
+        "3": 100.0,
+        "4": 100.0,
+        "6": 100.0,
+        "8": 100.0
+      },
+      "acc_sd_by_D": {
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "6": 0.0,
+        "8": 0.0
+      },
+      "zero_shot_D6_D8_mean": 100.0,
+      "tmseeg_n46_post_train": {
+        "n_subjects": 46,
+        "n_positive": 45,
+        "mean_partial_rho": 0.2882
+      },
+      "continual_goal_flip": {
+        "frozen_pct": 90.9,
+        "adapted_params": 4528,
+        "D6_before_adapt": 0.0,
+        "D6_after_80step_adapt": 100.0,
+        "D8_before_adapt": 0.0,
+        "D8_after_80step_adapt": 100.0
+      }
+    }
+  }
+}

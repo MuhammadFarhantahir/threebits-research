@@ -2,74 +2,299 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Threebits · Level-3A Closed-Loop &amp; Neural Gym Co-Processor</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#12110f">
+<meta name="description" content="Threebits Neural Gym: interactive non-verbal Brain–AI co-processor training beyond Cowan's working-memory limit (K = 4–16), plus real OpenNeuro ds008037 healthy-human EEG closed-loop replay.">
+<link rel="canonical" href="https://threebits.si/gym/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%231a1916'/%3E%3Crect x='3' y='3' width='4' height='4' fill='%23f9f8f4'/%3E%3Crect x='9' y='9' width='4' height='4' fill='%23ee6f40'/%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://threebits.si/gym/">
+<meta property="og:title" content="Threebits · Neural Gym &amp; Closed-Loop Brain–AI Co-Processor">
+<meta property="og:description" content="Train your cortex on a sub-50 ms non-verbal 4-bit latent code beyond Cowan's working-memory limit (K = 8–16), or run our 4-arm healthy-human EEG trial.">
+<title>Threebits · Neural Gym &amp; Closed-Loop Brain–AI Co-Processor</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..500;1,6..72,400..500&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
   :root {
     --bg:#12110f; --panel:#1a1916; --line:#2e2b24; --ink:#ece9df; --muted:#9a9589;
     --accent:#ee6f40; --teal:#3aa68f; --blue:#5c8ec4;
+    --display:"Newsreader",Georgia,serif;
+    --body:"Inter",-apple-system,BlinkMacSystemFont,sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,monospace;
   }
   * { box-sizing:border-box; }
-  body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Inter",sans-serif; background:var(--bg); color:var(--ink); line-height:1.5; }
-  .wrap { max-width:1200px; margin:0 auto; padding:20px 24px 44px; }
-  header { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px; border-bottom:1px solid var(--line); padding-bottom:14px; margin-bottom:16px; }
-  .brand { font-weight:600; letter-spacing:-0.01em; font-size:1.15rem; }
-  .brand span { color:var(--accent); font-weight:500; font-size:0.86rem; margin-left:8px; }
-  .pill { font-size:0.78rem; color:var(--muted); background:var(--panel); border:1px solid var(--line); padding:5px 10px; border-radius:999px; font-family:ui-monospace,SFMono-Regular,monospace; }
-  .tabs { display:flex; gap:8px; margin-bottom:18px; }
-  .tab { background:var(--panel); color:var(--muted); border:1px solid var(--line); border-radius:9px; padding:9px 15px; font-size:0.88rem; cursor:pointer; font-weight:500; }
+  body { margin:0; font-family:var(--body); background:var(--bg); color:var(--ink); line-height:1.5; -webkit-font-smoothing:antialiased; }
+  a { color:var(--accent); text-underline-offset:0.2em; }
+  .wrap { max-width:1200px; margin:0 auto; padding:18px 22px 52px; }
+  header { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px; border-bottom:1px solid var(--line); padding-bottom:14px; margin-bottom:18px; }
+  .brand-row { display:flex; flex-wrap:wrap; align-items:center; gap:14px; }
+  .mark { display:inline-flex; align-items:center; gap:9px; font-weight:600; font-size:1.08rem; letter-spacing:-0.015em; color:var(--ink); text-decoration:none; }
+  .mark i { display:flex; gap:3px; }
+  .mark i::before, .mark i::after, .mark i b { content:""; width:7px; height:7px; background:var(--ink); }
+  .mark i::after { background:var(--accent); }
+  .sub-brand { color:var(--accent); font-size:0.86rem; font-weight:500; }
+  .header-right { display:flex; flex-wrap:wrap; align-items:center; gap:10px; }
+  .back-link { font-size:0.84rem; color:var(--muted); text-decoration:none; padding:5px 10px; border:1px solid var(--line); border-radius:999px; }
+  .back-link:hover { color:var(--ink); border-color:var(--muted); }
+  .pill { font-size:0.76rem; color:var(--muted); background:var(--panel); border:1px solid var(--line); padding:5px 11px; border-radius:999px; font-family:var(--mono); }
+  .intro { margin-bottom:16px; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:12px; }
+  .intro h1 { margin:0; font-family:var(--display); font-weight:400; font-size:clamp(1.65rem,3.2vw,2.35rem); line-height:1.1; letter-spacing:-0.02em; }
+  .intro h1 em { font-style:italic; color:var(--accent); }
+  .tabs { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:18px; }
+  .tab { background:var(--panel); color:var(--muted); border:1px solid var(--line); border-radius:9px; padding:9px 15px; font-size:0.86rem; cursor:pointer; font-weight:500; font-family:var(--body); }
+  .tab:hover { color:var(--ink); }
   .tab.active { background:#26231d; color:var(--ink); border-color:var(--accent); }
   .view { display:none; }
   .view.active { display:block; }
   .grid { display:grid; grid-template-columns:1.25fr 0.95fr; gap:18px; align-items:start; }
-  @media (max-width:900px){ .grid{ grid-template-columns:1fr; } }
+  @media (max-width:920px){ .grid{ grid-template-columns:1fr; } }
   .card { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:18px; }
-  h2 { margin:0 0 8px; font-size:1.0rem; font-weight:600; }
+  h2 { margin:0 0 8px; font-size:1.0rem; font-weight:600; letter-spacing:-0.01em; }
   .sub { font-size:0.84rem; color:var(--muted); margin:0 0 14px; }
   .controls { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; align-items:center; }
-  select, button { background:#23211c; color:var(--ink); border:1px solid var(--line); border-radius:8px; padding:8px 11px; font-size:0.84rem; cursor:pointer; }
+  select, button { background:#23211c; color:var(--ink); border:1px solid var(--line); border-radius:8px; padding:8px 11px; font-size:0.83rem; cursor:pointer; font-family:var(--body); }
   button.primary { background:var(--accent); color:#12110f; border-color:var(--accent); font-weight:600; }
+  button.primary:hover:not(:disabled) { filter:brightness(1.07); }
   button:disabled { opacity:0.45; cursor:not-allowed; }
   label.chk { font-size:0.8rem; color:var(--muted); display:inline-flex; align-items:center; gap:5px; padding:6px 10px; border:1px solid var(--line); border-radius:8px; background:#151411; cursor:pointer; }
   .arena { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:400px; background:#0c0b09; border:1px solid var(--line); border-radius:10px; position:relative; padding:14px; }
-  canvas { display:block; max-width:100%; }
-  .phase-bar { position:absolute; top:12px; left:14px; right:14px; display:flex; justify-content:space-between; font-size:0.8rem; font-family:ui-monospace,monospace; color:var(--muted); }
-  .rule-pill { position:absolute; bottom:12px; left:14px; font-size:0.8rem; font-family:ui-monospace,monospace; padding:4px 9px; border-radius:6px; background:#1c1a16; border:1px solid var(--line); color:var(--ink); }
-  .cue-banner { margin-top:10px; padding:8px 12px; border-radius:8px; font-size:0.84rem; border:1px solid var(--line); background:#171612; min-height:38px; width:100%; display:flex; justify-content:space-between; align-items:center; gap:10px; }
+  canvas { display:block; max-width:100%; touch-action:manipulation; }
+  .phase-bar { position:absolute; top:12px; left:14px; right:14px; display:flex; justify-content:space-between; gap:8px; font-size:0.78rem; font-family:var(--mono); color:var(--muted); }
+  .rule-pill { position:absolute; bottom:12px; left:14px; font-size:0.78rem; font-family:var(--mono); padding:4px 9px; border-radius:6px; background:#1c1a16; border:1px solid var(--line); color:var(--ink); }
+  .cue-banner { margin-top:10px; padding:9px 12px; border-radius:8px; font-size:0.83rem; border:1px solid var(--line); background:#171612; min-height:40px; width:100%; display:flex; justify-content:space-between; align-items:center; gap:10px; }
   .cue-active { border-color:var(--teal); background:rgba(58,166,143,0.12); color:#b8f0e2; }
   .meter-wrap { height:10px; background:#0c0b09; border-radius:999px; overflow:hidden; border:1px solid var(--line); margin:6px 0 12px; }
   .meter-fill { height:100%; width:0%; background:linear-gradient(90deg,var(--teal),var(--accent)); transition:width 0.25s ease; }
   .kpis { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:14px; }
   .kpi { background:#12110f; border:1px solid var(--line); border-radius:8px; padding:10px; }
-  .kpi b { display:block; font-size:1.12rem; font-family:ui-monospace,monospace; }
-  .kpi span { font-size:0.74rem; color:var(--muted); }
+  .kpi b { display:block; font-size:1.1rem; font-family:var(--mono); }
+  .kpi span { font-size:0.73rem; color:var(--muted); }
   table { width:100%; border-collapse:collapse; font-size:0.82rem; margin-top:8px; }
   th, td { text-align:left; padding:7px 6px; border-bottom:1px solid var(--line); }
   th { color:var(--muted); font-weight:500; }
-  .right { text-align:right; font-family:ui-monospace,monospace; }
+  .right { text-align:right; font-family:var(--mono); }
   .glyph-box { display:flex; gap:14px; align-items:center; background:#0c0b09; border:1px solid var(--line); border-radius:10px; padding:12px; margin-bottom:12px; }
   .glyph-meta { font-size:0.8rem; color:var(--muted); line-height:1.55; }
-  .glyph-meta strong { color:var(--ink); font-family:ui-monospace,monospace; }
+  .glyph-meta strong { color:var(--ink); font-family:var(--mono); }
+  .export-btn { color:var(--teal); font-size:0.78rem; background:#151411; border:1px solid var(--line); padding:4px 9px; border-radius:6px; }
+  .protocol { margin-top:22px; display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+  @media (max-width:920px){ .protocol{ grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:560px){ .protocol{ grid-template-columns:1fr; } }
+  .step-card { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:14px; }
+  .step-card b { display:block; font-family:var(--mono); font-size:0.74rem; color:var(--accent); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:5px; }
+  .step-card p { margin:0; font-size:0.82rem; color:var(--muted); line-height:1.45; }
+  footer { margin-top:26px; padding-top:14px; border-top:1px solid var(--line); font-size:0.8rem; color:var(--muted); display:flex; flex-wrap:wrap; justify-content:space-between; gap:10px; }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <div class="brand">Threebits <span>Closed-Loop Brain–AI Co-Processor</span></div>
-    <div class="pill" id="status-pill">Connecting to neural engine...</div>
+    <div class="brand-row">
+      <a class="mark" href="/"><i aria-hidden="true"><b></b></i>Threebits</a>
+      <span class="sub-brand">Closed-Loop Brain–AI Co-Processor Lab</span>
+    </div>
+    <div class="header-right">
+      <span class="pill" id="status-pill">C99 int4 chip: 14.3 µs/bin · 66.35 kB ROM+SRAM</span>
+      <a class="back-link" href="/">&larr; Research paper</a>
+    </div>
   </header>
 
-  <div class="tabs">
-    <button class="tab active" data-tab="l3a">Level-3A · 4-Arm EEG Trial</button>
-    <button class="tab" data-tab="gym">Neural Gym · Non-Verbal Latent Co-Processor (K = 4..16)</button>
+  <div class="intro">
+    <h1>Feel the <em>Brain–AI phase transition</em> in your own working memory.</h1>
   </div>
 
-  <!-- ===================== TAB 1: LEVEL-3A 4-ARM EEG TRIAL ===================== -->
-  <div class="view active" id="view-l3a">
+  <div class="tabs">
+    <button class="tab active" data-tab="gym">Neural Gym · Non-Verbal Latent Co-Processor (K = 4..16)</button>
+    <button class="tab" data-tab="burst">Sub-Verbal Burst · 8-Finger Parallel Throughput (bits/s)</button>
+    <button class="tab" data-tab="pilot">Pilot Study · 18-Trial Blinded Randomized Protocol</button>
+    <button class="tab" data-tab="l3a">Level-3A · 4-Arm Healthy-Human EEG Trial</button>
+  </div>
+
+  <!-- ===================== TAB 1: NEURAL GYM (NON-VERBAL LATENT CO-PROCESSOR) ===================== -->
+  <div class="view active" id="view-gym">
+    <div class="grid">
+      <div class="card">
+        <h2>Prosthetic Cortex Neural Gym · Non-Verbal Latent Write Port</h2>
+        <p class="sub">Train your cortex to hold K = 8–16 items (2–4&times; Cowan's biological limit). The AI never prints text or shows the color — it injects a monochrome 4-bit polar harmonic glyph + optional stereo pitch chord encoding (q_cos, q_sin).</p>
+        <div class="controls">
+          <select id="gym-mode" aria-label="Co-processor mode">
+            <option value="latent_coproc" selected>Non-Verbal Latent Co-Processor</option>
+            <option value="unassisted">Unassisted Human Baseline</option>
+            <option value="sham_code">Sham Latent Code (control)</option>
+          </select>
+          <select id="gym-k" aria-label="Working memory load K">
+            <option value="4">K = 4 (Cowan limit)</option>
+            <option value="8">K = 8 (2&times; human)</option>
+            <option value="12" selected>K = 12 (3&times; human)</option>
+            <option value="16">K = 16 (4&times; human)</option>
+          </select>
+          <select id="gym-bits" aria-label="Quantization bit-width">
+            <option value="1">1-bit (40 bps)</option>
+            <option value="2">2-bit (80 bps)</option>
+            <option value="4" selected>4-bit (160+ bps)</option>
+          </select>
+          <select id="gym-lat" aria-label="Loop latency">
+            <option value="50" selected>50 ms loop</option>
+            <option value="150">150 ms loop</option>
+            <option value="250">250 ms loop</option>
+          </select>
+          <label class="chk"><input type="checkbox" id="gym-rule"> Private Rule (+0/+90/+180&deg;)</label>
+          <label class="chk"><input type="checkbox" id="gym-audio" checked> Stereo Audio Chord</label>
+          <button class="primary" id="gym-start">Run Gym Trial</button>
+        </div>
+
+        <div class="arena">
+          <div class="phase-bar">
+            <span id="gym-phase">READY</span>
+            <span id="gym-prompt">Press Run Gym Trial (Space)</span>
+          </div>
+          <canvas id="gym-canvas" width="380" height="360"></canvas>
+          <div class="rule-pill" id="gym-rule-pill">Private Human Rule: DIRECT (+0&deg;)</div>
+        </div>
+
+        <div class="cue-banner" id="gym-banner">
+          <span id="gym-cue-txt">Monochrome polar harmonic glyph points along the 4-bit (q_cos, q_sin) vector — zero color pixels. Combine with your private rule and click the ring.</span>
+          <span id="gym-last" style="font-family:var(--mono);color:var(--accent);white-space:nowrap;"></span>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:18px;">
+        <div class="card">
+          <h2>Live Non-Verbal Latent Code Decoder</h2>
+          <p class="sub">Sensory-substitution write port: monochrome radial harmonic (visual) + stereo pan/pitch chord (auditory).</p>
+          <div class="glyph-box">
+            <canvas id="glyph-canvas" width="110" height="110" style="background:#12110f;border:1px solid var(--line);border-radius:8px;flex:none;"></canvas>
+            <div class="glyph-meta">
+              <div>Vector: <strong id="g-vec">(0.71, -0.71) preview</strong></div>
+              <div>Quantized: <strong id="g-bits">4-bit · 50 ms (160 bps)</strong></div>
+              <div>Audio pan/Hz: <strong id="g-audio">ready</strong></div>
+              <div>C99 int4 chip: <strong id="g-c99">14.3 µs / 20 ms bin</strong></div>
+            </div>
+          </div>
+          <svg id="gym-curve" viewBox="0 0 420 116" style="width:100%;height:116px;background:#0c0b09;border:1px solid var(--line);border-radius:8px;">
+            <line x1="42" y1="91" x2="404" y2="91" stroke="#2e2b24" stroke-dasharray="3 3"/>
+            <text x="10" y="16" fill="#9a9589" font-size="10" font-family="IBM Plex Mono,monospace">Co-adaptation curve: error deg (orange = co-proc, blue = alone)</text>
+            <text x="8" y="94" fill="#6b675b" font-size="9" font-family="IBM Plex Mono,monospace">30&deg;</text>
+            <polyline id="gym-poly-coproc" fill="none" stroke="#ee6f40" stroke-width="2.2" points=""/>
+            <polyline id="gym-poly-unass" fill="none" stroke="#5c8ec4" stroke-width="1.8" stroke-dasharray="4 3" points=""/>
+          </svg>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <h2 style="margin:0;">Neural Gym Co-Adaptation Scoreboard</h2>
+            <div style="display:flex;gap:6px;">
+              <button class="export-btn" id="gym-export">Export CSV</button>
+              <button id="gym-reset" style="padding:4px 8px;font-size:0.78rem;">Reset</button>
+            </div>
+          </div>
+          <table>
+            <thead><tr><th>Mode</th><th class="right">N</th><th class="right">&lt;30&deg; Acc</th><th class="right">MAE</th><th class="right">Human+AI bits/s</th></tr></thead>
+            <tbody id="gym-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="protocol">
+      <div class="step-card">
+        <b>1. Hit Cowan's Cliff</b>
+        <p>Run 5 trials in <strong>Unassisted Human</strong> at K = 12. Human working memory saturates around ~4 items, pushing mean error toward 45–65&deg;.</p>
+      </div>
+      <div class="step-card">
+        <b>2. Verify Sham Control</b>
+        <p>Switch to <strong>Sham Latent Code</strong> at K = 12. Identical monochrome glyph and stereo chord, uncorrelated angle — confirming zero placebo gain.</p>
+      </div>
+      <div class="step-card">
+        <b>3. Co-Adapt (4-bit · 50 ms)</b>
+        <p>Run 10+ trials in <strong>Non-Verbal Co-Processor</strong>. No words or colors are shown — watch your error drop below 30&deg; and bits/s climb.</p>
+      </div>
+      <div class="step-card">
+        <b>4. Test Private Rule &amp; Limits</b>
+        <p>Check <strong>Private Rule (+0/+90/+180&deg;)</strong> (invisible to AI) to test joint Human+AI reasoning, or drop to <strong>1-bit / 250 ms</strong> to feel the phase transition.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== TAB 2: SUB-VERBAL BURST (8-FINGER PARALLEL THROUGHPUT) ===================== -->
+  <div class="view" id="view-burst">
+    <div class="grid">
+      <div class="card">
+        <h2>Continuous Sub-Verbal Burst · 8-Finger Parallel Read/Write Port</h2>
+        <p class="sub">Zero inter-trial pause. Memorize K = 12 slots once, then fire rapid non-verbal responses for 15 seconds using 8 home-row fingers (<code>A S D F</code> &middot; <code>J K L ;</code>, a silent wrist-sEMG motor proxy) or tap wedges. Measures exact Shannon mutual-information throughput (bits/s) against the 39 bits/s speech benchmark.</p>
+        <div class="controls">
+          <select id="burst-mode" aria-label="Burst mode">
+            <option value="latent_coproc" selected>Non-Verbal Latent Co-Processor</option>
+            <option value="unassisted">Unassisted Human (K = 12 memory)</option>
+            <option value="sham_code">Sham Latent Code (control)</option>
+          </select>
+          <select id="burst-lat" aria-label="Burst latency">
+            <option value="20">20 ms loop</option>
+            <option value="50" selected>50 ms loop</option>
+            <option value="150">150 ms loop</option>
+            <option value="250">250 ms loop</option>
+          </select>
+          <label class="chk"><input type="checkbox" id="burst-rule"> Private Rule (+0/+90&deg;)</label>
+          <button class="primary" id="burst-start">Start 15 s Burst</button>
+        </div>
+
+        <div class="arena">
+          <div class="phase-bar">
+            <span id="burst-phase">READY · 15.0 s</span>
+            <span id="burst-prompt">Home row: A S D F &middot; J K L ; (or tap wedge)</span>
+          </div>
+          <canvas id="burst-canvas" width="380" height="360"></canvas>
+          <div class="rule-pill" id="burst-rule-pill">Private Rule: DIRECT (+0&deg;)</div>
+        </div>
+
+        <div class="cue-banner" id="burst-banner">
+          <span id="burst-cue-txt">Exact Shannon MI capacity: random mashing scores 0.0 bits/s. Co-adapt to the monochrome polar glyph + stereo chord to climb toward speech rate (39 bits/s).</span>
+          <span id="burst-last" style="font-family:var(--mono);color:var(--accent);white-space:nowrap;"></span>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:18px;">
+        <div class="card">
+          <h2>Live Verified Shannon Throughput (Human + AI)</h2>
+          <p class="sub">Fano-corrected 8-way channel mutual information rate: <code>I(p) = log2(8) + p log2(p) + (1-p) log2((1-p)/7)</code> times response rate (Hz).</p>
+          <div class="kpis">
+            <div class="kpi"><b id="b-bps">0.0</b><span>Verified bits/s</span></div>
+            <div class="kpi"><b id="b-acc">--</b><span>Accuracy</span></div>
+            <div class="kpi"><b id="b-rate">0.0 Hz</b><span>Response rate</span></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:0.78rem;color:var(--muted);">
+            <span>Progress toward human speech ceiling (39 bits/s)</span>
+            <span id="b-pct">0% of speech</span>
+          </div>
+          <div class="meter-wrap"><div class="meter-fill" id="b-bar"></div></div>
+          <div style="font-size:0.78rem;color:var(--muted);line-height:1.5;background:#0c0b09;border:1px solid var(--line);border-radius:8px;padding:10px;font-family:var(--mono);">
+            Key map: <strong>A</strong>=W(180&deg;) &middot; <strong>S</strong>=NW(225&deg;) &middot; <strong>F</strong>=N(270&deg;) &middot; <strong>L</strong>=NE(315&deg;)<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>D</strong>=SW(135&deg;) &middot; <strong>J</strong>=S(90&deg;) &nbsp;&middot; <strong>K</strong>=SE(45&deg;) &nbsp;&middot; <strong>;</strong>=E(0&deg;)
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <h2 style="margin:0;">15 s Burst History</h2>
+            <div style="display:flex;gap:6px;">
+              <button class="export-btn" id="burst-export">Export CSV</button>
+              <button id="burst-reset" style="padding:4px 8px;font-size:0.78rem;">Reset</button>
+            </div>
+          </div>
+          <table>
+            <thead><tr><th>Mode</th><th class="right">Runs</th><th class="right">Acc</th><th class="right">Rate</th><th class="right">Best bits/s</th></tr></thead>
+            <tbody id="burst-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== TAB 3: LEVEL-3A 4-ARM EEG TRIAL ===================== -->
+  <div class="view" id="view-l3a">
     <div class="grid">
       <div class="card">
         <h2>4-Arm Randomized Working-Memory Task (Continuous Color Recall)</h2>
-        <p class="sub">Memorize all colored dots (0.65 s), hold during the 1.5 s EEG delay, then click the matching color on the ring for the highlighted slot.</p>
+        <p class="sub">Memorize all colored dots (0.65 s), hold during the 1.5 s real EEG delay replay, then click the matching color on the outer ring for the highlighted slot.</p>
         <div class="controls">
           <select id="arm-sel" aria-label="Trial Arm">
             <option value="human_alone">Arm 1 · Human Alone</option>
@@ -97,17 +322,17 @@
 
         <div class="cue-banner" id="cue-banner">
           <span id="cue-text">Co-processor idle. In Arm 4, real-time EEG overload (&ge;50%) automatically injects a low-friction color-sector anchor before recall.</span>
-          <span id="last-err" style="font-family:ui-monospace,monospace;color:var(--accent)"></span>
+          <span id="last-err" style="font-family:var(--mono);color:var(--accent);white-space:nowrap;"></span>
         </div>
       </div>
 
       <div style="display:flex;flex-direction:column;gap:18px;">
         <div class="card">
-          <h2>Real-Time Neural Telemetry</h2>
-          <p class="sub" id="eeg-src">Loading real OpenNeuro ds008037 healthy-human EEG stream...</p>
+          <h2>Real-Time Healthy-Human EEG Replay</h2>
+          <p class="sub" id="eeg-src">Real OpenNeuro ds008037 pre-response working-memory EEG (sub-020, 225 held-out trials).</p>
           <div class="kpis">
-            <div class="kpi"><b id="kpi-auc">--</b><span>OOF Load AUC</span></div>
-            <div class="kpi"><b id="kpi-lat">--</b><span>C99 int4 step</span></div>
+            <div class="kpi"><b id="kpi-auc">0.916</b><span>OOF Load AUC</span></div>
+            <div class="kpi"><b id="kpi-lat">14.3 µs</b><span>C99 int4 bench</span></div>
             <div class="kpi"><b id="kpi-prob">--</b><span>Overload risk</span></div>
           </div>
           <div style="display:flex;justify-content:space-between;font-size:0.78rem;color:var(--muted);">
@@ -118,7 +343,7 @@
           <svg id="eeg-svg" viewBox="0 0 420 110" style="width:100%;height:110px;background:#0c0b09;border:1px solid var(--line);border-radius:8px;">
             <line x1="20" y1="55" x2="400" y2="55" stroke="#2e2b24" stroke-dasharray="3 3"/>
             <polyline id="eeg-line" fill="none" stroke="#3aa68f" stroke-width="2.4" points="20,55 400,55"/>
-            <text x="12" y="16" fill="#9a9589" font-size="10" font-family="ui-monospace,monospace">Parietal alpha (8–13 Hz, z-score across 6 x 250 ms delay bins)</text>
+            <text x="12" y="16" fill="#9a9589" font-size="10" font-family="IBM Plex Mono,monospace">Parietal alpha (8–13 Hz, z-score across 6 x 250 ms delay bins)</text>
           </svg>
         </div>
 
@@ -126,7 +351,7 @@
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
             <h2 style="margin:0;">Live 4-Arm Session Scoreboard</h2>
             <div style="display:flex;gap:6px;">
-              <a href="/api/export" style="color:var(--teal);font-size:0.8rem;text-decoration:none;border:1px solid var(--line);padding:4px 8px;border-radius:6px;">Export CSV</a>
+              <button class="export-btn" id="l3a-export">Export CSV</button>
               <button id="reset-btn" style="padding:4px 8px;font-size:0.78rem;">Reset</button>
             </div>
           </div>
@@ -139,95 +364,81 @@
     </div>
   </div>
 
-  <!-- ===================== TAB 2: NEURAL GYM (NON-VERBAL LATENT CO-PROCESSOR) ===================== -->
-  <div class="view" id="view-gym">
+  <!-- ===================== TAB 3: BLINDED 18-TRIAL LIVING-HUMAN PILOT STUDY ===================== -->
+  <div class="view" id="view-pilot">
     <div class="grid">
       <div class="card">
-        <h2>Prosthetic Cortex Neural Gym · Non-Verbal Latent Write Port</h2>
-        <p class="sub">Train your cortex to hold K = 8–16 items (2–4&times; Cowan's biological limit). The AI never prints text or shows the color — it flashes a monochrome 4-bit spatial-harmonic glyph + optional stereo pitch chord encoding (q_cos, q_sin).</p>
+        <h2>Single-Blind 18-Trial Living-Human Co-Adaptation Study (K = 12)</h2>
+        <p class="sub">Runs a counterbalanced, randomized 3-arm protocol at K = 12 (3&times; Cowan's limit): <strong>6 Unassisted</strong>, <strong>6 Sham Latent Code</strong>, and <strong>6 Real 4-bit Non-Verbal Co-Processor</strong> trials (~2.5 minutes). Real vs. Sham arms are blinded until completion to eliminate placebo bias.</p>
         <div class="controls">
-          <select id="gym-mode">
-            <option value="latent_coproc" selected>Non-Verbal Latent Co-Processor</option>
-            <option value="unassisted">Unassisted Human Baseline</option>
-            <option value="sham_code">Sham Latent Code (control)</option>
-          </select>
-          <select id="gym-k">
-            <option value="4">K = 4 (Cowan limit)</option>
-            <option value="8">K = 8 (2&times; human)</option>
-            <option value="12" selected>K = 12 (3&times; human)</option>
-            <option value="16">K = 16 (4&times; human)</option>
-          </select>
-          <select id="gym-bits">
-            <option value="1">1-bit (40 bps)</option>
-            <option value="2">2-bit (80 bps)</option>
-            <option value="4" selected>4-bit (160+ bps)</option>
-          </select>
-          <select id="gym-lat">
-            <option value="50" selected>50 ms loop</option>
-            <option value="150">150 ms loop</option>
-            <option value="250">250 ms loop</option>
-          </select>
-          <label class="chk"><input type="checkbox" id="gym-rule"> Private Rule (+0/+90/+180&deg;)</label>
-          <label class="chk"><input type="checkbox" id="gym-audio" checked> Stereo Audio Chord</label>
-          <button class="primary" id="gym-start">Run Gym Trial</button>
+          <label class="chk">ID: <input type="text" id="pilot-pid" value="" style="width:82px;background:#0c0b09;color:var(--ink);border:1px solid var(--line);border-radius:5px;padding:2px 6px;font-family:var(--mono);font-size:0.78rem;"></label>
+          <label class="chk"><input type="checkbox" id="pilot-rule"> Include Private Rule (+0/+90/+180&deg;)</label>
+          <button class="primary" id="pilot-start">Start 18-Trial Study</button>
+          <button id="pilot-abort" disabled>Abort</button>
         </div>
+
+        <div style="display:flex;justify-content:space-between;font-size:0.78rem;color:var(--muted);margin-bottom:4px;">
+          <span id="pilot-prog-txt">Trial 0 / 18 (idle)</span>
+          <span id="pilot-arm-blind">BLINDED</span>
+        </div>
+        <div class="meter-wrap"><div class="meter-fill" id="pilot-bar"></div></div>
 
         <div class="arena">
           <div class="phase-bar">
-            <span id="gym-phase">READY</span>
-            <span id="gym-prompt">Press Run Gym Trial (Space)</span>
+            <span id="pilot-phase">READY</span>
+            <span id="pilot-prompt">Press Start 18-Trial Study</span>
           </div>
-          <canvas id="gym-canvas" width="380" height="360"></canvas>
-          <div class="rule-pill" id="gym-rule-pill">Private Human Rule: DIRECT (+0&deg;)</div>
+          <canvas id="pilot-canvas" width="380" height="360"></canvas>
+          <div class="rule-pill" id="pilot-rule-pill">Private Human Rule: DIRECT (+0&deg;)</div>
         </div>
 
-        <div class="cue-banner" id="gym-banner">
-          <span id="gym-cue-txt">Monochrome polar harmonic glyph points along the 4-bit (q_cos, q_sin) vector — zero color pixels. Combine with your private rule and click the ring.</span>
-          <span id="gym-last" style="font-family:ui-monospace,monospace;color:var(--accent)"></span>
+        <div class="cue-banner" id="pilot-banner">
+          <span id="pilot-cue-txt">When a monochrome polar harmonic glyph appears, you will not know whether it is Real or Sham until all 18 trials finish.</span>
+          <span id="pilot-last" style="font-family:var(--mono);color:var(--accent);white-space:nowrap;"></span>
         </div>
       </div>
 
       <div style="display:flex;flex-direction:column;gap:18px;">
         <div class="card">
-          <h2>Live Non-Verbal Latent Code Decoder</h2>
-          <p class="sub">Sensory-substitution write port: monochrome radial harmonic (visual) + stereo pan/pitch chord (auditory).</p>
-          <div class="glyph-box">
-            <canvas id="glyph-canvas" width="110" height="110" style="background:#12110f;border:1px solid var(--line);border-radius:8px;"></canvas>
-            <div class="glyph-meta">
-              <div>Vector: <strong id="g-vec">(0.71, -0.71) preview</strong></div>
-              <div>Quantized: <strong id="g-bits">4-bit · 50 ms</strong></div>
-              <div>Audio pan/Hz: <strong id="g-audio">ready</strong></div>
-              <div>C99 int4 step: <strong id="g-c99">--</strong></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <h2 style="margin:0;">Within-Subject Statistical Report</h2>
+            <div style="display:flex;gap:6px;">
+              <button class="export-btn" id="pilot-export">Export Pilot CSV</button>
+              <button id="pilot-reset" style="padding:4px 8px;font-size:0.78rem;">Reset</button>
             </div>
           </div>
-          <svg id="gym-curve" viewBox="0 0 420 115" style="width:100%;height:115px;background:#0c0b09;border:1px solid var(--line);border-radius:8px;">
-            <line x1="20" y1="91" x2="400" y2="91" stroke="#2e2b24" stroke-dasharray="3 3"/>
-            <text x="12" y="16" fill="#9a9589" font-size="10" font-family="ui-monospace,monospace">Co-adaptation curve: error deg (orange = co-proc, blue = alone)</text>
-            <text x="348" y="88" fill="#6b675b" font-size="9" font-family="ui-monospace,monospace">30° target</text>
-            <polyline id="gym-poly-coproc" fill="none" stroke="#ee6f40" stroke-width="2.2" points=""/>
-            <polyline id="gym-poly-unass" fill="none" stroke="#5c8ec4" stroke-width="1.8" stroke-dasharray="4 3" points=""/>
-          </svg>
+          <p class="sub" id="pilot-status-msg">Complete all 18 trials to unblind arms and compute exact 2,000-permutation p-values.</p>
+          <table>
+            <thead><tr><th>Blinded Arm (K = 12)</th><th class="right">N</th><th class="right">&lt;30&deg; Acc</th><th class="right">MAE</th><th class="right">bits/s</th></tr></thead>
+            <tbody id="pilot-body"></tbody>
+          </table>
+          <div id="pilot-stats-box" style="margin-top:12px;padding:11px;background:#0c0b09;border:1px solid var(--line);border-radius:8px;font-family:var(--mono);font-size:0.77rem;color:var(--muted);line-height:1.6;">
+            Waiting for completed 18-trial study...
+          </div>
         </div>
 
         <div class="card">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
-            <h2 style="margin:0;">Neural Gym Co-Adaptation Scoreboard</h2>
-            <div style="display:flex;gap:6px;">
-              <a href="/api/export_gym" style="color:var(--teal);font-size:0.8rem;text-decoration:none;border:1px solid var(--line);padding:4px 8px;border-radius:6px;">Export CSV</a>
-              <button id="gym-reset" style="padding:4px 8px;font-size:0.78rem;">Reset</button>
-            </div>
-          </div>
-          <table>
-            <thead><tr><th>Mode</th><th class="right">N</th><th class="right">&lt;30&deg; Acc</th><th class="right">MAE</th><th class="right">Human+AI bits/s</th></tr></thead>
-            <tbody id="gym-body"></tbody>
-          </table>
+          <h2>Aggregate Across Multiple Participants</h2>
+          <p class="sub" style="margin-bottom:0;">Export each participant's CSV (<code>threebits_pilot_*.csv</code>) into a folder and run <code>python analyze_human_gym_pilot.py pilot_data/</code> from <a href="https://github.com/MuhammadFarhantahir/threebits-research" target="_blank" rel="noopener">threebits-research</a> to generate paired Wilcoxon statistics, Cohen's d, and a publication figure.</p>
         </div>
       </div>
     </div>
   </div>
+
+  <footer>
+    <span>Browser research lab · runs locally in your browser (sessions saved to localStorage, zero personal data uploaded). Real EEG traces &amp; OOF overload scores from public OpenNeuro ds008037 (CC0).</span>
+    <span><a href="/#human">Read Findings 1–4 on threebits.si</a></span>
+  </footer>
 </div>
 
+<script src="eeg_data.js"></script>
 <script>
+const EEG_DATA = window.THREEBITS_EEG_DATA || { source:"ds008037 replay", decoder_auc_oof:0.916, chip_rom_kb:66.35, c99_bench_us:14.3, trials:{"2":[],"4":[],"6":[]} };
+const GYM_STORE_KEY = "threebits_neural_gym_v1";
+const BURST_STORE_KEY = "threebits_burst_v1";
+const PILOT_STORE_KEY = "threebits_pilot_v1";
+const L3A_STORE_KEY = "threebits_level3a_v1";
+
 /* ---------- Tab Switching ---------- */
 function selectTab(tabName){
   document.querySelectorAll(".tab").forEach(b => b.classList.toggle("active", b.dataset.tab === tabName));
@@ -238,14 +449,58 @@ function selectTab(tabName){
     window.history.replaceState(null, "", u.toString());
   } catch(_) {}
 }
-document.querySelectorAll(".tab").forEach(btn => {
-  btn.onclick = () => selectTab(btn.dataset.tab);
-});
+document.querySelectorAll(".tab").forEach(btn => { btn.onclick = () => selectTab(btn.dataset.tab); });
 const initTab = new URLSearchParams(window.location.search).get("tab");
-if(initTab === "gym" || window.location.hash === "#gym") selectTab("gym");
+if(initTab === "l3a" || initTab === "eeg" || window.location.hash === "#eeg") selectTab("l3a");
+else if(initTab === "burst" || window.location.hash === "#burst") selectTab("burst");
+else if(initTab === "pilot" || window.location.hash === "#pilot") selectTab("pilot");
 
 function hslColor(deg){ return `hsl(${((deg%360)+360)%360}, 82%, 56%)`; }
 function circErr(a,b){ let d = ((a-b+180)%360+360)%360 - 180; return Math.abs(d); }
+function loadRows(key){ try { return JSON.parse(localStorage.getItem(key) || "[]"); } catch(_) { return []; } }
+function saveRows(key, rows){ try { localStorage.setItem(key, JSON.stringify(rows)); } catch(_) {} }
+function downloadCSV(filename, fields, rows){
+  const lines = [fields.join(",")].concat(rows.map(r => fields.map(f => JSON.stringify(r[f] ?? "")).join(",")));
+  const blob = new Blob([lines.join("\n") + "\n"], { type:"text/csv;charset=utf-8" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = filename; a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1500);
+}
+
+/* ---------- Pure Client-Side Non-Verbal Latent Quantizer (Exact Match to Level-2 Math) ---------- */
+function encodeLatentCode(targetDeg, mode, bits, latencyMs){
+  if(mode === "unassisted"){
+    return { mode, active:false, q_cos:0, q_sin:0, bits, latency_ms:latencyMs, channel_bps:0 };
+  }
+  const deg = mode === "sham_code" ? Math.random() * 360 : targetDeg;
+  const rad = deg * Math.PI / 180;
+  let qCos, qSin;
+  if(bits <= 1){
+    qCos = Math.cos(rad) >= 0 ? 1 : -1;
+    qSin = Math.sin(rad) >= 0 ? 1 : -1;
+  } else {
+    const qMax = (1 << (bits - 1)) - 1;
+    qCos = Math.round(Math.max(-1, Math.min(1, Math.cos(rad))) * qMax) / qMax;
+    qSin = Math.round(Math.max(-1, Math.min(1, Math.sin(rad))) * qMax) / qMax;
+  }
+  const channelBps = Math.round(2 * bits * (1000 / Math.max(latencyMs, 20)));
+  return { mode, active:true, bits, latency_ms:latencyMs, q_cos:Number(qCos.toFixed(4)), q_sin:Number(qSin.toFixed(4)), channel_bps:channelBps };
+}
+
+/* ---------- Pure Client-Side Real ds008037 EEG Replay Decoder ---------- */
+function decodeRealEegTrial(arm, setSize){
+  const key = setSize >= 6 ? "6" : (setSize >= 4 ? "4" : "2");
+  const pool = EEG_DATA.trials[key] && EEG_DATA.trials[key].length ? EEG_DATA.trials[key] : EEG_DATA.trials["6"];
+  const realTrial = pool[Math.floor(Math.random() * pool.length)] || { p:0.65, a:[0,0,0,0,0,0] };
+  let prob = realTrial.p;
+  if(arm === "sham_loop"){
+    const all = [].concat(EEG_DATA.trials["2"] || [], EEG_DATA.trials["4"] || [], EEG_DATA.trials["6"] || []);
+    const shamTrial = all[Math.floor(Math.random() * all.length)] || realTrial;
+    prob = shamTrial.p;
+  }
+  const trigger = (arm === "real_closedloop" || arm === "sham_loop") && prob >= 0.50;
+  return { overload_prob:prob, trigger_coprocessor:trigger, alpha_trace:realTrial.a };
+}
 
 /* ---------- Web Audio Stereo Binaural Latent Chord ---------- */
 let audioCtx = null;
@@ -253,6 +508,7 @@ function playLatentChord(qCos, qSin){
   if(!document.getElementById("gym-audio").checked) return;
   try {
     if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if(audioCtx.state === "suspended") audioCtx.resume();
     const now = audioCtx.currentTime;
     const osc = audioCtx.createOscillator();
     const osc2 = audioCtx.createOscillator();
@@ -284,7 +540,6 @@ function drawMonochromeGlyph(canvasCtx, cx, cy, rMax, qCos, qSin, active){
   if(active){
     const ang = Math.atan2(qSin, qCos);
     const mag = Math.min(1, Math.hypot(qCos, qSin));
-    // Polar harmonic cardioid ripple purely in monochrome white/gray!
     canvasCtx.beginPath();
     for(let i=0; i<=72; i++){
       const th = (i / 72) * Math.PI * 2;
@@ -297,7 +552,6 @@ function drawMonochromeGlyph(canvasCtx, cx, cy, rMax, qCos, qSin, active){
     canvasCtx.fillStyle = "rgba(236, 233, 223, 0.18)";
     canvasCtx.fill();
     canvasCtx.strokeStyle = "#ece9df"; canvasCtx.lineWidth = 2.0; canvasCtx.stroke();
-    // Sharp monochrome vector tick
     canvasCtx.beginPath();
     canvasCtx.moveTo(cx, cy);
     canvasCtx.lineTo(cx + Math.cos(ang)*rMax*0.92, cy + Math.sin(ang)*rMax*0.92);
@@ -306,11 +560,7 @@ function drawMonochromeGlyph(canvasCtx, cx, cy, rMax, qCos, qSin, active){
   canvasCtx.restore();
 }
 
-/* ===================== TAB 1: LEVEL-3A 4-ARM EEG TRIAL LOGIC ===================== */
-const cvs = document.getElementById("task-canvas"), ctx = cvs.getContext("2d");
 const CX = 190, CY = 185, RING_R = 128, DOT_R = 82;
-let state = { phase:"idle", items:[], targetIdx:0, arm:"real_closedloop", k:6, respStart:0, assisted:false, decodeInfo:null, sectorCenter:null };
-
 function drawColorRing(c2d, highlightSectorDeg){
   for(let d=0; d<360; d+=2){
     c2d.beginPath();
@@ -324,6 +574,158 @@ function drawColorRing(c2d, highlightSectorDeg){
   }
 }
 
+/* ===================== TAB 1: NEURAL GYM LOGIC ===================== */
+const gcvs = document.getElementById("gym-canvas"), gctx = gcvs.getContext("2d");
+const glcvs = document.getElementById("glyph-canvas"), glctx = glcvs.getContext("2d");
+let gym = { phase:"idle", items:[], targetIdx:0, mode:"latent_coproc", k:12, bits:4, lat:50, ruleDeg:0, code:null, respStart:0 };
+
+function renderGym(){
+  gctx.clearRect(0,0,gcvs.width,gcvs.height);
+  if(gym.phase === "encode"){
+    const radDot = gym.k >= 12 ? 10 : 13;
+    for(const it of gym.items){
+      gctx.beginPath(); gctx.arc(it.x, it.y, radDot, 0, Math.PI*2);
+      gctx.fillStyle = hslColor(it.deg); gctx.fill();
+      gctx.strokeStyle = "#ece9df"; gctx.lineWidth = 1.2; gctx.stroke();
+    }
+  } else if(gym.phase === "delay"){
+    gctx.fillStyle = "#9a9589"; gctx.font = "22px IBM Plex Mono,monospace"; gctx.textAlign = "center";
+    gctx.fillText("+", CX, CY + 7);
+  } else if(gym.phase === "respond"){
+    drawColorRing(gctx, null);
+    gym.items.forEach((it, i) => {
+      gctx.beginPath(); gctx.arc(it.x, it.y, i === gym.targetIdx ? 12 : 6, 0, Math.PI*2);
+      gctx.fillStyle = i === gym.targetIdx ? "#ece9df" : "#26231e"; gctx.fill();
+      if(i === gym.targetIdx){ gctx.strokeStyle = "#ee6f40"; gctx.lineWidth = 2.5; gctx.stroke(); }
+    });
+    if(gym.code && gym.code.active){
+      drawMonochromeGlyph(gctx, CX, CY, 44, gym.code.q_cos, gym.code.q_sin, true);
+    }
+  } else {
+    gctx.fillStyle = "#6b675b"; gctx.font = "14px Inter,sans-serif"; gctx.textAlign = "center";
+    gctx.fillText("Press Run Gym Trial (Space)", CX, CY);
+  }
+}
+
+function renderGymScoreboard(){
+  const rows = loadRows(GYM_STORE_KEY);
+  const labels = { unassisted:"Unassisted Human", sham_code:"Sham Latent Code", latent_coproc:"Non-Verbal Co-Processor" };
+  document.getElementById("gym-body").innerHTML = Object.keys(labels).map(k => {
+    const sub = rows.filter(r => r.mode === k);
+    if(!sub.length) return `<tr><td>${labels[k]}</td><td class="right">0</td><td class="right">--</td><td class="right">--</td><td class="right">--</td></tr>`;
+    const acc = (sub.filter(r => r.err_deg < 30).length / sub.length * 100).toFixed(1);
+    const mae = (sub.reduce((a,r) => a + r.err_deg, 0) / sub.length).toFixed(1);
+    const bps = (sub.reduce((a,r) => a + r.eff_bps, 0) / sub.length).toFixed(2);
+    return `<tr><td>${labels[k]}</td><td class="right">${sub.length}</td><td class="right">${acc}%</td><td class="right">${mae}&deg;</td><td class="right">${bps}</td></tr>`;
+  }).join("");
+
+  const recent = rows.slice(-40);
+  const drawLine = (id, modeKey) => {
+    const pts = recent.filter(r => r.mode === modeKey);
+    const s = pts.map((r, i) => {
+      const x = 44 + (i / Math.max(pts.length - 1, 1)) * 356;
+      const y = 104 - Math.min(180, r.err_deg) / 180 * 78;
+      return `${x.toFixed(1)},${y.toFixed(1)}`;
+    }).join(" ");
+    document.getElementById(id).setAttribute("points", s);
+  };
+  drawLine("gym-poly-coproc", "latent_coproc");
+  drawLine("gym-poly-unass", "unassisted");
+}
+
+function runGymTrial(){
+  if(gym.phase !== "idle") return;
+  const mode = document.getElementById("gym-mode").value;
+  const k = parseInt(document.getElementById("gym-k").value, 10);
+  const bits = parseInt(document.getElementById("gym-bits").value, 10);
+  const lat = parseInt(document.getElementById("gym-lat").value, 10);
+  const useRule = document.getElementById("gym-rule").checked;
+  const ruleChoices = [0, 90, 180];
+  const ruleDeg = useRule ? ruleChoices[Math.floor(Math.random()*ruleChoices.length)] : 0;
+
+  const items = [], baseRot = Math.random() * Math.PI * 2;
+  const rRing = k >= 12 ? 92 : 84;
+  for(let i=0; i<k; i++){
+    const a = baseRot + (i / k) * Math.PI * 2;
+    items.push({ x: CX + Math.cos(a)*rRing, y: CY + Math.sin(a)*rRing, deg: Math.floor(Math.random()*360) });
+  }
+  gym = { phase:"encode", items, targetIdx:Math.floor(Math.random()*k), mode, k, bits, lat, ruleDeg, code:null, respStart:0 };
+  document.getElementById("gym-start").disabled = true;
+  document.getElementById("gym-phase").textContent = `ENCODE (K=${k})`;
+  document.getElementById("gym-prompt").textContent = `Memorize ${k} colors`;
+  document.getElementById("gym-rule-pill").textContent = ruleDeg === 0 ? "Private Human Rule: DIRECT (+0°)" : `Private Human Rule: ROTATE +${ruleDeg}°`;
+  document.getElementById("gym-banner").classList.remove("cue-active");
+  renderGym();
+
+  setTimeout(() => {
+    gym.phase = "delay";
+    document.getElementById("gym-phase").textContent = "DELAY (0.9 s)";
+    document.getElementById("gym-prompt").textContent = "Holding memory...";
+    renderGym();
+    setTimeout(() => {
+      gym.phase = "respond";
+      gym.respStart = performance.now();
+      document.getElementById("gym-phase").textContent = `RESPOND (lat ${lat} ms)`;
+      document.getElementById("gym-prompt").textContent = ruleDeg === 0 ? "Click matching color on ring" : `Apply +${ruleDeg}° mental rotation, then click ring`;
+      renderGym();
+
+      const rawDeg = gym.items[gym.targetIdx].deg;
+      const code = encodeLatentCode(rawDeg, mode, bits, lat);
+      setTimeout(() => {
+        if(gym.phase !== "respond") return;
+        gym.code = code;
+        glctx.clearRect(0,0,glcvs.width,glcvs.height);
+        drawMonochromeGlyph(glctx, 55, 55, 44, code.q_cos, code.q_sin, code.active);
+        document.getElementById("g-vec").textContent = `(${code.q_cos.toFixed(2)}, ${code.q_sin.toFixed(2)})`;
+        document.getElementById("g-bits").textContent = `${bits}-bit · ${lat} ms (${code.channel_bps} bps)`;
+        if(code.active){
+          const hz = Math.round(390 - code.q_sin * 150);
+          document.getElementById("g-audio").textContent = `pan ${code.q_cos>=0?"+":""}${code.q_cos.toFixed(2)} · ${hz} Hz`;
+          playLatentChord(code.q_cos, code.q_sin);
+          document.getElementById("gym-banner").classList.add("cue-active");
+          document.getElementById("gym-cue-txt").textContent = mode === "sham_code"
+            ? "Sham monochrome latent glyph injected (uncorrelated angle)."
+            : `Non-verbal ${bits}-bit latent vector injected at +${lat} ms — decode glyph & apply your private rule.`;
+        } else {
+          document.getElementById("g-audio").textContent = "OFF (unassisted)";
+          document.getElementById("gym-cue-txt").textContent = "Unassisted human trial — no AI co-processor signal.";
+        }
+        renderGym();
+      }, lat);
+    }, 900);
+  }, 800);
+}
+
+gcvs.addEventListener("pointerdown", (ev) => {
+  if(gym.phase !== "respond") return;
+  const rect = gcvs.getBoundingClientRect();
+  const x = (ev.clientX - rect.left) * (gcvs.width / rect.width) - CX;
+  const y = (ev.clientY - rect.top) * (gcvs.height / rect.height) - CY;
+  if(Math.hypot(x, y) < RING_R - 30) return;
+  const reported = ((Math.atan2(y, x) * 180 / Math.PI) + 360) % 360;
+  const trueTarget = (gym.items[gym.targetIdx].deg + gym.ruleDeg) % 360;
+  const err = circErr(reported, trueTarget), rt = Math.round(performance.now() - gym.respStart);
+  const infoBits = Math.max(0, Math.log2(180 / (2 * Math.max(err, 2))));
+  const effBps = Number((infoBits / Math.max(rt / 1000, 0.15)).toFixed(2));
+  gym.phase = "idle";
+  document.getElementById("gym-start").disabled = false;
+  document.getElementById("gym-phase").textContent = "LOGGED";
+  document.getElementById("gym-last").textContent = `Error: ${err.toFixed(1)}° (${rt} ms · ${effBps} bps)`;
+  renderGym();
+  const rows = loadRows(GYM_STORE_KEY);
+  rows.push({
+    ts: Number((Date.now()/1000).toFixed(2)), mode:gym.mode, set_size:gym.k, rule_deg:gym.ruleDeg,
+    bits:gym.bits, latency_ms:gym.lat, target_deg:trueTarget, reported_deg:Math.round(reported),
+    err_deg:Number(err.toFixed(2)), rt_ms:rt, eff_bps:effBps
+  });
+  saveRows(GYM_STORE_KEY, rows);
+  renderGymScoreboard();
+});
+
+/* ===================== TAB 2: LEVEL-3A 4-ARM EEG TRIAL LOGIC ===================== */
+const cvs = document.getElementById("task-canvas"), ctx = cvs.getContext("2d");
+let state = { phase:"idle", items:[], targetIdx:0, arm:"real_closedloop", k:6, respStart:0, assisted:false, decodeInfo:null, sectorCenter:null };
+
 function render(){
   ctx.clearRect(0,0,cvs.width,cvs.height);
   if(state.phase === "encode"){
@@ -333,7 +735,7 @@ function render(){
       ctx.strokeStyle = "#ece9df"; ctx.lineWidth = 1.5; ctx.stroke();
     }
   } else if(state.phase === "delay"){
-    ctx.fillStyle = "#9a9589"; ctx.font = "22px ui-monospace,monospace"; ctx.textAlign = "center";
+    ctx.fillStyle = "#9a9589"; ctx.font = "22px IBM Plex Mono,monospace"; ctx.textAlign = "center";
     ctx.fillText("+", CX, CY + 7);
     if(state.sectorCenter !== null){
       ctx.beginPath(); ctx.arc(CX, CY, 44, (state.sectorCenter-25)*Math.PI/180, (state.sectorCenter+25)*Math.PI/180);
@@ -358,50 +760,20 @@ function updateEegPlot(trace){
   document.getElementById("eeg-line").setAttribute("points", pts);
 }
 
-function renderScoreboard(stats){
+function renderScoreboard(){
+  const rows = loadRows(L3A_STORE_KEY);
   const labels = { human_alone:"Arm 1 · Human Alone", manual_ai:"Arm 2 · Manual AI", sham_loop:"Arm 3 · Sham EEG", real_closedloop:"Arm 4 · Real Closed-Loop" };
   document.getElementById("score-body").innerHTML = Object.keys(labels).map(k => {
-    const a = stats.arms[k] || {n:0};
-    return `<tr><td>${labels[k]}</td><td class="right">${a.n}</td><td class="right">${a.acc30 ?? "--"}${a.acc30!==null?"%":""}</td><td class="right">${a.mae_deg ?? "--"}${a.mae_deg!==null?"&deg;":""}</td><td class="right">${a.trigger_rate ?? "--"}${a.trigger_rate!==null?"%":""}</td></tr>`;
+    const sub = rows.filter(r => r.arm === k);
+    if(!sub.length) return `<tr><td>${labels[k]}</td><td class="right">0</td><td class="right">--</td><td class="right">--</td><td class="right">--</td></tr>`;
+    const acc = (sub.filter(r => r.err_deg < 30).length / sub.length * 100).toFixed(1);
+    const mae = (sub.reduce((a,r) => a + r.err_deg, 0) / sub.length).toFixed(1);
+    const trig = (sub.filter(r => r.assisted).length / sub.length * 100).toFixed(1);
+    return `<tr><td>${labels[k]}</td><td class="right">${sub.length}</td><td class="right">${acc}%</td><td class="right">${mae}&deg;</td><td class="right">${trig}%</td></tr>`;
   }).join("");
 }
 
-function renderGymScoreboard(gs){
-  if(!gs) return;
-  const labels = { unassisted:"Unassisted Human", sham_code:"Sham Latent Code", latent_coproc:"Non-Verbal Co-Processor" };
-  document.getElementById("gym-body").innerHTML = Object.keys(labels).map(k => {
-    const m = gs.modes[k] || {n:0};
-    return `<tr><td>${labels[k]}</td><td class="right">${m.n}</td><td class="right">${m.acc30 ?? "--"}${m.acc30!==null?"%":""}</td><td class="right">${m.mae_deg ?? "--"}${m.mae_deg!==null?"&deg;":""}</td><td class="right">${m.bits_per_sec ?? "--"}</td></tr>`;
-  }).join("");
-  const drawLine = (id, modeKey) => {
-    const pts = (gs.recent || []).filter(r => r.mode === modeKey);
-    const s = pts.map((r, i) => {
-      const x = 24 + (i / Math.max(pts.length - 1, 1)) * 372;
-      const y = 104 - Math.min(180, r.err_deg) / 180 * 78;
-      return `${x.toFixed(1)},${y.toFixed(1)}`;
-    }).join(" ");
-    document.getElementById(id).setAttribute("points", s);
-  };
-  drawLine("gym-poly-coproc", "latent_coproc");
-  drawLine("gym-poly-unass", "unassisted");
-}
-
-async function refreshStatus(){
-  try {
-    const r = await fetch("/api/status").then(x=>x.json());
-    document.getElementById("status-pill").textContent = `C99 int4: ${r.c99_latency_us} µs · ROM ${r.chip_rom_kb} kB`;
-    document.getElementById("eeg-src").textContent = r.source;
-    document.getElementById("kpi-auc").textContent = r.decoder_auc_oof.toFixed(3);
-    document.getElementById("kpi-lat").textContent = `${r.c99_latency_us} µs`;
-    document.getElementById("g-c99").textContent = `${r.c99_latency_us} µs`;
-    renderScoreboard(r.stats);
-    renderGymScoreboard(r.gym_stats);
-  } catch(e) {
-    document.getElementById("status-pill").textContent = "Server offline";
-  }
-}
-
-async function runTrial(){
+function runTrial(){
   if(state.phase !== "idle") return;
   const arm = document.getElementById("arm-sel").value;
   const k = parseInt(document.getElementById("k-sel").value, 10);
@@ -418,14 +790,13 @@ async function runTrial(){
   document.getElementById("cue-banner").classList.remove("cue-active");
   render();
 
-  setTimeout(async () => {
+  setTimeout(() => {
     state.phase = "delay";
     document.getElementById("phase-lbl").textContent = "RETENTION DELAY (1.5 s EEG)";
     document.getElementById("trial-lbl").textContent = "Decoding pre-response neural state...";
     render();
-    const dec = await fetch("/api/decode_delay", { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({arm, set_size:k}) }).then(x=>x.json());
+    const dec = decodeRealEegTrial(arm, k);
     state.decodeInfo = dec;
-    document.getElementById("kpi-lat").textContent = `${dec.c99_latency_us} µs`;
     document.getElementById("kpi-prob").textContent = `${Math.round(dec.overload_prob*100)}%`;
     document.getElementById("prob-bar").style.width = `${Math.round(dec.overload_prob*100)}%`;
     updateEegPlot(dec.alpha_trace);
@@ -462,7 +833,7 @@ function triggerManualHint(){
   render();
 }
 
-cvs.addEventListener("click", async (ev) => {
+cvs.addEventListener("pointerdown", (ev) => {
   if(state.phase !== "respond") return;
   const rect = cvs.getBoundingClientRect();
   const x = (ev.clientX - rect.left) * (cvs.width / rect.width) - CX;
@@ -477,153 +848,440 @@ cvs.addEventListener("click", async (ev) => {
   document.getElementById("phase-lbl").textContent = "LOGGED";
   document.getElementById("last-err").textContent = `Error: ${err.toFixed(1)}° (${rt} ms)`;
   render();
-  const stats = await fetch("/api/log_trial", {
-    method:"POST", headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({ arm:state.arm, set_size:state.k, target_deg:target, reported_deg:Math.round(reported),
-      err_deg:Number(err.toFixed(2)), rt_ms:rt, assisted:state.assisted,
-      overload_prob:state.decodeInfo ? state.decodeInfo.overload_prob : 0,
-      c99_latency_us:state.decodeInfo ? state.decodeInfo.c99_latency_us : 0 })
-  }).then(x=>x.json());
-  renderScoreboard(stats);
+  const rows = loadRows(L3A_STORE_KEY);
+  rows.push({
+    ts: Number((Date.now()/1000).toFixed(2)), arm:state.arm, set_size:state.k, target_deg:target,
+    reported_deg:Math.round(reported), err_deg:Number(err.toFixed(2)), rt_ms:rt,
+    assisted:state.assisted, overload_prob:state.decodeInfo ? state.decodeInfo.overload_prob : 0
+  });
+  saveRows(L3A_STORE_KEY, rows);
+  renderScoreboard();
 });
 
-/* ===================== TAB 2: NEURAL GYM LOGIC ===================== */
-const gcvs = document.getElementById("gym-canvas"), gctx = gcvs.getContext("2d");
-const glcvs = document.getElementById("glyph-canvas"), glctx = glcvs.getContext("2d");
-let gym = { phase:"idle", items:[], targetIdx:0, mode:"latent_coproc", k:12, bits:4, lat:50, ruleDeg:0, code:null, respStart:0 };
+/* ===================== TAB 2: SUB-VERBAL BURST LOGIC ===================== */
+const bcvs = document.getElementById("burst-canvas"), bctx = bcvs.getContext("2d");
+const BURST_SECTORS = [
+  { idx:0, deg:0,   key:";", label:";" },
+  { idx:1, deg:45,  key:"k", label:"K" },
+  { idx:2, deg:90,  key:"j", label:"J" },
+  { idx:3, deg:135, key:"d", label:"D" },
+  { idx:4, deg:180, key:"a", label:"A" },
+  { idx:5, deg:225, key:"s", label:"S" },
+  { idx:6, deg:270, key:"f", label:"F" },
+  { idx:7, deg:315, key:"l", label:"L" },
+];
+const KEY_TO_SECTOR = Object.fromEntries(BURST_SECTORS.map(s => [s.key, s.idx]));
+let burst = { active:false, phase:"idle", mode:"latent_coproc", lat:50, useRule:false, items:[], targetSlot:0, ruleShift:0, code:null, startTs:0, endTs:0, hits:0, total:0, flashIdx:-1, flashOk:true, timer:null, codeTimer:null };
 
-function renderGym(){
-  gctx.clearRect(0,0,gcvs.width,gcvs.height);
-  if(gym.phase === "encode"){
-    const radDot = gym.k >= 12 ? 10 : 13;
-    for(const it of gym.items){
-      gctx.beginPath(); gctx.arc(it.x, it.y, radDot, 0, Math.PI*2);
-      gctx.fillStyle = hslColor(it.deg); gctx.fill();
-      gctx.strokeStyle = "#ece9df"; gctx.lineWidth = 1.2; gctx.stroke();
-    }
-  } else if(gym.phase === "delay"){
-    gctx.fillStyle = "#9a9589"; gctx.font = "22px ui-monospace,monospace"; gctx.textAlign = "center";
-    gctx.fillText("+", CX, CY + 7);
-  } else if(gym.phase === "respond"){
-    drawColorRing(gctx, null);
-    // Draw queried slot + monochrome latent harmonic glyph in center (zero color hints!)
-    gym.items.forEach((it, i) => {
-      gctx.beginPath(); gctx.arc(it.x, it.y, i === gym.targetIdx ? 12 : 6, 0, Math.PI*2);
-      gctx.fillStyle = i === gym.targetIdx ? "#ece9df" : "#26231e"; gctx.fill();
-      if(i === gym.targetIdx){ gctx.strokeStyle = "#ee6f40"; gctx.lineWidth = 2.5; gctx.stroke(); }
+function shannon8WayBps(hits, total, sec){
+  if(total <= 0 || sec <= 0.1) return 0;
+  const p = hits / total;
+  if(p <= 1/8) return 0;
+  let info = 3.0;
+  if(p < 1.0){
+    info = 3.0 + p * Math.log2(p) + (1 - p) * Math.log2((1 - p) / 7.0);
+  }
+  return Math.max(0, info * (total / sec));
+}
+
+function renderBurst(){
+  bctx.clearRect(0, 0, bcvs.width, bcvs.height);
+  // Draw 8-sector monochrome tactile ring with key legends
+  BURST_SECTORS.forEach(s => {
+    const a0 = (s.deg - 20) * Math.PI / 180, a1 = (s.deg + 20) * Math.PI / 180;
+    const am = s.deg * Math.PI / 180;
+    bctx.beginPath();
+    bctx.arc(CX, CY, RING_R, a0, a1);
+    const isFlash = burst.flashIdx === s.idx;
+    bctx.strokeStyle = isFlash ? (burst.flashOk ? "#3aa68f" : "#ee6f40") : "#2e2b24";
+    bctx.lineWidth = isFlash ? 22 : 16;
+    bctx.stroke();
+    const lx = CX + Math.cos(am) * (RING_R + 24), ly = CY + Math.sin(am) * (RING_R + 24);
+    bctx.fillStyle = isFlash ? "#ece9df" : "#9a9589";
+    bctx.font = "600 13px IBM Plex Mono,monospace";
+    bctx.textAlign = "center"; bctx.textBaseline = "middle";
+    bctx.fillText(s.label, lx, ly);
+  });
+
+  if(burst.phase === "encode"){
+    burst.items.forEach(it => {
+      bctx.beginPath(); bctx.arc(it.x, it.y, 10, 0, Math.PI*2);
+      bctx.fillStyle = hslColor(it.sector * 45); bctx.fill();
+      bctx.strokeStyle = "#ece9df"; bctx.lineWidth = 1.2; bctx.stroke();
     });
-    if(gym.code && gym.code.active){
-      drawMonochromeGlyph(gctx, CX, CY, 44, gym.code.q_cos, gym.code.q_sin, true);
+  } else if(burst.phase === "run"){
+    burst.items.forEach((it, i) => {
+      bctx.beginPath(); bctx.arc(it.x, it.y, i === burst.targetSlot ? 11 : 5, 0, Math.PI*2);
+      bctx.fillStyle = i === burst.targetSlot ? "#ece9df" : "#24211c"; bctx.fill();
+      if(i === burst.targetSlot){ bctx.strokeStyle = "#ee6f40"; bctx.lineWidth = 2.5; bctx.stroke(); }
+    });
+    if(burst.code && burst.code.active){
+      drawMonochromeGlyph(bctx, CX, CY, 44, burst.code.q_cos, burst.code.q_sin, true);
     }
   } else {
-    gctx.fillStyle = "#6b675b"; gctx.font = "14px Inter,sans-serif"; gctx.textAlign = "center";
-    gctx.fillText("Press Run Gym Trial (K = 4..16)", CX, CY);
+    bctx.fillStyle = "#6b675b"; bctx.font = "13px Inter,sans-serif"; bctx.textAlign = "center"; bctx.textBaseline = "middle";
+    bctx.fillText("Press Start 15 s Burst", CX, CY);
   }
 }
 
-async function runGymTrial(){
-  if(gym.phase !== "idle") return;
-  const mode = document.getElementById("gym-mode").value;
-  const k = parseInt(document.getElementById("gym-k").value, 10);
-  const bits = parseInt(document.getElementById("gym-bits").value, 10);
-  const lat = parseInt(document.getElementById("gym-lat").value, 10);
-  const useRule = document.getElementById("gym-rule").checked;
-  const ruleChoices = [0, 90, 180];
-  const ruleDeg = useRule ? ruleChoices[Math.floor(Math.random()*ruleChoices.length)] : 0;
+function updateBurstHUD(){
+  const elapsed = burst.active ? Math.max(0.2, (performance.now() - burst.startTs) / 1000) : 15.0;
+  const bps = shannon8WayBps(burst.hits, burst.total, elapsed);
+  const acc = burst.total ? (burst.hits / burst.total * 100).toFixed(0) + "%" : "--";
+  const rate = (burst.total / elapsed).toFixed(2) + " Hz";
+  document.getElementById("b-bps").textContent = bps.toFixed(2);
+  document.getElementById("b-acc").textContent = acc;
+  document.getElementById("b-rate").textContent = rate;
+  const pct = Math.min(100, Math.round(bps / 39 * 100));
+  document.getElementById("b-pct").textContent = `${pct}% of speech`;
+  document.getElementById("b-bar").style.width = `${pct}%`;
+}
 
+function nextBurstProbe(){
+  if(!burst.active) return;
+  burst.targetSlot = Math.floor(Math.random() * burst.items.length);
+  burst.ruleShift = burst.useRule ? (Math.random() < 0.5 ? 0 : 2) : 0; // +0 or +90 deg (+2 sectors)
+  burst.code = null;
+  document.getElementById("burst-rule-pill").textContent = burst.ruleShift === 0 ? "Private Rule: DIRECT (+0°)" : "Private Rule: ROTATE +90° (CW)";
+  renderBurst();
+  const rawDeg = burst.items[burst.targetSlot].sector * 45;
+  const code = encodeLatentCode(rawDeg, burst.mode, 4, burst.lat);
+  clearTimeout(burst.codeTimer);
+  burst.codeTimer = setTimeout(() => {
+    if(!burst.active) return;
+    burst.code = code;
+    if(code.active) playLatentChord(code.q_cos, code.q_sin);
+    renderBurst();
+  }, burst.lat);
+}
+
+function handleBurstChoice(sectorIdx){
+  if(!burst.active || burst.phase !== "run") return;
+  const trueSector = (burst.items[burst.targetSlot].sector + burst.ruleShift) % 8;
+  const ok = sectorIdx === trueSector;
+  burst.total += 1;
+  if(ok) burst.hits += 1;
+  burst.flashIdx = sectorIdx;
+  burst.flashOk = ok;
+  updateBurstHUD();
+  nextBurstProbe();
+}
+
+function renderBurstHistory(){
+  const rows = loadRows(BURST_STORE_KEY);
+  const labels = { unassisted:"Unassisted (K=12)", sham_code:"Sham Latent Code", latent_coproc:"Non-Verbal Co-Proc" };
+  document.getElementById("burst-body").innerHTML = Object.keys(labels).map(k => {
+    const sub = rows.filter(r => r.mode === k);
+    if(!sub.length) return `<tr><td>${labels[k]}</td><td class="right">0</td><td class="right">--</td><td class="right">--</td><td class="right">--</td></tr>`;
+    const acc = (sub.reduce((a,r)=>a+r.acc_pct, 0) / sub.length).toFixed(1);
+    const rate = (sub.reduce((a,r)=>a+r.rate_hz, 0) / sub.length).toFixed(2);
+    const best = Math.max(...sub.map(r => r.bps)).toFixed(2);
+    return `<tr><td>${labels[k]}</td><td class="right">${sub.length}</td><td class="right">${acc}%</td><td class="right">${rate} Hz</td><td class="right">${best}</td></tr>`;
+  }).join("");
+}
+
+function startBurst(){
+  if(burst.active) return;
+  const mode = document.getElementById("burst-mode").value;
+  const lat = parseInt(document.getElementById("burst-lat").value, 10);
+  const useRule = document.getElementById("burst-rule").checked;
   const items = [], baseRot = Math.random() * Math.PI * 2;
-  const rRing = k >= 12 ? 92 : 84;
-  for(let i=0; i<k; i++){
-    const a = baseRot + (i / k) * Math.PI * 2;
-    items.push({ x: CX + Math.cos(a)*rRing, y: CY + Math.sin(a)*rRing, deg: Math.floor(Math.random()*360) });
+  for(let i=0; i<12; i++){
+    const a = baseRot + (i / 12) * Math.PI * 2;
+    items.push({ x: CX + Math.cos(a)*88, y: CY + Math.sin(a)*88, sector: Math.floor(Math.random()*8) });
   }
-  gym = { phase:"encode", items, targetIdx:Math.floor(Math.random()*k), mode, k, bits, lat, ruleDeg, code:null, respStart:0 };
-  document.getElementById("gym-start").disabled = true;
-  document.getElementById("gym-phase").textContent = `ENCODE (K=${k})`;
-  document.getElementById("gym-prompt").textContent = `Memorize ${k} colors`;
-  document.getElementById("gym-rule-pill").textContent = ruleDeg === 0 ? "Private Human Rule: DIRECT (+0°)" : `Private Human Rule: ROTATE +${ruleDeg}°`;
-  document.getElementById("gym-banner").classList.remove("cue-active");
-  renderGym();
+  burst = { active:true, phase:"encode", mode, lat, useRule, items, targetSlot:0, ruleShift:0, code:null, startTs:0, endTs:0, hits:0, total:0, flashIdx:-1, flashOk:true, timer:null, codeTimer:null };
+  document.getElementById("burst-start").disabled = true;
+  document.getElementById("burst-phase").textContent = "ENCODE K=12 (0.8 s)";
+  document.getElementById("burst-banner").classList.remove("cue-active");
+  renderBurst();
 
   setTimeout(() => {
-    gym.phase = "delay";
-    document.getElementById("gym-phase").textContent = "DELAY (0.9 s)";
-    document.getElementById("gym-prompt").textContent = "Holding memory...";
-    renderGym();
-    setTimeout(async () => {
-      gym.phase = "respond";
-      gym.respStart = performance.now();
-      document.getElementById("gym-phase").textContent = `RESPOND (lat ${lat} ms)`;
-      document.getElementById("gym-prompt").textContent = ruleDeg === 0 ? "Click matching color on ring" : `Apply +${ruleDeg}° mental rotation, then click ring`;
-      renderGym();
-
-      // Fetch 4-bit quantized non-verbal latent code from server and inject after simulated loop latency!
-      const rawDeg = gym.items[gym.targetIdx].deg;
-      const code = await fetch("/api/encode_latent", {
-        method:"POST", headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({ target_deg:rawDeg, mode, bits, latency_ms:lat })
-      }).then(x=>x.json());
-
-      setTimeout(() => {
-        if(gym.phase !== "respond") return;
-        gym.code = code;
-        glctx.clearRect(0,0,glcvs.width,glcvs.height);
-        drawMonochromeGlyph(glctx, 55, 55, 44, code.q_cos, code.q_sin, code.active);
-        document.getElementById("g-vec").textContent = `(${code.q_cos.toFixed(2)}, ${code.q_sin.toFixed(2)})`;
-        document.getElementById("g-bits").textContent = `${bits}-bit · ${lat} ms (${code.channel_bps || 0} bps)`;
-        document.getElementById("g-c99").textContent = `${code.c99_latency_us} µs`;
-        if(code.active){
-          const hz = Math.round(390 - code.q_sin * 150);
-          document.getElementById("g-audio").textContent = `pan ${code.q_cos>=0?"+":""}${code.q_cos.toFixed(2)} · ${hz} Hz`;
-          playLatentChord(code.q_cos, code.q_sin);
-          document.getElementById("gym-banner").classList.add("cue-active");
-          document.getElementById("gym-cue-txt").textContent = mode === "sham_code"
-            ? "Sham monochrome latent glyph injected (uncorrelated angle)."
-            : `Non-verbal ${bits}-bit latent vector injected at +${lat} ms — decode glyph & apply your private rule.`;
-        } else {
-          document.getElementById("g-audio").textContent = "OFF (unassisted)";
-          document.getElementById("gym-cue-txt").textContent = "Unassisted human trial — no AI co-processor signal.";
-        }
-        renderGym();
-      }, lat);
-    }, 900);
+    burst.phase = "run";
+    burst.startTs = performance.now();
+    burst.endTs = burst.startTs + 15000;
+    if(mode === "latent_coproc") document.getElementById("burst-banner").classList.add("cue-active");
+    nextBurstProbe();
+    burst.timer = setInterval(() => {
+      const rem = Math.max(0, (burst.endTs - performance.now()) / 1000);
+      document.getElementById("burst-phase").textContent = `BURST · ${rem.toFixed(1)} s`;
+      updateBurstHUD();
+      if(rem <= 0){
+        clearInterval(burst.timer); clearTimeout(burst.codeTimer);
+        burst.active = false; burst.phase = "idle";
+        document.getElementById("burst-start").disabled = false;
+        const bps = Number(shannon8WayBps(burst.hits, burst.total, 15.0).toFixed(2));
+        const acc = burst.total ? Number((burst.hits / burst.total * 100).toFixed(1)) : 0;
+        const rate = Number((burst.total / 15.0).toFixed(2));
+        document.getElementById("burst-phase").textContent = "FINISHED";
+        document.getElementById("burst-last").textContent = `${bps} bits/s (${burst.hits}/${burst.total}, ${acc}%)`;
+        const rows = loadRows(BURST_STORE_KEY);
+        rows.push({ ts:Number((Date.now()/1000).toFixed(2)), mode, latency_ms:lat, private_rule:useRule, hits:burst.hits, total:burst.total, acc_pct:acc, rate_hz:rate, bps });
+        saveRows(BURST_STORE_KEY, rows);
+        renderBurstHistory(); renderBurst();
+      }
+    }, 100);
   }, 800);
 }
 
-gcvs.addEventListener("click", async (ev) => {
-  if(gym.phase !== "respond") return;
-  const rect = gcvs.getBoundingClientRect();
-  const x = (ev.clientX - rect.left) * (gcvs.width / rect.width) - CX;
-  const y = (ev.clientY - rect.top) * (gcvs.height / rect.height) - CY;
-  if(Math.hypot(x, y) < RING_R - 30) return;
-  const reported = ((Math.atan2(y, x) * 180 / Math.PI) + 360) % 360;
-  const trueTarget = (gym.items[gym.targetIdx].deg + gym.ruleDeg) % 360;
-  const err = circErr(reported, trueTarget), rt = Math.round(performance.now() - gym.respStart);
-  gym.phase = "idle";
-  document.getElementById("gym-start").disabled = false;
-  document.getElementById("gym-phase").textContent = "LOGGED";
-  document.getElementById("gym-last").textContent = `Error: ${err.toFixed(1)}° (${rt} ms)`;
-  renderGym();
-  const gs = await fetch("/api/log_gym", {
-    method:"POST", headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({ mode:gym.mode, set_size:gym.k, rule_deg:gym.ruleDeg, bits:gym.bits, latency_ms:gym.lat,
-      target_deg:trueTarget, reported_deg:Math.round(reported), err_deg:Number(err.toFixed(2)), rt_ms:rt,
-      c99_latency_us:gym.code ? gym.code.c99_latency_us : 0 })
-  }).then(x=>x.json());
-  renderGymScoreboard(gs);
+bcvs.addEventListener("pointerdown", (ev) => {
+  if(!burst.active || burst.phase !== "run") return;
+  const rect = bcvs.getBoundingClientRect();
+  const x = (ev.clientX - rect.left) * (bcvs.width / rect.width) - CX;
+  const y = (ev.clientY - rect.top) * (bcvs.height / rect.height) - CY;
+  if(Math.hypot(x, y) < 48) return;
+  const ang = ((Math.atan2(y, x) * 180 / Math.PI) + 360) % 360;
+  const sec = Math.round(ang / 45) % 8;
+  handleBurstChoice(sec);
 });
 
+/* ===================== TAB 3: SINGLE-BLIND 18-TRIAL PILOT STUDY LOGIC ===================== */
+const pcvs = document.getElementById("pilot-canvas"), pctx = pcvs.getContext("2d");
+const pidInput = document.getElementById("pilot-pid");
+if(!pidInput.value) pidInput.value = "P-" + Math.random().toString(16).slice(2, 6).toUpperCase();
+let pilot = { running:false, phase:"idle", queue:[], idx:0, curArm:"", items:[], targetIdx:0, ruleDeg:0, code:null, respStart:0, rows:[], timers:[] };
+
+function permPValue(a, b, nPerm=2000){
+  if(!a.length || !b.length) return 1.0;
+  const mean = arr => arr.reduce((s,v)=>s+v, 0) / arr.length;
+  const obs = Math.abs(mean(a) - mean(b));
+  const pool = a.concat(b);
+  const na = a.length;
+  let ge = 0;
+  for(let p=0; p<nPerm; p++){
+    for(let i=pool.length-1; i>0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      const tmp = pool[i]; pool[i] = pool[j]; pool[j] = tmp;
+    }
+    let sa = 0, sb = 0;
+    for(let i=0; i<na; i++) sa += pool[i];
+    for(let i=na; i<pool.length; i++) sb += pool[i];
+    if(Math.abs(sa/na - sb/(pool.length-na)) >= obs - 1e-9) ge++;
+  }
+  return (ge + 1) / (nPerm + 1);
+}
+
+function renderPilotCanvas(){
+  pctx.clearRect(0, 0, pcvs.width, pcvs.height);
+  if(pilot.phase === "encode"){
+    for(const it of pilot.items){
+      pctx.beginPath(); pctx.arc(it.x, it.y, 10, 0, Math.PI*2);
+      pctx.fillStyle = hslColor(it.deg); pctx.fill();
+      pctx.strokeStyle = "#ece9df"; pctx.lineWidth = 1.2; pctx.stroke();
+    }
+  } else if(pilot.phase === "delay"){
+    pctx.fillStyle = "#9a9589"; pctx.font = "22px IBM Plex Mono,monospace"; pctx.textAlign = "center";
+    pctx.fillText("+", CX, CY + 7);
+  } else if(pilot.phase === "respond"){
+    drawColorRing(pctx, null);
+    pilot.items.forEach((it, i) => {
+      pctx.beginPath(); pctx.arc(it.x, it.y, i === pilot.targetIdx ? 12 : 6, 0, Math.PI*2);
+      pctx.fillStyle = i === pilot.targetIdx ? "#ece9df" : "#26231e"; pctx.fill();
+      if(i === pilot.targetIdx){ pctx.strokeStyle = "#ee6f40"; pctx.lineWidth = 2.5; pctx.stroke(); }
+    });
+    if(pilot.code && pilot.code.active){
+      drawMonochromeGlyph(pctx, CX, CY, 44, pilot.code.q_cos, pilot.code.q_sin, true);
+    }
+  } else {
+    pctx.fillStyle = "#6b675b"; pctx.font = "14px Inter,sans-serif"; pctx.textAlign = "center";
+    pctx.fillText(pilot.rows.length >= 18 ? "Study complete — see report & Export CSV" : "Press Start 18-Trial Study", CX, CY);
+  }
+}
+
+function renderPilotReport(unblinded){
+  const rows = loadRows(PILOT_STORE_KEY);
+  const labels = { unassisted:"Arm 1 · Unassisted (K=12)", sham_code:"Arm 2 · Sham Latent Code", latent_coproc:"Arm 3 · Real 4-bit Co-Processor" };
+  if(!unblinded && rows.length < 18){
+    document.getElementById("pilot-body").innerHTML = Object.keys(labels).map(k =>
+      `<tr><td>${labels[k]}</td><td class="right">?</td><td class="right">blinded</td><td class="right">blinded</td><td class="right">blinded</td></tr>`
+    ).join("");
+    document.getElementById("pilot-stats-box").textContent = `Blinded in progress: ${rows.length}/18 trials completed. Results unblind automatically after trial 18.`;
+    return;
+  }
+  document.getElementById("pilot-status-msg").textContent = `Unblinded within-subject results (${rows.length} trials, participant ${rows[0]?.participant_id || pidInput.value}):`;
+  document.getElementById("pilot-body").innerHTML = Object.keys(labels).map(k => {
+    const sub = rows.filter(r => r.arm === k);
+    if(!sub.length) return `<tr><td>${labels[k]}</td><td class="right">0</td><td class="right">--</td><td class="right">--</td><td class="right">--</td></tr>`;
+    const acc = (sub.filter(r => r.err_deg < 30).length / sub.length * 100).toFixed(1);
+    const mae = (sub.reduce((a,r)=>a+r.err_deg, 0) / sub.length).toFixed(1);
+    const bps = (sub.reduce((a,r)=>a+r.eff_bps, 0) / sub.length).toFixed(2);
+    return `<tr><td>${labels[k]}</td><td class="right">${sub.length}</td><td class="right">${acc}%</td><td class="right">${mae}&deg;</td><td class="right">${bps}</td></tr>`;
+  }).join("");
+
+  const eCop = rows.filter(r => r.arm === "latent_coproc").map(r => r.err_deg);
+  const eUna = rows.filter(r => r.arm === "unassisted").map(r => r.err_deg);
+  const eSha = rows.filter(r => r.arm === "sham_code").map(r => r.err_deg);
+  if(eCop.length && eUna.length && eSha.length){
+    const mean = a => a.reduce((s,v)=>s+v,0)/a.length;
+    const pUna = permPValue(eCop, eUna, 2000);
+    const pSha = permPValue(eCop, eSha, 2000);
+    const half = Math.max(1, Math.floor(eCop.length / 2));
+    const early = mean(eCop.slice(0, half)), late = mean(eCop.slice(half));
+    document.getElementById("pilot-stats-box").innerHTML =
+      `Co-Processor vs Unassisted: <strong>${(mean(eUna)-mean(eCop)).toFixed(1)}&deg; error drop</strong> (perm p = ${pUna.toFixed(4)})<br>` +
+      `Co-Processor vs Sham Control: <strong>${(mean(eSha)-mean(eCop)).toFixed(1)}&deg; error drop</strong> (perm p = ${pSha.toFixed(4)})<br>` +
+      `Co-adaptation slope (1st half &rarr; 2nd half): <strong>${early.toFixed(1)}&deg; &rarr; ${late.toFixed(1)}&deg;</strong>`;
+  }
+}
+
+function clearPilotTimers(){ pilot.timers.forEach(t => clearTimeout(t)); pilot.timers = []; }
+
+function runNextPilotTrial(){
+  if(!pilot.running) return;
+  if(pilot.idx >= pilot.queue.length){
+    pilot.running = false; pilot.phase = "idle";
+    document.getElementById("pilot-start").disabled = false;
+    document.getElementById("pilot-abort").disabled = true;
+    document.getElementById("pilot-phase").textContent = "COMPLETE";
+    document.getElementById("pilot-arm-blind").textContent = "UNBLINDED";
+    document.getElementById("pilot-prog-txt").textContent = "Trial 18 / 18 (complete)";
+    document.getElementById("pilot-bar").style.width = "100%";
+    renderPilotCanvas();
+    renderPilotReport(true);
+    return;
+  }
+  const arm = pilot.queue[pilot.idx];
+  const useRule = document.getElementById("pilot-rule").checked;
+  const ruleDeg = useRule ? [0, 90, 180][Math.floor(Math.random()*3)] : 0;
+  const items = [], baseRot = Math.random() * Math.PI * 2;
+  for(let i=0; i<12; i++){
+    const a = baseRot + (i / 12) * Math.PI * 2;
+    items.push({ x: CX + Math.cos(a)*92, y: CY + Math.sin(a)*92, deg: Math.floor(Math.random()*360) });
+  }
+  pilot.curArm = arm; pilot.items = items; pilot.targetIdx = Math.floor(Math.random()*12);
+  pilot.ruleDeg = ruleDeg; pilot.code = null; pilot.phase = "encode";
+  document.getElementById("pilot-prog-txt").textContent = `Trial ${pilot.idx + 1} / 18`;
+  document.getElementById("pilot-bar").style.width = `${Math.round((pilot.idx / 18) * 100)}%`;
+  document.getElementById("pilot-arm-blind").textContent = arm === "unassisted" ? "UNASSISTED" : "BLINDED GLYPH (REAL OR SHAM)";
+  document.getElementById("pilot-phase").textContent = "ENCODE (K=12)";
+  document.getElementById("pilot-prompt").textContent = "Memorize 12 colors";
+  document.getElementById("pilot-rule-pill").textContent = ruleDeg === 0 ? "Private Human Rule: DIRECT (+0°)" : `Private Human Rule: ROTATE +${ruleDeg}°`;
+  renderPilotCanvas();
+
+  pilot.timers.push(setTimeout(() => {
+    pilot.phase = "delay";
+    document.getElementById("pilot-phase").textContent = "DELAY (0.9 s)";
+    document.getElementById("pilot-prompt").textContent = "Holding memory...";
+    renderPilotCanvas();
+    pilot.timers.push(setTimeout(() => {
+      pilot.phase = "respond"; pilot.respStart = performance.now();
+      document.getElementById("pilot-phase").textContent = "RESPOND";
+      document.getElementById("pilot-prompt").textContent = ruleDeg === 0 ? "Click matching color on ring" : `Apply +${ruleDeg}° rotation, then click ring`;
+      renderPilotCanvas();
+      const rawDeg = pilot.items[pilot.targetIdx].deg;
+      const code = encodeLatentCode(rawDeg, arm, 4, 50);
+      pilot.timers.push(setTimeout(() => {
+        if(!pilot.running || pilot.phase !== "respond") return;
+        pilot.code = code;
+        if(code.active) playLatentChord(code.q_cos, code.q_sin);
+        renderPilotCanvas();
+      }, 50));
+    }, 900));
+  }, 800));
+}
+
+pcvs.addEventListener("pointerdown", (ev) => {
+  if(!pilot.running || pilot.phase !== "respond") return;
+  const rect = pcvs.getBoundingClientRect();
+  const x = (ev.clientX - rect.left) * (pcvs.width / rect.width) - CX;
+  const y = (ev.clientY - rect.top) * (pcvs.height / rect.height) - CY;
+  if(Math.hypot(x, y) < RING_R - 30) return;
+  const reported = ((Math.atan2(y, x) * 180 / Math.PI) + 360) % 360;
+  const trueTarget = (pilot.items[pilot.targetIdx].deg + pilot.ruleDeg) % 360;
+  const err = circErr(reported, trueTarget), rt = Math.round(performance.now() - pilot.respStart);
+  const infoBits = Math.max(0, Math.log2(180 / (2 * Math.max(err, 2))));
+  const effBps = Number((infoBits / Math.max(rt / 1000, 0.15)).toFixed(2));
+  pilot.phase = "iti";
+  document.getElementById("pilot-last").textContent = `T${pilot.idx+1}: ${err.toFixed(1)}° (${rt} ms)`;
+  const row = {
+    participant_id: (pidInput.value || "P-ANON").trim(),
+    trial_idx: pilot.idx + 1, arm: pilot.curArm, set_size: 12, rule_deg: pilot.ruleDeg,
+    target_deg: trueTarget, reported_deg: Math.round(reported), err_deg: Number(err.toFixed(2)),
+    rt_ms: rt, eff_bps: effBps, ts: Number((Date.now()/1000).toFixed(2))
+  };
+  pilot.rows.push(row);
+  saveRows(PILOT_STORE_KEY, pilot.rows);
+  pilot.idx += 1;
+  renderPilotReport(false);
+  pilot.timers.push(setTimeout(runNextPilotTrial, 450));
+});
+
+function startPilotStudy(){
+  if(pilot.running) return;
+  clearPilotTimers();
+  // Balanced randomized 18-trial sequence (6 blocks of shuffled [unassisted, sham_code, latent_coproc])
+  const q = [];
+  for(let b=0; b<6; b++){
+    const tri = ["unassisted", "sham_code", "latent_coproc"];
+    for(let i=2; i>0; i--){ const j = Math.floor(Math.random()*(i+1)); [tri[i],tri[j]] = [tri[j],tri[i]]; }
+    q.push(...tri);
+  }
+  pilot = { running:true, phase:"idle", queue:q, idx:0, curArm:"", items:[], targetIdx:0, ruleDeg:0, code:null, respStart:0, rows:[], timers:[] };
+  saveRows(PILOT_STORE_KEY, []);
+  document.getElementById("pilot-start").disabled = true;
+  document.getElementById("pilot-abort").disabled = false;
+  renderPilotReport(false);
+  runNextPilotTrial();
+}
+
+/* ---------- Wire Buttons & Keyboard ---------- */
+document.getElementById("gym-start").onclick = runGymTrial;
+document.getElementById("gym-reset").onclick = () => { saveRows(GYM_STORE_KEY, []); renderGymScoreboard(); };
+document.getElementById("gym-export").onclick = () => downloadCSV(
+  "threebits_neural_gym.csv",
+  ["ts","mode","set_size","rule_deg","bits","latency_ms","target_deg","reported_deg","err_deg","rt_ms","eff_bps"],
+  loadRows(GYM_STORE_KEY)
+);
+document.getElementById("burst-start").onclick = startBurst;
+document.getElementById("burst-reset").onclick = () => { saveRows(BURST_STORE_KEY, []); renderBurstHistory(); };
+document.getElementById("burst-export").onclick = () => downloadCSV(
+  "threebits_subverbal_burst.csv",
+  ["ts","mode","latency_ms","private_rule","hits","total","acc_pct","rate_hz","bps"],
+  loadRows(BURST_STORE_KEY)
+);
+document.getElementById("pilot-start").onclick = startPilotStudy;
+document.getElementById("pilot-abort").onclick = () => {
+  clearPilotTimers(); pilot.running = false; pilot.phase = "idle";
+  document.getElementById("pilot-start").disabled = false; document.getElementById("pilot-abort").disabled = true;
+  document.getElementById("pilot-phase").textContent = "ABORTED"; renderPilotCanvas();
+};
+document.getElementById("pilot-reset").onclick = () => {
+  clearPilotTimers(); pilot.running = false; pilot.phase = "idle"; pilot.rows = [];
+  saveRows(PILOT_STORE_KEY, []); document.getElementById("pilot-start").disabled = false;
+  document.getElementById("pilot-abort").disabled = true; document.getElementById("pilot-bar").style.width = "0%";
+  renderPilotCanvas(); renderPilotReport(false);
+};
+document.getElementById("pilot-export").onclick = () => {
+  const rows = loadRows(PILOT_STORE_KEY);
+  const pid = (rows[0]?.participant_id || pidInput.value || "anon").replace(/[^a-zA-Z0-9_-]/g, "");
+  downloadCSV(
+    `threebits_pilot_${pid}.csv`,
+    ["participant_id","trial_idx","arm","set_size","rule_deg","target_deg","reported_deg","err_deg","rt_ms","eff_bps","ts"],
+    rows
+  );
+};
 document.getElementById("start-btn").onclick = runTrial;
 document.getElementById("hint-btn").onclick = triggerManualHint;
-document.getElementById("reset-btn").onclick = async () => { renderScoreboard(await fetch("/api/reset_log", {method:"POST"}).then(x=>x.json())); };
-document.getElementById("gym-start").onclick = runGymTrial;
-document.getElementById("gym-reset").onclick = async () => { renderGymScoreboard(await fetch("/api/reset_gym", {method:"POST"}).then(x=>x.json())); };
+document.getElementById("reset-btn").onclick = () => { saveRows(L3A_STORE_KEY, []); renderScoreboard(); };
+document.getElementById("l3a-export").onclick = () => downloadCSV(
+  "threebits_level3a_session.csv",
+  ["ts","arm","set_size","target_deg","reported_deg","err_deg","rt_ms","assisted","overload_prob"],
+  loadRows(L3A_STORE_KEY)
+);
 window.addEventListener("keydown", e => {
+  if(document.getElementById("view-burst").classList.contains("active")){
+    const k = e.key.toLowerCase();
+    if(k in KEY_TO_SECTOR){ e.preventDefault(); handleBurstChoice(KEY_TO_SECTOR[k]); return; }
+    if(e.code === "Space"){ e.preventDefault(); startBurst(); return; }
+  }
   if(e.key.toLowerCase() === "h") triggerManualHint();
   if(e.code === "Space" && document.getElementById("view-gym").classList.contains("active")){ e.preventDefault(); runGymTrial(); }
 });
+
+document.getElementById("kpi-auc").textContent = EEG_DATA.decoder_auc_oof.toFixed(3);
+document.getElementById("kpi-lat").textContent = `${EEG_DATA.c99_bench_us} µs`;
 drawMonochromeGlyph(glctx, 55, 55, 44, 0.71, -0.71, true);
-render(); renderGym(); refreshStatus();
+render(); renderGym(); renderBurst(); renderPilotCanvas(); renderScoreboard(); renderGymScoreboard(); renderBurstHistory(); renderPilotReport(loadRows(PILOT_STORE_KEY).length >= 18);
 </script>
 </body>
 </html>

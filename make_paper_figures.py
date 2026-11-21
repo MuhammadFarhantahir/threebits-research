@@ -1,4 +1,4 @@
-"""Generate publication-quality figures from saved experimental outputs in ~/threebitschip.
+"""Generate publication-quality figures from saved experimental outputs in the repository root.
 
 Outputs (saved in figures/):
   1. fig1_ccep_validation.png      — 74-patient human CCEP validation: fMRI-vs-causal trade-off + 5-fold CCEP calibration
