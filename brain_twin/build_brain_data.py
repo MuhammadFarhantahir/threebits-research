@@ -165,6 +165,8 @@ def main():
         "bench_wm": load_opt("functional_brain_emulator.json"),
         "bench_reasoning": load_opt("superhuman_reasoning_emulator.json"),
         "bench_continual": load_opt("continual_multitask_brain.json"),
+        "bench_autonomous": load_opt("autonomous_brain_bg_thalamus.json"),
+        "bench_unified": load_opt("unified_spiking_chip_brain.json"),
     }
 
     OUT_JS.parent.mkdir(parents=True, exist_ok=True)

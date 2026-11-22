@@ -3,6 +3,8 @@
 **Causally validated human whole-brain simulation, certified-safe closed-loop control, pure-integer sub-8-bit neural implant decoders, and co-adaptive Brain–AI co-processing.**
 
 - **Live Research Overview:** https://threebits.si/
+- **Autonomous Task-Blind Continual Brain (`autonomous_brain_bg_thalamus.py`, Figure 5):** Removes `task_id` completely via a **Basal Ganglia (`D1` Go / `D2` NoGo + Dopamine RPE) + Mediodorsal Thalamus + Hippocampal SWR** upgrade. Autonomously catches **`6/6`** unannounced shifts in 3 steps (`[963, 1263]`), autonomously discovers Tick 1 & Tick 2 over fixed 6-tick rollouts, and locks onto hidden rules purely from 1-bit reward in **`2.15` trials** (`99.8%` steady-state, `91.2%` overall, `0.0 pp` forgetting, CCEP `+0.661`, `44/46` TMS-EEG `+0.288`) vs `41.2%` matched-weights Sham Dopamine RPE and `10.5%` Causal Transformer.
+- **Unified Silicon-in-the-Loop Spiking Brain + Counterfactual Region 101 (`unified_spiking_chip_brain.py`, Figure 6):** Unifies Papers 1 + 2 + 3 by embedding `176` biophysical LIF E–I spiking neurons inside `LH_Cont_PFCl_1` decoded live by our **compiled zero-float C99 binary (`chip/libint4_gru.dylib`, `65.43 kB`, `23.7 µs/bin`, `100.0%` W4A32/W4A8 parity)** driving **81-branch counterfactual planning** under Paper 1 Lyapunov safety bounds across 450 unseen causal trap worlds — achieving **`100.0% ± 0.0%`** Day 1 and Week-6 drift recovery (`1%` adapter, SHA256-verified byte-identical ROM, `0%` seizures vs `126 Hz / 100%` without guard, `5.6%` bio alone, `3.8%` Sham C99, `49.8%` AI Bayes cap).
 - **Interactive 100-Region Human Brain Twin:** https://threebits.si/brain/
 - **Preprints (HTML, PDF, arXiv LaTeX, BibTeX):** https://threebits.si/papers/
 - **Live Browser Neural Gym, 4-Arm EEG Replay & Single-Blind Pilot:** https://threebits.si/gym/
@@ -52,6 +54,10 @@ python brain_ai_coprocessor.py
 
 # Run the 100-region continual 3-task benchmark vs. Causal Transformer & GRU
 python continual_multitask_brain.py
+
+# Run Track A (Autonomous Task-Blind BG/Thalamus) & Track B (Unified 176-LIF Spiking + Real C99 int4 Chip)
+python autonomous_brain_bg_thalamus.py
+python unified_spiking_chip_brain.py
 
 # Run the local Level-3A EEG + Neural Gym + Pilot API server (supports --lsl for live headsets)
 python level3_app/server.py --port 8765

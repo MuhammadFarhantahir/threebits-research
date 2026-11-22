@@ -1,0 +1,317 @@
+{
+  "protocol": "Strict task-blind hidden-rule streaming WCST (zero task_id, zero raw replay, fixed 6 ticks, 1-bit reward RPE)",
+  "true_shift_steps": [
+    961,
+    1261
+  ],
+  "regimes": {
+    "transformer": {
+      "label": "1. Task-Blind Causal Transformer (Reward-Conditioned)",
+      "total_params": 235050,
+      "frozen_pct_slot1": 0.0,
+      "frozen_pct_slot2": 0.0,
+      "shifts_caught_str": "0/6",
+      "shift_steps_per_seed": [
+        [],
+        [],
+        []
+      ],
+      "learned_ticks_seed0": {},
+      "overall_blind_acc": 10.25,
+      "overall_blind_sd": 0.31,
+      "steady_state_acc": 10.49,
+      "steady_state_sd": 0.5,
+      "steady_T1_D6": 11.48,
+      "steady_T2_K10": 8.77,
+      "steady_T3_Plan": 11.23,
+      "trials_to_lock": 11.93,
+      "forgetting_pp": 45.63,
+      "switch_curve_mean": [
+        11.11,
+        7.41,
+        10.0,
+        8.15,
+        14.07,
+        11.11,
+        11.85,
+        10.37,
+        9.63,
+        11.48,
+        7.41,
+        10.37
+      ],
+      "switch_curve_sd": [
+        0.91,
+        0.52,
+        1.81,
+        2.77,
+        4.09,
+        1.81,
+        4.19,
+        3.66,
+        0.52,
+        2.28,
+        2.1,
+        1.89
+      ],
+      "ccep_rho": 0.0,
+      "ccep_prho": 0.0
+    },
+    "bio_bg": {
+      "label": "2. 100-Region Biological Brain + BG/Thalamus (No R101)",
+      "total_params": 53897,
+      "frozen_pct_slot1": 0.0,
+      "frozen_pct_slot2": 0.0,
+      "shifts_caught_str": "0/6",
+      "shift_steps_per_seed": [
+        [],
+        [],
+        []
+      ],
+      "learned_ticks_seed0": {
+        "slot_1_argmax_tick": 1,
+        "slot_1_max_prob": 0.167,
+        "slot_2_argmax_tick": 1,
+        "slot_2_max_prob": 0.167
+      },
+      "overall_blind_acc": 11.2,
+      "overall_blind_sd": 0.59,
+      "steady_state_acc": 10.82,
+      "steady_state_sd": 0.52,
+      "steady_T1_D6": 11.98,
+      "steady_T2_K10": 9.88,
+      "steady_T3_Plan": 10.62,
+      "trials_to_lock": 11.98,
+      "forgetting_pp": 5.14,
+      "switch_curve_mean": [
+        12.59,
+        15.56,
+        8.89,
+        7.41,
+        11.48,
+        8.15,
+        11.11,
+        13.7,
+        14.44,
+        10.0,
+        10.74,
+        10.37
+      ],
+      "switch_curve_sd": [
+        2.29,
+        1.57,
+        1.81,
+        3.67,
+        4.29,
+        1.89,
+        5.05,
+        1.89,
+        0.91,
+        1.57,
+        2.28,
+        0.52
+      ],
+      "ccep_rho": 0.6617,
+      "ccep_prho": 0.3805,
+      "tmseeg_n46": {
+        "n_subjects": 46,
+        "n_positive": 44,
+        "mean_partial_rho": 0.2868
+      }
+    },
+    "r101_unprotected": {
+      "label": "3. 100-Region Brain + 4-bit R101 (No BG / Unprotected)",
+      "total_params": 67750,
+      "frozen_pct_slot1": 0.0,
+      "frozen_pct_slot2": 0.0,
+      "shifts_caught_str": "0/6",
+      "shift_steps_per_seed": [
+        [],
+        [],
+        []
+      ],
+      "learned_ticks_seed0": {},
+      "overall_blind_acc": 11.02,
+      "overall_blind_sd": 0.15,
+      "steady_state_acc": 10.82,
+      "steady_state_sd": 0.61,
+      "steady_T1_D6": 8.4,
+      "steady_T2_K10": 13.46,
+      "steady_T3_Plan": 10.62,
+      "trials_to_lock": 11.88,
+      "forgetting_pp": 44.72,
+      "switch_curve_mean": [
+        14.07,
+        7.41,
+        13.33,
+        8.89,
+        12.96,
+        10.37,
+        10.37,
+        11.85,
+        13.33,
+        10.37,
+        10.74,
+        8.52
+      ],
+      "switch_curve_sd": [
+        1.39,
+        2.1,
+        2.72,
+        3.27,
+        2.28,
+        1.89,
+        4.66,
+        1.89,
+        4.54,
+        3.18,
+        2.77,
+        1.89
+      ],
+      "ccep_rho": 0.661,
+      "ccep_prho": 0.3801
+    },
+    "sham_rpe": {
+      "label": "4. Sham Dopamine RPE Control (Matched Frozen Core + Permuted Reward)",
+      "total_params": 77705,
+      "frozen_pct_slot1": 86.03000000000002,
+      "frozen_pct_slot2": 86.03000000000002,
+      "shifts_caught_str": "6/6",
+      "shift_steps_per_seed": [
+        [
+          963,
+          1263
+        ],
+        [
+          963,
+          1263
+        ],
+        [
+          963,
+          1263
+        ]
+      ],
+      "learned_ticks_seed0": {
+        "slot_1_argmax_tick": 1,
+        "slot_1_max_prob": 0.484,
+        "slot_2_argmax_tick": 2,
+        "slot_2_max_prob": 0.61
+      },
+      "overall_blind_acc": 40.52,
+      "overall_blind_sd": 0.9,
+      "steady_state_acc": 41.19,
+      "steady_state_sd": 1.03,
+      "steady_T1_D6": 40.86,
+      "steady_T2_K10": 41.23,
+      "steady_T3_Plan": 41.48,
+      "trials_to_lock": 9.63,
+      "forgetting_pp": 0.0,
+      "switch_curve_mean": [
+        41.11,
+        35.93,
+        38.52,
+        38.52,
+        39.63,
+        43.34,
+        43.34,
+        40.37,
+        39.63,
+        40.37,
+        41.85,
+        43.7
+      ],
+      "switch_curve_sd": [
+        2.4,
+        3.44,
+        2.92,
+        1.05,
+        4.66,
+        3.96,
+        3.14,
+        5.55,
+        4.29,
+        3.78,
+        7.33,
+        2.92
+      ],
+      "ccep_rho": 0.6609,
+      "ccep_prho": 0.3798,
+      "tmseeg_n46": {
+        "n_subjects": 46,
+        "n_positive": 44,
+        "mean_partial_rho": 0.288
+      }
+    },
+    "threebits_autonomous": {
+      "label": "5. Threebits Autonomous Brain (BG D1/D2 + MD Thalamus + SWR)",
+      "total_params": 77705,
+      "frozen_pct_slot1": 86.03000000000002,
+      "frozen_pct_slot2": 86.03000000000002,
+      "shifts_caught_str": "6/6",
+      "shift_steps_per_seed": [
+        [
+          963,
+          1263
+        ],
+        [
+          963,
+          1263
+        ],
+        [
+          963,
+          1263
+        ]
+      ],
+      "learned_ticks_seed0": {
+        "slot_1_argmax_tick": 1,
+        "slot_1_max_prob": 0.484,
+        "slot_2_argmax_tick": 2,
+        "slot_2_max_prob": 0.61
+      },
+      "overall_blind_acc": 91.23,
+      "overall_blind_sd": 0.38,
+      "steady_state_acc": 99.84,
+      "steady_state_sd": 0.15,
+      "steady_T1_D6": 100.0,
+      "steady_T2_K10": 99.75,
+      "steady_T3_Plan": 99.75,
+      "trials_to_lock": 2.15,
+      "forgetting_pp": 0.0,
+      "switch_curve_mean": [
+        36.3,
+        65.93,
+        94.07,
+        98.89,
+        99.63,
+        100.0,
+        100.0,
+        100.0,
+        100.0,
+        100.0,
+        100.0,
+        100.0
+      ],
+      "switch_curve_sd": [
+        3.67,
+        2.62,
+        0.52,
+        1.57,
+        0.52,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "ccep_rho": 0.6609,
+      "ccep_prho": 0.3798,
+      "tmseeg_n46": {
+        "n_subjects": 46,
+        "n_positive": 44,
+        "mean_partial_rho": 0.288
+      }
+    }
+  }
+}

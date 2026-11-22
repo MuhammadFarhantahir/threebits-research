@@ -64,9 +64,9 @@ SPECS = [
         "venue_hint": "Target: bioRxiv / arXiv (q-bio.NC, cs.AI) · Journal of Neural Engineering",
         "tag": "Human Working-Memory Limits & Brain–AI Phase Transition",
         "highlights": [
-            "123 healthy adults (ds008037): Cowan cliff 88.6% → 43.8% (K=2→6); EEG overload 0.690 AUC; live 100-region Brain Twin (threebits.si/brain/) & single-blind pilot API",
-            "Multi-hop fluid reasoning inside triple-validated 100-region Human Brain Emulator (CCEP ρ=+0.66, 45/46 TMS-EEG +0.29): bias-free 4-bit Region 101 hits 100.0% ± 0.0% zero-shot on unseen D=6*, 8* (+ private goal) vs 18.0% biology, 22.6% Sham, & 49.7% Standalone AI cap",
-            "Zero-replay continual 3-task learning (D=6* multi-hop → shifted K=10 WM → 4-way reflected planning): Threebits Continual Brain hits 100.0% average with 0.0 pp forgetting vs −84.9 pp in a Causal Transformer and −92.1 pp in unprotected Brain+R101",
+            "123 healthy adults (ds008037): Cowan cliff 88.6% → 43.8% (K=2→6); EEG overload 0.690 AUC; live 100-region Brain Twin (threebits.si/brain/), Multi-Modal Bandwidth Lab & Single-Blind Pilot API (threebits.si/gym/)",
+            "Multi-hop & Task-Blind Continual Brain (0 task_id, 0 replay): bias-free 4-bit Region 101 hits 100.0% zero-shot on unseen D=6*, 8* (+ private goal), and Basal Ganglia D1/D2 + MD Thalamus + SWR detects 6/6 unannounced shifts in 3 steps to hit 99.8% blind steady-state (2.15 trials to lock, 0.0 pp forgetting) vs 41.2% Sham RPE & 10.5% Causal Transformer",
+            "Unified Papers 1+2+3 Silicon-in-the-Loop Spiking Brain: 176 biophysical LIF PFC neurons decoded live by our compiled pure-integer C99 int4 binary (65.4 kB, 23.7 µs/bin, 100% W4A32/W4A8 parity) driving 81-branch counterfactual planning -> 100.0% Day 1 & Week-6 drift recovery (SHA256 byte-identical ROM, 0% seizures vs 126 Hz / 100% without Lyapunov guard)",
         ],
         "bibkey": "tahir2026prosthetic",
         "bibtex_title": "From Biological Working-Memory Limits to Co-Adaptive Brain--AI Co-Processing: A Quantitative Proof Ladder",

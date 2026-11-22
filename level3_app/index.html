@@ -106,6 +106,7 @@
   <div class="tabs">
     <button class="tab active" data-tab="gym">Neural Gym · Non-Verbal Latent Co-Processor (K = 4..16)</button>
     <button class="tab" data-tab="burst">Sub-Verbal Burst · 8-Finger Parallel Throughput (bits/s)</button>
+    <button class="tab" data-tab="bandwidth">Multi-Modal Bandwidth Lab · Gaze + Chords (Beat 39 bps)</button>
     <button class="tab" data-tab="pilot">Pilot Study · 18-Trial Blinded Randomized Protocol</button>
     <button class="tab" data-tab="l3a">Level-3A · 4-Arm Healthy-Human EEG Trial</button>
   </div>
@@ -439,11 +440,17 @@
         <div class="card">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;gap:8px;flex-wrap:wrap;">
             <h2 style="margin:0;">Live Living-Human Cohort API</h2>
-            <div style="display:flex;gap:6px;">
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <button id="cohort-copy-invite" style="padding:4px 8px;font-size:0.78rem;border-color:#3aa68f;color:#3aa68f;">Copy Tester Invite</button>
               <button id="cohort-refresh" style="padding:4px 8px;font-size:0.78rem;">Refresh</button>
               <a class="export-btn" id="cohort-csv-link" href="/api/pilot/csv" download="threebits_pilot_cohort.csv" style="text-decoration:none;display:inline-flex;align-items:center;">Download Cohort CSV</a>
             </div>
           </div>
+          <div style="display:flex;justify-content:space-between;font-size:0.76rem;color:var(--muted);margin-bottom:4px;">
+            <span id="cohort-goal-txt">Cohort Progress: 0 / 20 sessions</span>
+            <span id="cohort-invite-msg" style="color:#3aa68f;font-family:var(--mono);"></span>
+          </div>
+          <div class="meter-wrap" style="margin-bottom:8px;"><div class="meter-fill" id="cohort-goal-bar" style="width:0%;"></div></div>
           <p class="sub" id="cohort-meta" style="margin-bottom:8px;">Loading live anonymized cohort from <code>/api/pilot/summary</code>...</p>
           <table>
             <thead><tr><th>Cohort Arm (Pooled)</th><th class="right">Trials</th><th class="right">&lt;30&deg; Acc</th><th class="right">MAE</th><th class="right">bits/s</th></tr></thead>
@@ -452,6 +459,72 @@
           <div id="cohort-stats-box" style="margin-top:10px;padding:9px 11px;background:#0c0b09;border:1px solid var(--line);border-radius:8px;font-family:var(--mono);font-size:0.74rem;color:var(--muted);line-height:1.55;">
             CLI sync: <code>python analyze_human_gym_pilot.py --from-api https://threebits.si --out-fig figures/fig_human_pilot.png</code>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== TAB 5: MULTI-MODAL BANDWIDTH LAB (GAZE + 2-HAND CHORDS) ===================== -->
+  <div class="view" id="view-bandwidth">
+    <div class="grid">
+      <div class="card">
+        <h2>Multi-Modal Sub-Verbal Bandwidth Lab · Gaze/Head + 2-Hand Parallel Chords</h2>
+        <p class="sub">Direct software precursor to our non-invasive EEG + silent wrist-sEMG + eye-tracking wearable. Combine <strong>2 simultaneous independent channels</strong> — a <strong>4-bit 2-hand finger chord</strong> (<code>A S D F</code> Left + <code>J K L ;</code> Right = 16 states) PLUS a <strong>2-bit spatial gaze/head quadrant</strong> (local webcam centroid OR trackpad/mouse gaze proxy = 4 quadrants) = <strong>6.0 bits/burst (64 joint states)</strong> — plotted live onto our Paper 3 Phase Transition Map (39 bps speech &rarr; 320 bps Prosthetic Cortex).</p>
+        <div class="controls">
+          <button id="bw-cam-btn" style="border-color:#3aa68f;color:#3aa68f;">Enable Local Webcam Head/Gaze</button>
+          <button id="bw-cam-cal" disabled>Calibrate Center</button>
+          <button class="primary" id="bw-start">Start 20 s Multi-Modal Burst</button>
+          <button id="bw-export" class="export-btn">Export CSV</button>
+        </div>
+
+        <div class="arena" style="padding:14px;">
+          <div class="phase-bar">
+            <span id="bw-phase">READY · 20.0 s</span>
+            <span id="bw-mode-badge">Gaze source: Pointer/Trackpad Proxy (optional local webcam)</span>
+          </div>
+          <canvas id="bw-canvas" width="380" height="330" style="cursor:crosshair;"></canvas>
+          <div style="display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;margin-top:8px;">
+            <video id="bw-video" width="96" height="72" autoplay playsinline muted style="display:none;border-radius:6px;border:1px solid var(--line);transform:scaleX(-1);"></video>
+            <canvas id="bw-cam-proc" width="64" height="48" style="display:none;"></canvas>
+            <div class="rule-pill" id="bw-target-pill">Target: Aim Gaze Quadrant + Press 1 Left (A/S/D/F) + 1 Right (J/K/L/;) Simultaneously</div>
+          </div>
+        </div>
+
+        <div class="cue-banner">
+          <span id="bw-cue-txt">100% local in-browser processing — zero video frames leave your device. Fire a Left key + Right key within 220 ms while aiming gaze/pointer into the highlighted quadrant!</span>
+          <span id="bw-last" style="font-family:var(--mono);color:var(--accent);white-space:nowrap;"></span>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:18px;">
+        <div class="card">
+          <h2>Live Multi-Modal Shannon Throughput (Fano-Corrected)</h2>
+          <p class="sub">Independent channel decomposition: <code>I_total = I_chord(4-bit) + I_gaze(2-bit)</code> &times; burst rate (Hz).</p>
+          <div class="kpis">
+            <div class="kpi"><b id="bw-total-bps">0.0</b><span>Total bits/s</span></div>
+            <div class="kpi"><b id="bw-motor-bps">0.0</b><span>2-Hand Chord bps</span></div>
+            <div class="kpi"><b id="bw-gaze-bps">0.0</b><span>Gaze/Head bps</span></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:0.77rem;color:var(--muted);margin-bottom:4px;">
+            <span id="bw-lat-txt">Median Burst Latency: -- ms</span>
+            <span id="bw-speech-pct">0% of 39 bits/s speech ceiling</span>
+          </div>
+          <div class="meter-wrap"><div class="meter-fill" id="bw-bar"></div></div>
+          <div style="margin-top:10px;">
+            <div style="font-family:var(--mono);font-size:0.72rem;color:var(--muted);margin-bottom:4px;">LIVE POSITION ON PAPER 3 BANDWIDTH &times; LATENCY PHASE TRANSITION (K = 12)</div>
+            <canvas id="bw-phase-map" width="420" height="170" style="width:100%;height:170px;background:#0c0b09;border:1px solid var(--line);border-radius:8px;"></canvas>
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <h2 style="margin:0;">Multi-Modal Session History</h2>
+            <button id="bw-reset" style="padding:4px 8px;font-size:0.78rem;">Reset</button>
+          </div>
+          <table>
+            <thead><tr><th>Source</th><th class="right">Bursts</th><th class="right">Joint Acc</th><th class="right">Lat (ms)</th><th class="right">Total bits/s</th></tr></thead>
+            <tbody id="bw-hist-body"></tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -485,6 +558,7 @@ document.querySelectorAll(".tab").forEach(btn => { btn.onclick = () => selectTab
 const initTab = new URLSearchParams(window.location.search).get("tab");
 if(initTab === "l3a" || initTab === "eeg" || window.location.hash === "#eeg") selectTab("l3a");
 else if(initTab === "burst" || window.location.hash === "#burst") selectTab("burst");
+else if(initTab === "bandwidth" || window.location.hash === "#bandwidth") selectTab("bandwidth");
 else if(initTab === "pilot" || window.location.hash === "#pilot") selectTab("pilot");
 
 function hslColor(deg){ return `hsl(${((deg%360)+360)%360}, 82%, 56%)`; }
@@ -1212,6 +1286,13 @@ async function fetchPilotCohort(){
       if(!a.n) return `<tr><td>${labels[k]}</td><td class="right">0</td><td class="right">--</td><td class="right">--</td><td class="right">--</td></tr>`;
       return `<tr><td>${labels[k]}</td><td class="right">${a.n}</td><td class="right">${a.acc30.toFixed(1)}%</td><td class="right">${a.mae_deg.toFixed(1)}&deg;</td><td class="right">${a.eff_bps.toFixed(2)}</td></tr>`;
     }).join("");
+    const goalBar = document.getElementById("cohort-goal-bar");
+    const goalTxt = document.getElementById("cohort-goal-txt");
+    if(goalBar && goalTxt){
+      const ns = data.n_sessions || 0;
+      goalTxt.textContent = `Cohort Progress: ${ns} / 20 sessions (${data.n_trials || 0} trials)`;
+      goalBar.style.width = `${Math.min(100, (ns / 20) * 100).toFixed(1)}%`;
+    }
     const pt = data.pooled_tests || {};
     const pc = data.paired_cohort || {};
     let lines = [];
@@ -1438,6 +1519,352 @@ document.getElementById("pilot-reset").onclick = () => {
 };
 document.getElementById("pilot-submit-api").onclick = () => submitPilotToApi(true);
 document.getElementById("cohort-refresh").onclick = fetchPilotCohort;
+document.getElementById("cohort-copy-invite").onclick = async () => {
+  const txt =
+    "Quick 3-min neuroscience pilot (zero login, zero personal info): https://threebits.si/gym/?tab=pilot\n" +
+    "1) Click '1. 4-Trial Calibration Warm-Up' (~30s), then '2. Start 18-Trial Study' (~2.5 min).\n" +
+    "2) Click the highlighted dot's COLOR on the outer rainbow ring. When a white arrow appears in the center, follow the arrowhead straight out to the ring. It submits automatically on Trial 18!";
+  const msg = document.getElementById("cohort-invite-msg");
+  try {
+    await navigator.clipboard.writeText(txt);
+    if(msg){ msg.textContent = "Copied invite + instructions!"; setTimeout(() => msg.textContent = "", 2400); }
+  } catch(_) {
+    if(msg) msg.textContent = "https://threebits.si/gym/?tab=pilot";
+  }
+};
+
+/* ---------- TAB 5: MULTI-MODAL BANDWIDTH LAB (GAZE/HEAD + 2-HAND CHORDS) ---------- */
+const BW_STORE_KEY = "threebits_multimodal_bw_v1";
+const LEFT_KEYS = ["a", "s", "d", "f"];
+const RIGHT_KEYS = ["j", "k", "l", ";"];
+const QUAD_LABELS = ["NW (Top-Left)", "NE (Top-Right)", "SW (Bottom-Left)", "SE (Bottom-Right)"];
+const bwCanvas = document.getElementById("bw-canvas");
+const bwCtx = bwCanvas.getContext("2d");
+const bwPhaseCanvas = document.getElementById("bw-phase-map");
+const bwPhaseCtx = bwPhaseCanvas.getContext("2d");
+const bwVideo = document.getElementById("bw-video");
+const bwCamProc = document.getElementById("bw-cam-proc");
+const bwCamCtx = bwCamProc.getContext("2d", { willReadFrequently: true });
+
+let bwCamActive = false;
+let bwCamStream = null;
+let bwCamCenter = { x: 0.5, y: 0.5 };
+let bwGazeNorm = { x: 0.5, y: 0.5 };  // [0..1, 0..1]
+let bwCurQuad = 0;
+let bwState = {
+  running: false, startTs: 0, endTs: 0, targetTime: 0, rafId: 0,
+  targetL: 0, targetR: 1, targetQ: 0,
+  pendingL: null, pendingR: null, pendingTs: 0,
+  total: 0, motorHits: 0, gazeHits: 0, jointHits: 0, lats: [],
+  lastBps: 0, lastLat: 120
+};
+
+function fanoMI(acc, nClasses){
+  const p = Math.min(Math.max(acc, 1.0 / nClasses), 0.9999);
+  const hMax = Math.log2(nClasses);
+  if(p <= 1.0 / nClasses + 1e-6) return 0.0;
+  const q = (1 - p) / (nClasses - 1);
+  return Math.max(0.0, hMax + p * Math.log2(p) + (1 - p) * Math.log2(Math.max(q, 1e-12)));
+}
+
+function updateQuadFromNorm(nx, ny){
+  bwGazeNorm.x = Math.min(Math.max(nx, 0), 1);
+  bwGazeNorm.y = Math.min(Math.max(ny, 0), 1);
+  bwCurQuad = (bwGazeNorm.y >= 0.5 ? 2 : 0) + (bwGazeNorm.x >= 0.5 ? 1 : 0);
+}
+
+bwCanvas.addEventListener("pointermove", e => {
+  if(bwCamActive) return;
+  const r = bwCanvas.getBoundingClientRect();
+  updateQuadFromNorm((e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height);
+  drawBwArena();
+});
+
+function pollWebcamCentroid(){
+  if(!bwCamActive || !bwVideo || bwVideo.readyState < 2) return;
+  bwCamCtx.drawImage(bwVideo, 0, 0, 64, 48);
+  const img = bwCamCtx.getImageData(0, 0, 64, 48).data;
+  // Track dark/skin-contrast head-iris center-of-mass strictly locally on 64x48 downsampled canvas
+  let sx = 0, sy = 0, sw = 0;
+  for(let y = 4; y < 44; y += 2){
+    for(let x = 6; x < 58; x += 2){
+      const idx = (y * 64 + x) * 4;
+      const r = img[idx], g = img[idx + 1], b = img[idx + 2];
+      const luma = 0.299 * r + 0.587 * g + 0.114 * b;
+      const w = (r > g && r > b && luma > 45) ? 2.0 : (luma < 90 ? 0.8 : 0.1);
+      sx += (1.0 - x / 64.0) * w; // mirrored horizontally so left head turn -> left quadrant
+      sy += (y / 48.0) * w;
+      sw += w;
+    }
+  }
+  if(sw > 1){
+    const cx = sx / sw, cy = sy / sw;
+    const nx = 0.5 + (cx - bwCamCenter.x) * 4.5;
+    const ny = 0.5 + (cy - bwCamCenter.y) * 4.5;
+    updateQuadFromNorm(nx, ny);
+  }
+}
+
+document.getElementById("bw-cam-btn").onclick = async () => {
+  const btn = document.getElementById("bw-cam-btn");
+  const badge = document.getElementById("bw-mode-badge");
+  if(bwCamActive){
+    if(bwCamStream) bwCamStream.getTracks().forEach(t => t.stop());
+    bwCamActive = false; bwCamStream = null;
+    bwVideo.style.display = "none";
+    btn.textContent = "Enable Local Webcam Head/Gaze";
+    document.getElementById("bw-cam-cal").disabled = true;
+    badge.textContent = "Gaze source: Pointer/Trackpad Proxy";
+    return;
+  }
+  try {
+    bwCamStream = await navigator.mediaDevices.getUserMedia({ video: { width: 160, height: 120, facingMode: "user" }, audio: false });
+    bwVideo.srcObject = bwCamStream;
+    bwVideo.style.display = "block";
+    bwCamActive = true;
+    btn.textContent = "Disable Local Webcam";
+    document.getElementById("bw-cam-cal").disabled = false;
+    badge.textContent = "Gaze source: LIVE Local Webcam Head/Gaze (0 bytes uploaded)";
+    const pump = () => {
+      if(!bwCamActive) return;
+      pollWebcamCentroid();
+      drawBwArena();
+      requestAnimationFrame(pump);
+    };
+    requestAnimationFrame(pump);
+  } catch(err) {
+    badge.textContent = `Webcam unavailable (${err.name}) — using Pointer/Trackpad Gaze Proxy`;
+  }
+};
+
+document.getElementById("bw-cam-cal").onclick = () => {
+  if(!bwCamActive) return;
+  bwCamCtx.drawImage(bwVideo, 0, 0, 64, 48);
+  const img = bwCamCtx.getImageData(0, 0, 64, 48).data;
+  let sx = 0, sy = 0, sw = 0;
+  for(let y = 4; y < 44; y += 2){
+    for(let x = 6; x < 58; x += 2){
+      const idx = (y * 64 + x) * 4;
+      const r = img[idx], g = img[idx + 1], b = img[idx + 2];
+      const luma = 0.299 * r + 0.587 * g + 0.114 * b;
+      const w = (r > g && r > b && luma > 45) ? 2.0 : (luma < 90 ? 0.8 : 0.1);
+      sx += (1.0 - x / 64.0) * w; sy += (y / 48.0) * w; sw += w;
+    }
+  }
+  if(sw > 1) bwCamCenter = { x: sx / sw, y: sy / sw };
+  document.getElementById("bw-cue-txt").textContent = "Center gaze calibrated! Shift head/eyes slightly toward NW/NE/SW/SE while chording Left + Right keys.";
+};
+
+function nextBwTarget(){
+  bwState.targetL = Math.floor(Math.random() * 4);
+  bwState.targetR = Math.floor(Math.random() * 4);
+  bwState.targetQ = Math.floor(Math.random() * 4);
+  bwState.pendingL = null; bwState.pendingR = null;
+  bwState.targetTime = performance.now();
+  document.getElementById("bw-target-pill").textContent =
+    `TARGET: Aim ${QUAD_LABELS[bwState.targetQ]} + Chord [${LEFT_KEYS[bwState.targetL].toUpperCase()} + ${RIGHT_KEYS[bwState.targetR].toUpperCase()}]`;
+  drawBwArena();
+}
+
+function drawBwArena(){
+  const W = bwCanvas.width, H = bwCanvas.height;
+  bwCtx.clearRect(0, 0, W, H);
+  bwCtx.fillStyle = "#0c0b09";
+  bwCtx.fillRect(0, 0, W, H);
+  const hw = W / 2, hh = H / 2;
+  for(let q = 0; q < 4; q++){
+    const qx = (q % 2) * hw, qy = Math.floor(q / 2) * hh;
+    const isTarget = bwState.running && q === bwState.targetQ;
+    const isCur = q === bwCurQuad;
+    bwCtx.fillStyle = isTarget ? "rgba(58,166,143,0.22)" : (isCur ? "rgba(238,111,64,0.10)" : "#13120f");
+    bwCtx.fillRect(qx + 4, qy + 4, hw - 8, hh - 8);
+    bwCtx.strokeStyle = isTarget ? "#3aa68f" : (isCur ? "#ee6f40" : "#2b2822");
+    bwCtx.lineWidth = isTarget ? 2.6 : 1.2;
+    bwCtx.strokeRect(qx + 4, qy + 4, hw - 8, hh - 8);
+    bwCtx.fillStyle = isTarget ? "#ece9df" : "#6b675b";
+    bwCtx.font = "600 11px IBM Plex Mono,monospace";
+    bwCtx.textAlign = "center";
+    bwCtx.fillText(QUAD_LABELS[q], qx + hw / 2, qy + 24);
+    if(isTarget){
+      bwCtx.fillStyle = "#3aa68f";
+      bwCtx.font = "700 28px IBM Plex Mono,monospace";
+      bwCtx.fillText(`${LEFT_KEYS[bwState.targetL].toUpperCase()} + ${RIGHT_KEYS[bwState.targetR].toUpperCase()}`, qx + hw / 2, qy + hh / 2 + 10);
+      bwCtx.font = "500 11px Inter,sans-serif";
+      bwCtx.fillStyle = "#d6d2c6";
+      bwCtx.fillText("6-bit parallel target", qx + hw / 2, qy + hh / 2 + 30);
+    }
+  }
+  // Live gaze/pointer reticle
+  const gx = bwGazeNorm.x * W, gy = bwGazeNorm.y * H;
+  bwCtx.beginPath(); bwCtx.arc(gx, gy, 9, 0, Math.PI * 2);
+  bwCtx.strokeStyle = "#ee6f40"; bwCtx.lineWidth = 2.2; bwCtx.stroke();
+  bwCtx.beginPath(); bwCtx.arc(gx, gy, 3, 0, Math.PI * 2);
+  bwCtx.fillStyle = "#ee6f40"; bwCtx.fill();
+  if(!bwState.running){
+    bwCtx.fillStyle = "rgba(12,11,9,0.72)";
+    bwCtx.fillRect(42, H / 2 - 26, W - 84, 52);
+    bwCtx.strokeStyle = "#3aa68f"; bwCtx.lineWidth = 1.2;
+    bwCtx.strokeRect(42, H / 2 - 26, W - 84, 52);
+    bwCtx.fillStyle = "#ece9df"; bwCtx.font = "600 13px Inter,sans-serif"; bwCtx.textAlign = "center";
+    bwCtx.fillText("Press Start 20 s Multi-Modal Burst", W / 2, H / 2 - 3);
+    bwCtx.fillStyle = "#9a9589"; bwCtx.font = "11px IBM Plex Mono,monospace";
+    bwCtx.fillText("Move cursor/head into quadrant + press L(ASDF) & R(JKL;)", W / 2, H / 2 + 15);
+  }
+}
+
+function drawBwPhaseMap(liveBps, liveLatMs){
+  const W = bwPhaseCanvas.width, H = bwPhaseCanvas.height;
+  bwPhaseCtx.clearRect(0, 0, W, H);
+  bwPhaseCtx.fillStyle = "#0c0b09";
+  bwPhaseCtx.fillRect(0, 0, W, H);
+  // Paper 3 verified 7x5 Phase Transition grid (rows: 960..20 bps, cols: 20,50,100,200,250 ms)
+  const bpsRows = [960, 640, 320, 160, 80, 40, 20];
+  const latCols = [20, 50, 100, 200, 250];
+  const grid = [
+    [99,99,100,100,32], [92,96,96,90,30], [84,92,86,38,33],
+    [24,33,29,28,30], [21,23,26,22,26], [19,19,20,18,18], [22,20,19,22,24]
+  ];
+  const ox = 46, oy = 12, gw = W - 62, gh = H - 36;
+  const cw = gw / latCols.length, ch = gh / bpsRows.length;
+  for(let r = 0; r < bpsRows.length; r++){
+    for(let c = 0; c < latCols.length; c++){
+      const v = grid[r][c];
+      bwPhaseCtx.fillStyle = v >= 80 ? "rgba(15,118,110,0.78)" : (v >= 35 ? "rgba(217,119,6,0.55)" : "rgba(185,28,28,0.45)");
+      bwPhaseCtx.fillRect(ox + c * cw + 1, oy + r * ch + 1, cw - 2, ch - 2);
+      bwPhaseCtx.fillStyle = "#ece9df"; bwPhaseCtx.font = "9px IBM Plex Mono,monospace"; bwPhaseCtx.textAlign = "center";
+      bwPhaseCtx.fillText(`${v}%`, ox + c * cw + cw / 2, oy + r * ch + ch / 2 + 3);
+    }
+    bwPhaseCtx.fillStyle = bpsRows[r] === 320 ? "#3aa68f" : "#9a9589";
+    bwPhaseCtx.font = "9px IBM Plex Mono,monospace"; bwPhaseCtx.textAlign = "right";
+    bwPhaseCtx.fillText(`${bpsRows[r]}`, ox - 5, oy + r * ch + ch / 2 + 3);
+  }
+  for(let c = 0; c < latCols.length; c++){
+    bwPhaseCtx.fillStyle = "#9a9589"; bwPhaseCtx.textAlign = "center";
+    bwPhaseCtx.fillText(`${latCols[c]}ms`, ox + c * cw + cw / 2, H - 8);
+  }
+  // Plot live human (latency, bps) crosshair on log-bps scale
+  const logMin = Math.log2(15), logMax = Math.log2(1100);
+  const clampedBps = Math.min(Math.max(liveBps || 16, 15), 1100);
+  const py = oy + gh * (1 - (Math.log2(clampedBps) - logMin) / (logMax - logMin));
+  const clampedLat = Math.min(Math.max(liveLatMs || 150, 15), 270);
+  const px = ox + gw * ((clampedLat - 15) / (270 - 15));
+  bwPhaseCtx.beginPath(); bwPhaseCtx.arc(px, py, 6.5, 0, Math.PI * 2);
+  bwPhaseCtx.fillStyle = "#f59e0b"; bwPhaseCtx.fill();
+  bwPhaseCtx.strokeStyle = "#ffffff"; bwPhaseCtx.lineWidth = 2; bwPhaseCtx.stroke();
+  bwPhaseCtx.fillStyle = "#ffffff"; bwPhaseCtx.font = "700 9px IBM Plex Mono,monospace"; bwPhaseCtx.textAlign = "left";
+  bwPhaseCtx.fillText(`YOU: ${(liveBps||0).toFixed(1)} bps`, Math.min(px + 9, W - 95), Math.max(py + 3, 20));
+}
+
+function updateBwKPIs(){
+  const elapsed = Math.max(0.5, (Math.min(performance.now(), bwState.endTs) - bwState.startTs) / 1000.0);
+  const rate = bwState.total / elapsed;
+  const motorAcc = bwState.total ? bwState.motorHits / bwState.total : 0;
+  const gazeAcc = bwState.total ? bwState.gazeHits / bwState.total : 0;
+  const motorBps = fanoMI(motorAcc, 16) * rate;
+  const gazeBps = fanoMI(gazeAcc, 4) * rate;
+  const totalBps = motorBps + gazeBps;
+  const sortedL = [...bwState.lats].sort((a,b) => a - b);
+  const medLat = sortedL.length ? sortedL[Math.floor(sortedL.length / 2)] : 0;
+  bwState.lastBps = totalBps; bwState.lastLat = medLat || 150;
+  document.getElementById("bw-total-bps").textContent = totalBps.toFixed(1);
+  document.getElementById("bw-motor-bps").textContent = motorBps.toFixed(1);
+  document.getElementById("bw-gaze-bps").textContent = gazeBps.toFixed(1);
+  document.getElementById("bw-lat-txt").textContent = `Median Burst Latency: ${medLat ? Math.round(medLat) + " ms" : "-- ms"}`;
+  document.getElementById("bw-speech-pct").textContent = `${Math.round((totalBps / 39.0) * 100)}% of 39 bits/s speech ceiling`;
+  document.getElementById("bw-bar").style.width = `${Math.min(100, (totalBps / 39.0) * 100).toFixed(1)}%`;
+  drawBwPhaseMap(totalBps, medLat || 150);
+}
+
+function renderBwHistory(){
+  const rows = loadRows(BW_STORE_KEY);
+  const tbody = document.getElementById("bw-hist-body");
+  if(!rows.length){
+    tbody.innerHTML = `<tr><td colspan="5" style="color:var(--muted);">No multi-modal sessions yet — run a 20 s burst!</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = rows.slice(-8).reverse().map(r =>
+    `<tr><td>${r.source}</td><td class="right">${r.bursts}</td><td class="right">${r.joint_acc.toFixed(0)}%</td><td class="right">${r.med_lat_ms}</td><td class="right" style="color:#3aa68f;font-weight:600;">${r.total_bps.toFixed(1)}</td></tr>`
+  ).join("");
+}
+
+function finishBwBurst(){
+  bwState.running = false;
+  cancelAnimationFrame(bwState.rafId);
+  document.getElementById("bw-phase").textContent = "COMPLETE · 20.0 s";
+  updateBwKPIs();
+  const rows = loadRows(BW_STORE_KEY);
+  const elapsed = 20.0;
+  const rate = bwState.total / elapsed;
+  const mAcc = bwState.total ? bwState.motorHits / bwState.total : 0;
+  const gAcc = bwState.total ? bwState.gazeHits / bwState.total : 0;
+  const jAcc = bwState.total ? (bwState.jointHits / bwState.total) * 100 : 0;
+  const mBps = fanoMI(mAcc, 16) * rate, gBps = fanoMI(gAcc, 4) * rate;
+  const sortedL = [...bwState.lats].sort((a,b) => a - b);
+  const medLat = sortedL.length ? Math.round(sortedL[Math.floor(sortedL.length / 2)]) : 0;
+  rows.push({
+    ts: Number((Date.now() / 1000).toFixed(1)),
+    source: bwCamActive ? "Webcam+Chords" : "Proxy+Chords",
+    bursts: bwState.total,
+    motor_bps: Number(mBps.toFixed(2)),
+    gaze_bps: Number(gBps.toFixed(2)),
+    total_bps: Number((mBps + gBps).toFixed(2)),
+    joint_acc: Number(jAcc.toFixed(1)),
+    med_lat_ms: medLat,
+  });
+  saveRows(BW_STORE_KEY, rows);
+  renderBwHistory();
+  drawBwArena();
+}
+
+function startBwBurst(){
+  if(bwState.running) return;
+  const now = performance.now();
+  bwState = {
+    running: true, startTs: now, endTs: now + 20000, targetTime: now, rafId: 0,
+    targetL: 0, targetR: 0, targetQ: 0, pendingL: null, pendingR: null, pendingTs: 0,
+    total: 0, motorHits: 0, gazeHits: 0, jointHits: 0, lats: [], lastBps: 0, lastLat: 150
+  };
+  nextBwTarget();
+  const tick = () => {
+    if(!bwState.running) return;
+    const rem = Math.max(0, (bwState.endTs - performance.now()) / 1000.0);
+    document.getElementById("bw-phase").textContent = `LIVE · ${rem.toFixed(1)} s`;
+    updateBwKPIs();
+    if(rem <= 0){ finishBwBurst(); return; }
+    bwState.rafId = requestAnimationFrame(tick);
+  };
+  bwState.rafId = requestAnimationFrame(tick);
+}
+
+function handleBwKey(k){
+  if(!bwState.running) return;
+  const now = performance.now();
+  const li = LEFT_KEYS.indexOf(k), ri = RIGHT_KEYS.indexOf(k);
+  if(li < 0 && ri < 0) return;
+  if(bwState.pendingTs && now - bwState.pendingTs > 350){ bwState.pendingL = null; bwState.pendingR = null; }
+  if(li >= 0){ bwState.pendingL = li; bwState.pendingTs = now; }
+  if(ri >= 0){ bwState.pendingR = ri; bwState.pendingTs = now; }
+  if(bwState.pendingL !== null && bwState.pendingR !== null){
+    const lat = now - bwState.targetTime;
+    const mHit = (bwState.pendingL === bwState.targetL && bwState.pendingR === bwState.targetR);
+    const gHit = (bwCurQuad === bwState.targetQ);
+    bwState.total += 1;
+    if(mHit) bwState.motorHits += 1;
+    if(gHit) bwState.gazeHits += 1;
+    if(mHit && gHit) bwState.jointHits += 1;
+    bwState.lats.push(lat);
+    document.getElementById("bw-last").textContent = `${mHit ? "CHORD OK" : "chord x"} · ${gHit ? "GAZE OK" : "gaze x"} (${Math.round(lat)} ms)`;
+    nextBwTarget();
+  }
+}
+
+document.getElementById("bw-start").onclick = startBwBurst;
+document.getElementById("bw-reset").onclick = () => { saveRows(BW_STORE_KEY, []); renderBwHistory(); };
+document.getElementById("bw-export").onclick = () => downloadCSV(
+  "threebits_multimodal_bandwidth.csv",
+  ["ts","source","bursts","motor_bps","gaze_bps","total_bps","joint_acc","med_lat_ms"],
+  loadRows(BW_STORE_KEY)
+);
 document.getElementById("pilot-export").onclick = () => {
   const rows = loadRows(PILOT_STORE_KEY);
   if(!rows.length) return;
@@ -1457,6 +1884,11 @@ document.getElementById("l3a-export").onclick = () => downloadCSV(
   loadRows(L3A_STORE_KEY)
 );
 window.addEventListener("keydown", e => {
+  if(document.getElementById("view-bandwidth").classList.contains("active")){
+    const k = e.key.toLowerCase();
+    if(LEFT_KEYS.includes(k) || RIGHT_KEYS.includes(k)){ e.preventDefault(); handleBwKey(k); return; }
+    if(e.code === "Space"){ e.preventDefault(); startBwBurst(); return; }
+  }
   if(document.getElementById("view-burst").classList.contains("active")){
     const k = e.key.toLowerCase();
     if(k in KEY_TO_SECTOR){ e.preventDefault(); handleBurstChoice(KEY_TO_SECTOR[k]); return; }
@@ -1469,7 +1901,7 @@ window.addEventListener("keydown", e => {
 document.getElementById("kpi-auc").textContent = EEG_DATA.decoder_auc_oof.toFixed(3);
 document.getElementById("kpi-lat").textContent = `${EEG_DATA.c99_bench_us} µs`;
 drawMonochromeGlyph(glctx, 55, 55, 44, 0.71, -0.71, true);
-render(); renderGym(); renderBurst(); renderPilotCanvas(); renderScoreboard(); renderGymScoreboard(); renderBurstHistory(); renderPilotReport(loadRows(PILOT_STORE_KEY).length >= 18); fetchPilotCohort();
+render(); renderGym(); renderBurst(); renderPilotCanvas(); renderScoreboard(); renderGymScoreboard(); renderBurstHistory(); renderPilotReport(loadRows(PILOT_STORE_KEY).length >= 18); fetchPilotCohort(); drawBwArena(); drawBwPhaseMap(0, 150); renderBwHistory();
 </script>
 </body>
 </html>
