@@ -64,9 +64,9 @@ SPECS = [
         "venue_hint": "Target: bioRxiv / arXiv (q-bio.NC, cs.AI) · Journal of Neural Engineering",
         "tag": "Human Working-Memory Limits & Brain–AI Phase Transition",
         "highlights": [
-            "123 healthy adults (ds008037): Cowan cliff 88.6% → 43.8% (K=2→6); EEG overload 0.690 AUC; live 100-region Brain Twin (threebits.si/brain/), Multi-Modal Bandwidth Lab & Single-Blind Pilot API (threebits.si/gym/)",
-            "Multi-hop & Task-Blind Continual Brain (0 task_id, 0 replay): bias-free 4-bit Region 101 hits 100.0% zero-shot on unseen D=6*, 8* (+ private goal), and Basal Ganglia D1/D2 + MD Thalamus + SWR detects 6/6 unannounced shifts in 3 steps to hit 99.8% blind steady-state (2.15 trials to lock, 0.0 pp forgetting) vs 41.2% Sham RPE & 10.5% Causal Transformer",
-            "Unified Papers 1+2+3 Silicon-in-the-Loop Spiking Brain: 176 biophysical LIF PFC neurons decoded live by our compiled pure-integer C99 int4 binary (65.4 kB, 23.7 µs/bin, 100% W4A32/W4A8 parity) driving 81-branch counterfactual planning -> 100.0% Day 1 & Week-6 drift recovery (SHA256 byte-identical ROM, 0% seizures vs 126 Hz / 100% without Lyapunov guard)",
+            "123 healthy adults (ds008037): Cowan cliff 88.6% → 43.8% (K=2→6); EEG overload 0.690 AUC; live 100-region Brain Twin & 50-Patient Stroke Explorer (threebits.si/brain/), Multi-Modal Bandwidth Lab & Single-Blind Pilot API (threebits.si/gym/)",
+            "Multi-Hop, Task-Blind Continual & Open-Ended ARC Visual Programs: 4-bit Region 101 hits 100.0% zero-shot on unseen D=6*, 8*, Basal Ganglia D1/D2 + MD Thalamus catches 6/6 unannounced shifts (99.8% blind steady-state, 0.0 pp forgetting), and 110-program 5×5 ARC synthesis hits 98.1% OOD exact 25/25 match vs 50.1% Standalone AI cap (+48.0 pp) & 0.0% Transformer",
+            "Zero-Backprop Local Co-Adaptation, Unified C99 Spiking Silicon & 50 Real Human Brains (MICA-MICs): 176-LIF STDP ↔ 3.27 kB pure-integer C99 local kernel (0.56 µs/trial, 0 backprop, 0 labels) learns 90.0% → survives Trial-540 electrode shift (2.7% → 93.0%); 65.4 kB C99 counterfactual loop hits 100.0% safe; ONE frozen 4-bit R101 transfers across 50/50 healthy MICA-MICs brains (99.6%, p=3.6e-10) & rescues 65% Frontoparietal Stroke + 30% Infarct (9.7% → 85.1%, 50/50 rescued, p=3.7e-10)",
         ],
         "bibkey": "tahir2026prosthetic",
         "bibtex_title": "From Biological Working-Memory Limits to Co-Adaptive Brain--AI Co-Processing: A Quantitative Proof Ladder",
@@ -91,7 +91,7 @@ def tex_to_html(expr: str) -> str:
     s = re.sub(r"\\mathbb\{R\}", "ℝ", s)
     s = s.replace(r"e^{g_{ij}}", "<i>e</i><sup>g<sub>ij</sub></sup>")
     repls = [
-        (r"\big(", "("), (r"\big)", ")"), (r"\left", ""), (r"\right", ""),
+        (r"\leftrightarrow", "↔"), (r"\big(", "("), (r"\big)", ")"), (r"\left", ""), (r"\right", ""),
         (r"\log", "log"), (r"\tanh", "tanh"), (r"\max", "max"), (r"\min", "min"),
         (r"\cos", "cos"), (r"\bmod", " mod "), (r"\ell", "ℓ"), (r"\%", "%"),
         (r"\rho", "ρ"), (r"\alpha", "α"), (r"\gamma", "γ"), (r"\omega", "ω"),

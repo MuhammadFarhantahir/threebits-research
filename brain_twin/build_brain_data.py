@@ -167,6 +167,9 @@ def main():
         "bench_continual": load_opt("continual_multitask_brain.json"),
         "bench_autonomous": load_opt("autonomous_brain_bg_thalamus.json"),
         "bench_unified": load_opt("unified_spiking_chip_brain.json"),
+        "bench_coadapt": load_opt("zero_backprop_coadapt.json"),
+        "bench_arc": load_opt("arc_program_brain.json"),
+        "bench_patients50": load_opt("personalized_50brain_rescue.json"),
     }
 
     OUT_JS.parent.mkdir(parents=True, exist_ok=True)

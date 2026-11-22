@@ -57,9 +57,13 @@ from pilot_api_server import (  # noqa: E402
 class NeuralEngine:
     """Real-time EEG state decoder (ds008037 replay or live LSL) + compiled C99 int4 GRU latency kernel."""
 
-    def __init__(self, use_lsl=False):
+    def __init__(self, use_lsl=False, use_lsl_emg=False, serial_port=None):
         self.source_name = "Real ds008037 Healthy-Human EEG Replay (sub-020)"
         self.lsl_inlet = None
+        self.emg_inlet = None
+        self.emg_source = "disabled"
+        self.serial_conn = None
+        self.serial_source = "disabled"
         if use_lsl:
             try:
                 from pylsl import StreamInlet, resolve_byprop
@@ -68,7 +72,23 @@ class NeuralEngine:
                     self.lsl_inlet = StreamInlet(streams[0])
                     self.source_name = f"Live LSL EEG ({streams[0].name()})"
             except Exception as e:
-                print(f"[warn] LSL unavailable ({e}); falling back to real ds008037 replay.", flush=True)
+                print(f"[warn] LSL EEG unavailable ({e}); falling back to real ds008037 replay.", flush=True)
+        if use_lsl_emg:
+            try:
+                from pylsl import StreamInlet, resolve_byprop
+                streams = resolve_byprop("type", "EMG", timeout=2.0)
+                if streams:
+                    self.emg_inlet = StreamInlet(streams[0])
+                    self.emg_source = f"Live LSL sEMG ({streams[0].name()})"
+            except Exception as e:
+                print(f"[warn] LSL sEMG unavailable ({e}).", flush=True)
+        if serial_port:
+            try:
+                import serial
+                self.serial_conn = serial.Serial(serial_port, baudrate=115200, timeout=0.05)
+                self.serial_source = f"RP2350 UART ({serial_port})"
+            except Exception as e:
+                print(f"[warn] RP2350 serial unavailable ({e}); using local compiled C99 binary.", flush=True)
 
         # Load real pre-response healthy-human EEG trials & compute strictly out-of-fold overload probabilities
         d = np.load(WM_NPZ, allow_pickle=True)
@@ -341,6 +361,14 @@ def make_handler(engine: NeuralEngine):
                 self.send_header("Content-Length", str(len(data)))
                 self.end_headers()
                 self.wfile.write(data)
+            elif route == "/api/hardware_status":
+                self._send_json({
+                    "ok": True,
+                    "eeg_source": engine.source_name,
+                    "emg_source": engine.emg_source,
+                    "mcu_serial": engine.serial_source,
+                    "c99_int4_step_us": round(engine.measure_c99_step_us(), 2),
+                })
             elif route == "/api/pilot/health":
                 summ = compute_pilot_cohort_summary(PILOT_DIR)
                 self._send_json({"ok": True, "n_sessions": summ["n_sessions"], "n_trials": summ["n_trials"]})
@@ -443,11 +471,14 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument("--port", type=int, default=8765)
     p.add_argument("--lsl", action="store_true", help="Connect to live Lab Streaming Layer EEG headset")
+    p.add_argument("--lsl-emg", action="store_true", help="Connect to live Lab Streaming Layer silent wrist sEMG stream")
+    p.add_argument("--serial", type=str, default=None, help="USB serial device path for physical RP2350 MCU bridge")
     args = p.parse_args()
-    engine = NeuralEngine(use_lsl=args.lsl)
+    engine = NeuralEngine(use_lsl=args.lsl, use_lsl_emg=args.lsl_emg, serial_port=args.serial)
     srv = HTTPServer(("127.0.0.1", args.port), make_handler(engine))
     print(f"Threebits Level-3A Brain–AI Co-Processor running at http://127.0.0.1:{args.port}", flush=True)
-    print(f"  EEG source: {engine.source_name} | OOF load AUC={engine.decoder_auc:.3f} | C99 int4 step={engine.measure_c99_step_us():.1f} us", flush=True)
+    print(f"  EEG: {engine.source_name} | sEMG: {engine.emg_source} | MCU: {engine.serial_source}", flush=True)
+    print(f"  OOF load AUC={engine.decoder_auc:.3f} | C99 int4 step={engine.measure_c99_step_us():.1f} us", flush=True)
     srv.serve_forever()
 
 
