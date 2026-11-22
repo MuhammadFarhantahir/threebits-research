@@ -8,10 +8,16 @@
 <link rel="canonical" href="https://threebits.si/gym/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%231a1916'/%3E%3Crect x='3' y='3' width='4' height='4' fill='%23f9f8f4'/%3E%3Crect x='9' y='9' width='4' height='4' fill='%23ee6f40'/%3E%3C/svg%3E">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://threebits.si/gym/">
-<meta property="og:title" content="Threebits · Neural Gym &amp; Closed-Loop Brain–AI Co-Processor">
-<meta property="og:description" content="Train your cortex on a sub-50 ms non-verbal 4-bit latent code beyond Cowan's working-memory limit (K = 8–16), or run our 4-arm healthy-human EEG trial.">
-<title>Threebits · Neural Gym &amp; Closed-Loop Brain–AI Co-Processor</title>
+<meta property="og:site_name" content="Threebits Research">
+<meta property="og:url" content="https://threebits.si/gym/?tab=pilot">
+<meta property="og:title" content="Threebits · 3-Minute Single-Blind Working-Memory Pilot &amp; Neural Gym">
+<meta property="og:description" content="Take our anonymous 18-trial blinded working-memory pilot (~3 min, zero sign-up) comparing unassisted recall vs. sham vs. a 4-bit visual cue at K = 12 items.">
+<meta property="og:image" content="https://threebits.si/papers/figures/fig5_prosthetic_cortex.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Threebits · 3-Minute Single-Blind Working-Memory Pilot &amp; Neural Gym">
+<meta name="twitter:description" content="Anonymous 18-trial blinded working-memory pilot (~3 min, zero login): test recall at K = 12 with real vs. sham 4-bit cues and see instant unblinded permutation stats.">
+<meta name="twitter:image" content="https://threebits.si/papers/figures/fig5_prosthetic_cortex.png">
+<title>Threebits · Neural Gym &amp; Single-Blind Working-Memory Pilot</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..500;1,6..72,400..500&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
   :root {
@@ -370,8 +376,17 @@
   <div class="view" id="view-pilot">
     <div class="grid">
       <div class="card">
-        <h2>Single-Blind 18-Trial Living-Human Co-Adaptation Study (K = 12)</h2>
-        <p class="sub">Counterbalanced 3-arm test at K = 12 (3&times; Cowan's limit): <strong>6 Unassisted</strong>, <strong>6 Fake Decoy (Sham)</strong>, and <strong>6 Real 4-bit AI Co-Processor</strong> trials (~3 minutes, zero personal info).</p>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;margin-bottom:6px;">
+          <h2 style="margin:0;">Single-Blind 18-Trial Living-Human Pilot Study (K = 12)</h2>
+          <button id="pilot-copy-link" style="padding:4px 10px;font-size:0.78rem;border-color:#3aa68f;color:#3aa68f;">Copy Share Link</button>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;font-family:var(--mono);font-size:0.72rem;color:var(--muted);">
+          <span style="background:#12110f;border:1px solid var(--line);border-radius:999px;padding:3px 9px;">~3 min total</span>
+          <span style="background:#12110f;border:1px solid var(--line);border-radius:999px;padding:3px 9px;">100% Anonymous &middot; Zero Login</span>
+          <span style="background:#12110f;border:1px solid var(--line);border-radius:999px;padding:3px 9px;">Laptop &amp; Phone Friendly</span>
+          <span style="background:#12110f;border:1px solid var(--line);border-radius:999px;padding:3px 9px;">Instant Unblinded Stats</span>
+        </div>
+        <p class="sub">Counterbalanced 3-arm test at K = 12 (3&times; Cowan's limit): <strong>6 Unassisted</strong>, <strong>6 Fake Decoy (Sham)</strong>, and <strong>6 Real 4-bit Cue</strong> trials. Zero personal information is collected.</p>
         <div style="background:#0c0b09;border:1px solid #2c3a36;border-left:3px solid #3aa68f;border-radius:8px;padding:11px 13px;margin-bottom:14px;font-size:0.83rem;line-height:1.55;color:#d6d2c6;">
           <div style="font-family:var(--mono);font-size:0.73rem;text-transform:uppercase;letter-spacing:0.08em;color:#3aa68f;margin-bottom:5px;font-weight:600;">How to Play (Read in 10 Seconds)</div>
           <ol style="margin:0 0 0 18px;padding:0;">
@@ -1519,7 +1534,7 @@ document.getElementById("pilot-reset").onclick = () => {
 };
 document.getElementById("pilot-submit-api").onclick = () => submitPilotToApi(true);
 document.getElementById("cohort-refresh").onclick = fetchPilotCohort;
-document.getElementById("cohort-copy-invite").onclick = async () => {
+const _copyPilotInvite = async (btnEl) => {
   const txt =
     "Quick 3-min neuroscience pilot (zero login, zero personal info): https://threebits.si/gym/?tab=pilot\n" +
     "1) Click '1. 4-Trial Calibration Warm-Up' (~30s), then '2. Start 18-Trial Study' (~2.5 min).\n" +
@@ -1528,10 +1543,26 @@ document.getElementById("cohort-copy-invite").onclick = async () => {
   try {
     await navigator.clipboard.writeText(txt);
     if(msg){ msg.textContent = "Copied invite + instructions!"; setTimeout(() => msg.textContent = "", 2400); }
+    if(btnEl){ const orig = btnEl.textContent; btnEl.textContent = "Copied!"; setTimeout(() => btnEl.textContent = orig, 1800); }
   } catch(_) {
     if(msg) msg.textContent = "https://threebits.si/gym/?tab=pilot";
   }
 };
+document.getElementById("cohort-copy-invite").onclick = (e) => _copyPilotInvite(e.currentTarget);
+const _pilotCopyBtn = document.getElementById("pilot-copy-link");
+if(_pilotCopyBtn){
+  _pilotCopyBtn.onclick = async () => {
+    const url = "https://threebits.si/gym/?tab=pilot";
+    try {
+      await navigator.clipboard.writeText(url);
+      const orig = _pilotCopyBtn.textContent;
+      _pilotCopyBtn.textContent = "Link Copied!";
+      setTimeout(() => _pilotCopyBtn.textContent = orig, 1800);
+    } catch(_) {
+      _pilotCopyBtn.textContent = url;
+    }
+  };
+}
 
 /* ---------- TAB 5: MULTI-MODAL BANDWIDTH LAB (GAZE/HEAD + 2-HAND CHORDS) ---------- */
 const BW_STORE_KEY = "threebits_multimodal_bw_v1";

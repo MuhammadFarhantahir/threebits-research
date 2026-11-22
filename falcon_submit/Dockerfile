@@ -5,11 +5,11 @@ RUN pip install --no-cache-dir numpy scipy scikit-learn falcon-challenge
 
 WORKDIR /app
 COPY chip/int4_gru.c chip/int4_gru.c
-COPY chip/bench_int4_gru.py chip/bench_int4_gru.py
+COPY chip/int4_gru_runtime.py chip/int4_gru_runtime.py
 COPY falcon_submit/decoder.py falcon_submit/decoder.py
 COPY falcon_submit/h1_int4_bundle.pkl falcon_submit/h1_int4_bundle.pkl
 
-RUN gcc -O3 -shared -fPIC chip/int4_gru.c -o falcon_submit/libint4_gru.so
+RUN gcc -O3 -std=c99 -Wall -Wextra -Werror -shared -fPIC chip/int4_gru.c -o falcon_submit/libint4_gru.so
 
 ENV PREDICTION_PATH="/submission/submission.csv"
 ENV PREDICTION_PATH_LOCAL="/tmp/submission.pkl"

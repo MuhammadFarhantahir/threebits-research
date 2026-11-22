@@ -34,8 +34,8 @@ SPECS = [
         "venue_hint": "Target: bioRxiv (Neuroscience) · PLOS Computational Biology / Imaging Neuroscience",
         "tag": "Whole-Brain Causal Simulation & Safe Control",
         "highlights": [
-            "74 CCEP patients (316,366 trials): resting-fMRI tuning drops causal ρ from +0.62 → +0.18",
-            "Multi-scale 19-receptor PET + MEG + Mesulam twin jumps unseen-region partial ρ (+0.319 → +0.366) & LOO-network (+0.374), beating permuted controls (+0.321) and reaching ρ = +0.716 on unseen pairs",
+            "74 UMCU ECoG patients (316,366 trials) + 780 multi-center F-TRACT SEEG patients: resting-fMRI tuning degrades causal ρ (+0.62 → +0.18 Utrecht; +0.286 → +0.239 prob & +0.273 → +0.220 amp on Glasser-360 F-TRACT)",
+            "Multi-scale 19-receptor PET + MEG + Mesulam twin reaches ρ = +0.716 on Utrecht unseen pairs (+0.366 unseen-region partial) and transfers strictly ZERO-SHOT out-of-hospital to 780-patient F-TRACT (ρ = +0.350 all 4,307 pairs, matching empirical Utrecht↔F-TRACT +0.343; partial +0.224 vs permuted +0.145 on 1,681 Utrecht-unmeasured pairs, p = 0.0010)",
             "Zero-shot transfer to 44/46 healthy TMS-EEG adults + 160/160 Lyapunov BRL certificates + 15-patient RAM memory policy",
         ],
         "bibkey": "tahir2026causal",

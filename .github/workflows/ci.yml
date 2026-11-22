@@ -1,0 +1,36 @@
+name: Threebits CI (C99 Firmware + Python Verification)
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install minimal runtime dependencies (zero PyTorch required for C99/EvalAI/Pilot tests)
+        run: |
+          python -m pip install --upgrade pip
+          pip install numpy scipy matplotlib
+
+      - name: Compile C99 kernels & RP2350 firmware under strict -std=c99 -Wall -Wextra -Werror
+        run: |
+          gcc -O3 -std=c99 -Wall -Wextra -Werror -shared -fPIC chip/int4_gru.c -o /tmp/libint4_gru.so
+          gcc -O3 -std=c99 -Wall -Wextra -Werror -shared -fPIC chip/c99_local_plasticity.c -o /tmp/libc99_local.so
+          gcc -O3 -std=c99 -Wall -Wextra -Werror -DHOST_TEST \
+            chip/firmware_rp2350/main.c chip/int4_gru.c chip/c99_local_plasticity.c \
+            -o /tmp/rp2350_host_emu
+          /tmp/rp2350_host_emu --bench 200
+
+      - name: Run Threebits automated verification suite
+        run: |
+          python -m unittest discover -s tests -v

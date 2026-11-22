@@ -1,0 +1,650 @@
+{
+  "part_a_glasser360_ftract": {
+    "n_regions": 360,
+    "fmri_r_untuned": 0.3239,
+    "fmri_r_tuned": 0.8448,
+    "prob_pairs_total": 26771,
+    "prob_pairs_intra": 24909,
+    "prob_pairs_inter": 1862,
+    "prob_ceiling_frac_eq_1": 0.383,
+    "amp_pairs_total": 15772,
+    "amp_pairs_intra": 15143,
+    "prob_all": {
+      "HCP dMRI wiring": {
+        "n_pairs": 26771,
+        "pooled_rho": 0.2293,
+        "pooled_partial": 0.0616,
+        "n_sites": 339,
+        "site_rho": 0.2326,
+        "site_partial": 0.0641,
+        "site_pos_frac": 0.9705
+      },
+      "HCP resting fMRI": {
+        "n_pairs": 26771,
+        "pooled_rho": 0.2716,
+        "pooled_partial": 0.2054,
+        "n_sites": 339,
+        "site_rho": 0.2318,
+        "site_partial": 0.1576,
+        "site_pos_frac": 0.9115
+      },
+      "Untuned Hopf (1p)": {
+        "n_pairs": 26771,
+        "pooled_rho": 0.286,
+        "pooled_partial": 0.0805,
+        "n_sites": 339,
+        "site_rho": 0.2858,
+        "site_partial": 0.0937,
+        "site_pos_frac": 0.9735
+      },
+      "fMRI-tuned Hopf": {
+        "n_pairs": 26771,
+        "pooled_rho": 0.2391,
+        "pooled_partial": 0.135,
+        "n_sites": 339,
+        "site_rho": 0.2381,
+        "site_partial": 0.1407,
+        "site_pos_frac": 0.9263
+      },
+      "Rewired Hopf": {
+        "n_pairs": 26771,
+        "pooled_rho": 0.1549,
+        "pooled_partial": 0.1201,
+        "n_sites": 339,
+        "site_rho": 0.1201,
+        "site_partial": 0.0875,
+        "site_pos_frac": 0.7699
+      }
+    },
+    "prob_intra": {
+      "HCP dMRI wiring": {
+        "n_pairs": 24909,
+        "pooled_rho": 0.2324,
+        "pooled_partial": 0.0588,
+        "n_sites": 339,
+        "site_rho": 0.2382,
+        "site_partial": 0.0621,
+        "site_pos_frac": 0.9676
+      },
+      "HCP resting fMRI": {
+        "n_pairs": 24909,
+        "pooled_rho": 0.2746,
+        "pooled_partial": 0.1995,
+        "n_sites": 339,
+        "site_rho": 0.235,
+        "site_partial": 0.1525,
+        "site_pos_frac": 0.9174
+      },
+      "Untuned Hopf (1p)": {
+        "n_pairs": 24909,
+        "pooled_rho": 0.2862,
+        "pooled_partial": 0.0718,
+        "n_sites": 339,
+        "site_rho": 0.2941,
+        "site_partial": 0.0908,
+        "site_pos_frac": 0.9646
+      },
+      "fMRI-tuned Hopf": {
+        "n_pairs": 24909,
+        "pooled_rho": 0.24,
+        "pooled_partial": 0.1261,
+        "n_sites": 339,
+        "site_rho": 0.2389,
+        "site_partial": 0.1333,
+        "site_pos_frac": 0.9174
+      },
+      "Rewired Hopf": {
+        "n_pairs": 24909,
+        "pooled_rho": 0.1562,
+        "pooled_partial": 0.1142,
+        "n_sites": 339,
+        "site_rho": 0.1192,
+        "site_partial": 0.0813,
+        "site_pos_frac": 0.7493
+      }
+    },
+    "prob_inter": {
+      "HCP dMRI wiring": {
+        "n_pairs": 1862,
+        "pooled_rho": 0.2188,
+        "pooled_partial": 0.1,
+        "n_sites": 73,
+        "site_rho": 0.1918,
+        "site_partial": 0.0616,
+        "site_pos_frac": 0.7534
+      },
+      "HCP resting fMRI": {
+        "n_pairs": 1862,
+        "pooled_rho": 0.253,
+        "pooled_partial": 0.2496,
+        "n_sites": 133,
+        "site_rho": 0.2073,
+        "site_partial": 0.1489,
+        "site_pos_frac": 0.6767
+      },
+      "Untuned Hopf (1p)": {
+        "n_pairs": 1862,
+        "pooled_rho": 0.3273,
+        "pooled_partial": 0.2236,
+        "n_sites": 133,
+        "site_rho": 0.1336,
+        "site_partial": 0.0416,
+        "site_pos_frac": 0.5865
+      },
+      "fMRI-tuned Hopf": {
+        "n_pairs": 1862,
+        "pooled_rho": 0.2524,
+        "pooled_partial": 0.179,
+        "n_sites": 133,
+        "site_rho": 0.247,
+        "site_partial": 0.17,
+        "site_pos_frac": 0.7444
+      },
+      "Rewired Hopf": {
+        "n_pairs": 1862,
+        "pooled_rho": 0.1523,
+        "pooled_partial": 0.1441,
+        "n_sites": 133,
+        "site_rho": 0.1449,
+        "site_partial": 0.1543,
+        "site_pos_frac": 0.6391
+      }
+    },
+    "amp_all": {
+      "HCP dMRI wiring": {
+        "n_pairs": 15772,
+        "pooled_rho": 0.2706,
+        "pooled_partial": 0.092,
+        "n_sites": 323,
+        "site_rho": 0.2728,
+        "site_partial": 0.0893,
+        "site_pos_frac": 0.9164
+      },
+      "HCP resting fMRI": {
+        "n_pairs": 15772,
+        "pooled_rho": 0.1197,
+        "pooled_partial": 0.0299,
+        "n_sites": 323,
+        "site_rho": 0.2086,
+        "site_partial": 0.1207,
+        "site_pos_frac": 0.8607
+      },
+      "Untuned Hopf (1p)": {
+        "n_pairs": 15772,
+        "pooled_rho": 0.273,
+        "pooled_partial": 0.0799,
+        "n_sites": 323,
+        "site_rho": 0.2753,
+        "site_partial": 0.0892,
+        "site_pos_frac": 0.9164
+      },
+      "fMRI-tuned Hopf": {
+        "n_pairs": 15772,
+        "pooled_rho": 0.2204,
+        "pooled_partial": 0.1036,
+        "n_sites": 323,
+        "site_rho": 0.2295,
+        "site_partial": 0.1137,
+        "site_pos_frac": 0.8916
+      },
+      "Rewired Hopf": {
+        "n_pairs": 15772,
+        "pooled_rho": 0.0728,
+        "pooled_partial": 0.0326,
+        "n_sites": 323,
+        "site_rho": 0.1096,
+        "site_partial": 0.0752,
+        "site_pos_frac": 0.7307
+      }
+    },
+    "amp_intra": {
+      "HCP dMRI wiring": {
+        "n_pairs": 15143,
+        "pooled_rho": 0.285,
+        "pooled_partial": 0.1038,
+        "n_sites": 323,
+        "site_rho": 0.2829,
+        "site_partial": 0.097,
+        "site_pos_frac": 0.9195
+      },
+      "HCP resting fMRI": {
+        "n_pairs": 15143,
+        "pooled_rho": 0.125,
+        "pooled_partial": 0.0301,
+        "n_sites": 323,
+        "site_rho": 0.2124,
+        "site_partial": 0.1211,
+        "site_pos_frac": 0.8514
+      },
+      "Untuned Hopf (1p)": {
+        "n_pairs": 15143,
+        "pooled_rho": 0.2979,
+        "pooled_partial": 0.1002,
+        "n_sites": 323,
+        "site_rho": 0.2916,
+        "site_partial": 0.0996,
+        "site_pos_frac": 0.9164
+      },
+      "fMRI-tuned Hopf": {
+        "n_pairs": 15143,
+        "pooled_rho": 0.2287,
+        "pooled_partial": 0.1072,
+        "n_sites": 323,
+        "site_rho": 0.235,
+        "site_partial": 0.1153,
+        "site_pos_frac": 0.8916
+      },
+      "Rewired Hopf": {
+        "n_pairs": 15143,
+        "pooled_rho": 0.0758,
+        "pooled_partial": 0.032,
+        "n_sites": 323,
+        "site_rho": 0.1119,
+        "site_partial": 0.0761,
+        "site_pos_frac": 0.743
+      }
+    },
+    "bootstrap_untuned_vs_fmri_prob": {
+      "delta_rho": {
+        "mean_diff": 0.047,
+        "ci95_lo": 0.0226,
+        "ci95_hi": 0.0729,
+        "p_two_sided": 0.001
+      },
+      "delta_partial": {
+        "mean_diff": -0.0549,
+        "ci95_lo": -0.0814,
+        "ci95_hi": -0.0279,
+        "p_two_sided": 0.001
+      }
+    },
+    "bootstrap_untuned_vs_fmri_amp": {
+      "delta_rho": {
+        "mean_diff": 0.0526,
+        "ci95_lo": 0.0315,
+        "ci95_hi": 0.0729,
+        "p_two_sided": 0.001
+      },
+      "delta_partial": {
+        "mean_diff": -0.0237,
+        "ci95_lo": -0.0488,
+        "ci95_hi": 0.0022,
+        "p_two_sided": 0.07
+      }
+    }
+  },
+  "part_b_utrecht_to_ftract_zeroshot": {
+    "mapping_nn_median_mm": 11.04,
+    "schaefer_parcels_covered": 99,
+    "utrecht_patients": 74,
+    "utrecht_trials_non_soz": 277638,
+    "empirical_inter_hospital_prob": {
+      "n_pairs": 2626,
+      "pooled_rho": 0.3428,
+      "pooled_partial": 0.0751,
+      "n_sites": 91,
+      "site_rho": 0.3563,
+      "site_partial": 0.0835,
+      "site_pos_frac": 0.956
+    },
+    "empirical_inter_hospital_amp": {
+      "n_pairs": 2065,
+      "pooled_rho": 0.3038,
+      "pooled_partial": 0.0862,
+      "n_sites": 89,
+      "site_rho": 0.3322,
+      "site_partial": 0.0995,
+      "site_pos_frac": 0.9213
+    },
+    "prob_all": {
+      "HCP dMRI wiring": {
+        "n_pairs": 4307,
+        "pooled_rho": 0.2278,
+        "pooled_partial": 0.0467,
+        "n_sites": 99,
+        "site_rho": 0.2486,
+        "site_partial": 0.0655,
+        "site_pos_frac": 0.9091
+      },
+      "HCP resting fMRI": {
+        "n_pairs": 4307,
+        "pooled_rho": 0.2484,
+        "pooled_partial": 0.1828,
+        "n_sites": 99,
+        "site_rho": 0.2172,
+        "site_partial": 0.1468,
+        "site_pos_frac": 0.8889
+      },
+      "Untuned Hopf (1p)": {
+        "n_pairs": 4307,
+        "pooled_rho": 0.2574,
+        "pooled_partial": 0.0304,
+        "n_sites": 99,
+        "site_rho": 0.2594,
+        "site_partial": 0.0529,
+        "site_pos_frac": 0.8889
+      },
+      "fMRI-tuned Hopf": {
+        "n_pairs": 4307,
+        "pooled_rho": 0.1747,
+        "pooled_partial": 0.1109,
+        "n_sites": 99,
+        "site_rho": 0.1751,
+        "site_partial": 0.0953,
+        "site_pos_frac": 0.8182
+      },
+      "Rewired Hopf": {
+        "n_pairs": 4307,
+        "pooled_rho": 0.1427,
+        "pooled_partial": 0.1226,
+        "n_sites": 99,
+        "site_rho": 0.1163,
+        "site_partial": 0.093,
+        "site_pos_frac": 0.697
+      },
+      "Utrecht CCEP-Hopf (ZS)": {
+        "n_pairs": 4307,
+        "pooled_rho": 0.321,
+        "pooled_partial": 0.0966,
+        "n_sites": 99,
+        "site_rho": 0.2933,
+        "site_partial": 0.0865,
+        "site_pos_frac": 0.9192
+      },
+      "Utrecht Bio-Only (47p ZS)": {
+        "n_pairs": 4307,
+        "pooled_rho": 0.342,
+        "pooled_partial": 0.1444,
+        "n_sites": 99,
+        "site_rho": 0.3016,
+        "site_partial": 0.1097,
+        "site_pos_frac": 0.9192
+      },
+      "Utrecht Bio+CCEP Twin (ZS)": {
+        "n_pairs": 4307,
+        "pooled_rho": 0.35,
+        "pooled_partial": 0.1437,
+        "n_sites": 99,
+        "site_rho": 0.3185,
+        "site_partial": 0.1308,
+        "site_pos_frac": 0.9394
+      },
+      "Permuted-Bio-Only Ctrl (3p)": {
+        "n_pairs": 4307,
+        "pooled_rho": 0.2819,
+        "pooled_partial": 0.0616,
+        "site_rho": 0.2758,
+        "site_partial": 0.0769
+      },
+      "Permuted-Bio-Full Ctrl (3p)": {
+        "n_pairs": 4307,
+        "pooled_rho": 0.3257,
+        "pooled_partial": 0.1051,
+        "site_rho": 0.2982,
+        "site_partial": 0.0962
+      }
+    },
+    "prob_unseen_in_utrecht": {
+      "HCP dMRI wiring": {
+        "n_pairs": 1681,
+        "pooled_rho": 0.1986,
+        "pooled_partial": 0.0861,
+        "n_sites": 66,
+        "site_rho": 0.1872,
+        "site_partial": 0.0853,
+        "site_pos_frac": 0.7879
+      },
+      "HCP resting fMRI": {
+        "n_pairs": 1681,
+        "pooled_rho": 0.1883,
+        "pooled_partial": 0.1543,
+        "n_sites": 68,
+        "site_rho": 0.1761,
+        "site_partial": 0.1408,
+        "site_pos_frac": 0.75
+      },
+      "Untuned Hopf (1p)": {
+        "n_pairs": 1681,
+        "pooled_rho": 0.2594,
+        "pooled_partial": 0.1194,
+        "n_sites": 68,
+        "site_rho": 0.2343,
+        "site_partial": 0.1197,
+        "site_pos_frac": 0.8529
+      },
+      "fMRI-tuned Hopf": {
+        "n_pairs": 1681,
+        "pooled_rho": 0.1603,
+        "pooled_partial": 0.1151,
+        "n_sites": 68,
+        "site_rho": 0.1353,
+        "site_partial": 0.0827,
+        "site_pos_frac": 0.7206
+      },
+      "Rewired Hopf": {
+        "n_pairs": 1681,
+        "pooled_rho": 0.116,
+        "pooled_partial": 0.1009,
+        "n_sites": 68,
+        "site_rho": 0.0866,
+        "site_partial": 0.0584,
+        "site_pos_frac": 0.6029
+      },
+      "Utrecht CCEP-Hopf (ZS)": {
+        "n_pairs": 1681,
+        "pooled_rho": 0.2986,
+        "pooled_partial": 0.1675,
+        "n_sites": 68,
+        "site_rho": 0.2448,
+        "site_partial": 0.1334,
+        "site_pos_frac": 0.8382
+      },
+      "Utrecht Bio-Only (47p ZS)": {
+        "n_pairs": 1681,
+        "pooled_rho": 0.3357,
+        "pooled_partial": 0.2236,
+        "n_sites": 68,
+        "site_rho": 0.278,
+        "site_partial": 0.18,
+        "site_pos_frac": 0.8676
+      },
+      "Utrecht Bio+CCEP Twin (ZS)": {
+        "n_pairs": 1681,
+        "pooled_rho": 0.3348,
+        "pooled_partial": 0.22,
+        "n_sites": 68,
+        "site_rho": 0.2872,
+        "site_partial": 0.1979,
+        "site_pos_frac": 0.8382
+      },
+      "Permuted-Bio-Only Ctrl (3p)": {
+        "n_pairs": 1681,
+        "pooled_rho": 0.2762,
+        "pooled_partial": 0.1449,
+        "site_rho": 0.2458,
+        "site_partial": 0.139
+      },
+      "Permuted-Bio-Full Ctrl (3p)": {
+        "n_pairs": 1681,
+        "pooled_rho": 0.3043,
+        "pooled_partial": 0.1773,
+        "site_rho": 0.2519,
+        "site_partial": 0.1483
+      }
+    },
+    "amp_all": {
+      "HCP dMRI wiring": {
+        "n_pairs": 3006,
+        "pooled_rho": 0.2288,
+        "pooled_partial": 0.074,
+        "n_sites": 97,
+        "site_rho": 0.2537,
+        "site_partial": 0.0836,
+        "site_pos_frac": 0.9278
+      },
+      "HCP resting fMRI": {
+        "n_pairs": 3006,
+        "pooled_rho": 0.1294,
+        "pooled_partial": 0.0608,
+        "n_sites": 97,
+        "site_rho": 0.1738,
+        "site_partial": 0.1122,
+        "site_pos_frac": 0.8454
+      },
+      "Untuned Hopf (1p)": {
+        "n_pairs": 3006,
+        "pooled_rho": 0.2372,
+        "pooled_partial": 0.0635,
+        "n_sites": 97,
+        "site_rho": 0.2554,
+        "site_partial": 0.0749,
+        "site_pos_frac": 0.9278
+      },
+      "fMRI-tuned Hopf": {
+        "n_pairs": 3006,
+        "pooled_rho": 0.1349,
+        "pooled_partial": 0.0788,
+        "n_sites": 97,
+        "site_rho": 0.1626,
+        "site_partial": 0.1009,
+        "site_pos_frac": 0.7938
+      },
+      "Rewired Hopf": {
+        "n_pairs": 3006,
+        "pooled_rho": 0.0728,
+        "pooled_partial": 0.0507,
+        "n_sites": 97,
+        "site_rho": 0.0927,
+        "site_partial": 0.0798,
+        "site_pos_frac": 0.701
+      },
+      "Utrecht CCEP-Hopf (ZS)": {
+        "n_pairs": 3006,
+        "pooled_rho": 0.261,
+        "pooled_partial": 0.0765,
+        "n_sites": 97,
+        "site_rho": 0.2869,
+        "site_partial": 0.0984,
+        "site_pos_frac": 0.9485
+      },
+      "Utrecht Bio-Only (47p ZS)": {
+        "n_pairs": 3006,
+        "pooled_rho": 0.2642,
+        "pooled_partial": 0.0967,
+        "n_sites": 97,
+        "site_rho": 0.275,
+        "site_partial": 0.0985,
+        "site_pos_frac": 0.9278
+      },
+      "Utrecht Bio+CCEP Twin (ZS)": {
+        "n_pairs": 3006,
+        "pooled_rho": 0.2657,
+        "pooled_partial": 0.0866,
+        "n_sites": 97,
+        "site_rho": 0.2872,
+        "site_partial": 0.0952,
+        "site_pos_frac": 0.9485
+      },
+      "Permuted-Bio-Only Ctrl (3p)": {
+        "n_pairs": 3006,
+        "pooled_rho": 0.2476,
+        "pooled_partial": 0.076,
+        "site_rho": 0.2646,
+        "site_partial": 0.0878
+      },
+      "Permuted-Bio-Full Ctrl (3p)": {
+        "n_pairs": 3006,
+        "pooled_rho": 0.2646,
+        "pooled_partial": 0.0834,
+        "site_rho": 0.2877,
+        "site_partial": 0.1005
+      }
+    },
+    "bootstraps": {
+      "bio_full_vs_fmri_all_prob": {
+        "delta_rho": {
+          "mean_diff": 0.1763,
+          "ci95_lo": 0.1206,
+          "ci95_hi": 0.2354,
+          "p_two_sided": 0.001
+        },
+        "delta_partial": {
+          "mean_diff": 0.0337,
+          "ci95_lo": -0.0306,
+          "ci95_hi": 0.1049,
+          "p_two_sided": 0.334
+        }
+      },
+      "bio_full_vs_untuned_all_prob": {
+        "delta_rho": {
+          "mean_diff": 0.0918,
+          "ci95_lo": 0.069,
+          "ci95_hi": 0.1159,
+          "p_two_sided": 0.001
+        },
+        "delta_partial": {
+          "mean_diff": 0.1122,
+          "ci95_lo": 0.0789,
+          "ci95_hi": 0.1457,
+          "p_two_sided": 0.001
+        }
+      },
+      "bio_full_vs_uniform_ccep_all_prob": {
+        "delta_rho": {
+          "mean_diff": 0.0289,
+          "ci95_lo": 0.019,
+          "ci95_hi": 0.0389,
+          "p_two_sided": 0.001
+        },
+        "delta_partial": {
+          "mean_diff": 0.047,
+          "ci95_lo": 0.0327,
+          "ci95_hi": 0.0627,
+          "p_two_sided": 0.001
+        }
+      },
+      "bio_only_vs_perm_bio_unseen_prob": {
+        "delta_rho": {
+          "mean_diff": 0.0571,
+          "ci95_lo": 0.0316,
+          "ci95_hi": 0.0842,
+          "p_two_sided": 0.001
+        },
+        "delta_partial": {
+          "mean_diff": 0.0765,
+          "ci95_lo": 0.043,
+          "ci95_hi": 0.1117,
+          "p_two_sided": 0.001
+        }
+      },
+      "bio_only_vs_fmri_unseen_prob": {
+        "delta_rho": {
+          "mean_diff": 0.1731,
+          "ci95_lo": 0.0921,
+          "ci95_hi": 0.2627,
+          "p_two_sided": 0.001
+        },
+        "delta_partial": {
+          "mean_diff": 0.1075,
+          "ci95_lo": 0.0078,
+          "ci95_hi": 0.2079,
+          "p_two_sided": 0.032
+        }
+      },
+      "bio_full_vs_fmri_amp": {
+        "delta_rho": {
+          "mean_diff": 0.1312,
+          "ci95_lo": 0.0789,
+          "ci95_hi": 0.187,
+          "p_two_sided": 0.001
+        },
+        "delta_partial": {
+          "mean_diff": 0.009,
+          "ci95_lo": -0.0564,
+          "ci95_hi": 0.0765,
+          "p_two_sided": 0.798
+        }
+      }
+    }
+  }
+}

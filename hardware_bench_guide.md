@@ -18,14 +18,16 @@ This guide takes Threebits out of pure simulation and onto a **real physical \$5
 
 ## 2. Build & Flash Pure-Integer C99 Firmware on `RP2350`
 
-### A. Verify Bare-Metal Host Executables Locally (Zero Hardware Needed)
+### A. Verify Bare-Metal Host Executables & Virtual PTY Loopback Locally (Zero Hardware Needed)
 ```bash
-# 1. Paper 2 FALCON H1 66.35 kB int4 x int8 GRU firmware benchmark
-./chip/firmware_rp2350/host_bench
+# 1. Compile unified RP2350 firmware (FALCON H1 4-bit GRU + zero-backprop C99 local plasticity)
+cc -O3 -std=c99 -Wall -Wextra -Werror -DHOST_TEST \
+   chip/firmware_rp2350/main.c chip/int4_gru.c chip/c99_local_plasticity.c \
+   -o /tmp/rp2350_host_emu
+/tmp/rp2350_host_emu --bench 2000
 
-# 2. Track E 3.27 kB Zero-Backprop On-Chip Local Co-Adaptation benchmark
-cc -O3 -Wall -Wextra chip/firmware_rp2350/coadapt_bench.c chip/c99_local_plasticity.c -o chip/firmware_rp2350/coadapt_bench
-./chip/firmware_rp2350/coadapt_bench
+# 2. Run automated C99, CRC-16 POSIX PTY loopback, EvalAI & Pilot API verification suite:
+.venv/bin/python -m unittest discover -s tests -v
 ```
 
 ### B. Cross-Compile & Flash to a Physical \$5 Raspberry Pi Pico 2 (`RP2350`)
@@ -57,7 +59,9 @@ picotool load -x chip/firmware_rp2350/build/threebits_int4_gru.uf2
 # Install optional hardware bridge packages inside .venv
 .venv/bin/pip install pylsl pyserial
 
-# Run with live LSL EEG + live LSL silent wrist sEMG + physical RP2350 USB serial bridge:
+# Run with live LSL EEG + live LSL silent wrist sEMG + physical RP2350 USB-CDC serial bridge:
+# (Speaks CRC-16/CCITT-FALSE line protocol in chip/firmware_rp2350/rp2350_protocol.h;
+#  GET /api/hardware_status & POST /api/mcu_step report live hardware microsecond latency)
 .venv/bin/python level3_app/server.py --port 8765 --lsl --lsl-emg --serial /dev/cu.usbmodem14101
 ```
 Then open `http://127.0.0.1:8765/?tab=bandwidth` or `http://127.0.0.1:8765/?tab=l3a` to run real-time closed-loop trials with live hardware latency & throughput logging.

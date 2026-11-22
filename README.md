@@ -17,9 +17,10 @@
 ## Preprints & Core Findings
 
 ### 1. Causal & Multi-Scale Human Whole-Brain Simulation + Certified-Safe Control + 15-Patient Clinical Memory
-- **Manuscript:** [paper_causal_brain_sim.md](paper_causal_brain_sim.md) · [PDF](papers/threebits_paper1_causal_brain_sim.pdf) · [arXiv LaTeX](papers/threebits_paper1_causal_brain_sim_arxiv.tar.gz)
+- **Manuscript (v1.2):** [paper_causal_brain_sim.md](paper_causal_brain_sim.md) · [PDF](papers/threebits_paper1_causal_brain_sim.pdf) · [arXiv LaTeX](papers/threebits_paper1_causal_brain_sim_arxiv.tar.gz)
 - **Observational vs. Causal Trade-off (`validate_simulator_ccep.py`, `causal_brain_simulator.py`):** Across **74 human patients (316,366 electrical stimulation trials; OpenNeuro `ds004080`)**, tuning a 100-region Hopf simulator to resting-state fMRI (`r: 0.304 → 0.889`) degrades causal CCEP prediction (`ρ: +0.616 → +0.176`; distance-controlled partial `+0.311 → +0.049`). Direct CCEP calibration lifts 5-fold unseen-pair accuracy to **`ρ = +0.710, r = +0.727, partial +0.444`**.
 - **Multi-Scale Biological Twin (`multiscale_brain_twin.py`):** Aligning 100/100 cortical parcels with **19 real human PET neurotransmitter receptors** (Hansen et al. 2022, 1,238 healthy adults), **6-band HCP MEG**, and **Mesulam laminar hierarchy** jumps completely unseen stimulated regions (`partial ρ: +0.319 → +0.366`, `r: +0.536 → +0.651`; matched-capacity permuted-biology control `+0.321`), lifts **Leave-One-Yeo-7-Network-Out** (`+0.337 → +0.374`), reaches **`ρ = +0.716, r = +0.744, partial +0.454`** on unseen pairs, and automatically recovers cholinergic facilitation (`A4B2 +0.34/+0.37`, `VAChT +0.27/+0.36`) and `GABAa` inhibitory suppression (`−0.22`).
+- **Independent Out-of-Hospital Validation on 780-Patient Multi-Center F-TRACT SEEG (`validate_ccep_ftract_external.py`):** Replicates resting-fMRI causal degradation natively on Glasser-360 (`26,771` prob pairs `+0.286 → +0.239`; `15,772` evoked-amplitude pairs `+0.273 → +0.220`), and proves **strict zero-shot cross-hospital transfer** from Utrecht ECoG (`ds004080`, 74 pts) to 780-patient F-TRACT SEEG (zero F-TRACT fitting): **`ρ = +0.350`** across all `4,307` pairs (matching empirical Utrecht↔F-TRACT `+0.343`, cluster-bootstrap `p = 0.0010` vs fMRI-tuned `+0.175`); on the **`1,681` F-TRACT pairs never measured in Utrecht**, the 47-parameter PET+MEG+Mesulam Bio-Only model achieves **`partial ρ | d = +0.224`** vs matched permuted-biology controls (`+0.145`, `p = 0.0010`) and ranks #1 zero-shot on continuous evoked z-amplitude (`3,006` pairs, `+0.266`).
 - **Zero-Shot Healthy-Human TMS-EEG (`validate_simulator_tmseeg.py`):** Transfers with zero EEG tuning to **`44/46` clean healthy adults** (`OpenNeuro ds008037`, partial `ρ | d = +0.247–0.278` vs resting-fMRI `+0.131`, rewired `+0.028`, wrong-site `−0.136`).
 - **Certified-Safe Closed-Loop Control (`safe_closedloop_controller.py`):** Exact spectral-radius projection + Small-Gain contraction + Discrete-Time Bounded Real Lemma Riccati Lyapunov certification yields **`160/160` verified stability certificates**, **`0/160` energy or hypersynchrony excursions**, and a **3.1× gain over open-loop** (`+0.0643` vs `+0.0204`) on the CCEP brain.
 - **15-Patient Intracranial Memory Policy (`human_memory_policy.py`):** Across **4,500 words & 1,142 real closed-loop stimulations (`OpenNeuro ds005557/5558`)**, held-out recall decoding reaches `0.603` AUC (`p = 0.0001`, `14/15` above chance); deep hippocampal/insular targets consistently impair recall (`−8.46 pp`, `p = 0.0035` vs LTC), and a held-out LOPO policy avoids `6/7` strongly harmful sessions.
@@ -27,7 +28,7 @@
 ### 2. Sub-8-Bit Quantized Neural Decoders Under 6-Week Human Intracortical Drift
 - **Manuscript:** [paper_falcon_lowbit.md](paper_falcon_lowbit.md) · [PDF](papers/threebits_paper2_falcon_lowbit.pdf) · [arXiv LaTeX](papers/threebits_paper2_falcon_lowbit_arxiv.tar.gz)
 - **Quantization × Drift (`precision_sweep.py`, `falcon_precision_drift.py`, `falcon_anchored_recal.py`):** On `FALCON H1` (`DANDI 000954`, 176 channels, 7-DOF, 6 weeks), 3-bit (`44.1 kB`) and 4-bit (`58.8 kB`) LSQ causal GRUs match 32-bit float accuracy (`0.816` vs `0.813`). Unsupervised channel mean-centering + a 48-second L2-anchored 1% frozen-core adapter keeps 99% of quantized weights read-only on chip and beats full fine-tuning across 3–32 bits.
-- **Pure-Integer C99 Hardware Runtime & Firmware (`chip/int4_gru.c`, `chip/firmware_rp2350/`, `falcon_submit/`):** Zero floating-point math inside `gru_int4_step()`, matching PyTorch W4A32 (`0.8191` vs `0.8192` minival; `0.3178` vs `0.3134` 6-week recalibration; reverse-time control `−0.491`) in **`66.35 kB` static Flash + SRAM** (`62.94 kB` ROM + `3.40 kB` SRAM) at **`14.3 µs` per 20 ms bin** (`5.88 MMAC/s` at 50 Hz).
+- **Pure-Integer C99 Hardware Runtime, RP2350 USB-CDC Firmware & Zero-PyTorch EvalAI Container (`chip/int4_gru.c`, `chip/int4_gru_runtime.py`, `chip/firmware_rp2350/`, `falcon_submit/`, `tests/`):** Zero floating-point math inside `gru_int4_step()`, matching PyTorch W4A32 (`0.8191` vs `0.8192` minival; `0.3178` vs `0.3134` 6-week recalibration; reverse-time control `−0.491`) in **`66.35 kB` static Flash + SRAM** (`62.94 kB` ROM + `3.40 kB` SRAM) at **`14.3 µs` per 20 ms bin** (`5.88 MMAC/s` at 50 Hz). Includes complete `RP2350` Pico SDK USB-CDC firmware (`CMakeLists.txt`, `rp2350_protocol.h`, `main.c`, `rp2350_bridge.py`) with CRC-16/CCITT-FALSE verification wrapping both the 4-bit GRU and zero-backprop C99 local plasticity kernel (`62,944 B` ROM + `6,796 B` SRAM), verified under `-O3 -std=c99 -Wall -Wextra -Werror` and POSIX PTY bit-exact loopback in GitHub Actions CI (`.github/workflows/ci.yml`).
 
 ### 3. Working-Memory Limits & Co-Adaptive Brain–AI Co-Processing
 - **Manuscript:** [paper_prosthetic_cortex.md](paper_prosthetic_cortex.md) · [PDF](papers/threebits_paper3_prosthetic_cortex.pdf) · [arXiv LaTeX](papers/threebits_paper3_prosthetic_cortex_arxiv.tar.gz)
@@ -76,6 +77,12 @@ python personalized_50brain_rescue.py
 python scaling_law_1e9x.py
 python collective_multibrain_superintelligence.py
 python laminar_spiking_sleep_eeg.py
+
+# Run automated C99 (-Werror), RP2350 POSIX PTY loopback, zero-PyTorch EvalAI & Pilot API test suite:
+python -m unittest discover -s tests -v
+
+# Run independent 780-patient multi-center F-TRACT out-of-hospital validation:
+python validate_ccep_ftract_external.py
 
 # Run the local Level-3A EEG + sEMG + RP2350 UART Neural Gym & Pilot API server
 python level3_app/server.py --port 8765 --lsl --lsl-emg --serial /dev/cu.usbmodem*

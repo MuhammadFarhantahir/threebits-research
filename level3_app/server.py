@@ -43,7 +43,7 @@ WM_NPZ = ROOT / "data" / "tmseeg_ds008037" / "wm_features" / "sub-020_wm.npz"
 
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "chip"))
-from bench_int4_gru import Int4GRUModelC, build_luts, float_to_mult_shift  # noqa: E402
+from int4_gru_runtime import Int4GRUModelC, build_luts, find_int4_gru_library, float_to_mult_shift  # noqa: E402
 from pilot_api_server import (  # noqa: E402
     MAX_BODY_BYTES,
     _summarize_rows as _summarize_pilot_rows,
@@ -84,9 +84,10 @@ class NeuralEngine:
                 print(f"[warn] LSL sEMG unavailable ({e}).", flush=True)
         if serial_port:
             try:
-                import serial
-                self.serial_conn = serial.Serial(serial_port, baudrate=115200, timeout=0.05)
-                self.serial_source = f"RP2350 UART ({serial_port})"
+                sys.path.insert(0, str(ROOT / "chip" / "firmware_rp2350"))
+                from rp2350_bridge import RP2350Bridge  # noqa: E402
+                self.serial_conn = RP2350Bridge(serial_port, baudrate=115200, timeout=1.5)
+                self.serial_source = f"RP2350 USB-CDC ({self.serial_conn.board} @ {serial_port})"
             except Exception as e:
                 print(f"[warn] RP2350 serial unavailable ({e}); using local compiled C99 binary.", flush=True)
 
@@ -131,9 +132,10 @@ class NeuralEngine:
 
         # Load compiled pure-integer C99 4-bit GRU kernel for live hardware latency measurement
         self.c_lib = None
-        so_path = ROOT / "chip" / "libint4_gru.dylib"
+        self._x_buf = np.ascontiguousarray(self.rng.integers(-30, 30, size=176, dtype=np.int8))
+        so_path = find_int4_gru_library([ROOT / "chip", ROOT / "falcon_submit"])
         pkl_path = ROOT / "falcon_submit" / "h1_int4_bundle.pkl"
-        if so_path.exists() and pkl_path.exists():
+        if so_path is not None and pkl_path.exists():
             import pickle
             self.c_lib = ctypes.CDLL(str(so_path))
             self.c_lib.gru_int4_step.argtypes = [
@@ -166,6 +168,12 @@ class NeuralEngine:
             self._x_buf = np.ascontiguousarray(self.rng.integers(-30, 30, size=core["I"], dtype=np.int8))
 
     def measure_c99_step_us(self):
+        if self.serial_conn is not None:
+            try:
+                res = self.serial_conn.step_gru(self._x_buf)
+                return float(res["us"])
+            except Exception as e:
+                print(f"[warn] RP2350 step_gru error ({e}); falling back to local C99.", flush=True)
         if self.c_lib is None:
             return 14.3
         t0 = time.perf_counter()
@@ -177,6 +185,17 @@ class NeuralEngine:
             self._scratch.ctypes.data_as(ctypes.POINTER(ctypes.c_int32)),
         )
         return float((time.perf_counter() - t0) * 1e6)
+
+    def run_mcu_step(self, mode: str = "gru", x_q8=None, reward_bit: int = -1):
+        """Execute a live GRU or on-chip local plasticity step on connected RP2350/PTY hardware."""
+        if self.serial_conn is None:
+            return {"ok": False, "error": "mcu_not_connected"}
+        vec = self._x_buf if x_q8 is None else np.asarray(x_q8, dtype=np.int8)
+        if mode == "local":
+            res = self.serial_conn.step_local(vec, reward_bit=reward_bit)
+        else:
+            res = self.serial_conn.step_gru(vec)
+        return {"ok": True, "mode": mode, "board": self.serial_conn.board, **res}
 
     def decode_trial(self, arm: str, set_size: int):
         """Return real decoded pre-response EEG overload risk, parietal alpha trace, and co-processor trigger."""
@@ -362,12 +381,14 @@ def make_handler(engine: NeuralEngine):
                 self.end_headers()
                 self.wfile.write(data)
             elif route == "/api/hardware_status":
+                step_us = round(engine.measure_c99_step_us(), 2)
                 self._send_json({
                     "ok": True,
                     "eeg_source": engine.source_name,
                     "emg_source": engine.emg_source,
                     "mcu_serial": engine.serial_source,
-                    "c99_int4_step_us": round(engine.measure_c99_step_us(), 2),
+                    "mcu": engine.serial_conn.status() if engine.serial_conn is not None else {"connected": False},
+                    "c99_int4_step_us": step_us,
                 })
             elif route == "/api/pilot/health":
                 summ = compute_pilot_cohort_summary(PILOT_DIR)
@@ -457,6 +478,13 @@ def make_handler(engine: NeuralEngine):
                 if GYM_LOG_PATH.exists():
                     GYM_LOG_PATH.unlink()
                 self._send_json(compute_gym_stats())
+            elif route == "/api/mcu_step":
+                res = engine.run_mcu_step(
+                    mode=str(payload.get("mode", "gru")),
+                    x_q8=payload.get("x_q8"),
+                    reward_bit=int(payload.get("reward_bit", -1)),
+                )
+                self._send_json(res, code=200 if res.get("ok") else 503)
             elif route == "/api/reset_log":
                 if LOG_PATH.exists():
                     LOG_PATH.unlink()

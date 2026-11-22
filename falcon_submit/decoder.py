@@ -19,17 +19,21 @@ from pathlib import Path
 from typing import List
 
 import numpy as np
-import torch
 
 ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from chip.bench_int4_gru import Int4GRUModelC, build_luts, export_int4_c_bundle, float_to_mult_shift, pack_int4_matrix
+from chip.int4_gru_runtime import Int4GRUModelC, build_luts, float_to_mult_shift, pack_int4_matrix
 
 
 def _load_c_lib():
-    for cand in (Path(__file__).with_name("libint4_gru.so"), ROOT / "chip" / "libint4_gru.dylib", ROOT / "chip" / "libint4_gru.so"):
+    for cand in (
+        Path(__file__).with_name("libint4_gru.so"),
+        Path(__file__).with_name("libint4_gru.dylib"),
+        ROOT / "chip" / "libint4_gru.so",
+        ROOT / "chip" / "libint4_gru.dylib",
+    ):
         if cand.exists():
             lib = ctypes.CDLL(str(cand))
             lib.gru_int4_step.argtypes = [
@@ -68,6 +72,8 @@ def _make_runtime_struct(core, adapter):
 
 def train_bundle(data_dir: str, out_path: str):
     """Train 4-bit packed-weight GRU on held-in-calib + per-day 1% anchored adapters for held-out-calib."""
+    import torch
+    from chip.bench_int4_gru import export_int4_c_bundle
     from falcon_anchored_recal import recalibrate_anchored
     from falcon_precision_drift import CausalGRU, _load_all, fit_model, pad_trials, split_trials
     from precision_sweep import Rounded
