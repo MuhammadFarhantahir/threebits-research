@@ -235,16 +235,19 @@
 
     <div class="card">
       <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
-        <h2 style="margin:0;">3. Verified 100-Region Emulator Benchmarks (v2.0)</h2>
+        <h2 style="margin:0;">3. Verified 100-Region Emulator Benchmarks (v3.0)</h2>
         <div class="controls" style="margin:0;">
-          <button class="b-tab active teal" data-bench="reasoning">Multi-Hop (D=1..8*)</button>
+          <button class="b-tab active teal" data-bench="reasoning">Multi-Hop</button>
           <button class="b-tab" data-bench="wm">Working Memory</button>
-          <button class="b-tab" data-bench="continual">Continual 3-Task</button>
-          <button class="b-tab" data-bench="autonomous">Task-Blind BG/Thal</button>
-          <button class="b-tab" data-bench="unified">Spiking C99 Chip</button>
-          <button class="b-tab" data-bench="coadapt">Zero-Backprop STDP</button>
-          <button class="b-tab" data-bench="arc">ARC Visual Programs</button>
+          <button class="b-tab" data-bench="continual">Continual</button>
+          <button class="b-tab" data-bench="autonomous">Task-Blind BG</button>
+          <button class="b-tab" data-bench="unified">Spiking C99</button>
+          <button class="b-tab" data-bench="coadapt">Zero-Backprop</button>
+          <button class="b-tab" data-bench="arc">ARC Programs</button>
           <button class="b-tab" data-bench="patients50">50-Patient Rescue</button>
+          <button class="b-tab" data-bench="scaling1e9">10⁹× Scaling Law</button>
+          <button class="b-tab" data-bench="collective8">8-Brain Collective</button>
+          <button class="b-tab" data-bench="laminar_sleep">Laminar Sleep EEG</button>
         </div>
       </div>
       <p class="sub" id="bench-desc">Trained strictly on D=1..4, tested zero-shot on unseen D=6* and D=8* with a private embodied human goal.</p>
@@ -261,7 +264,7 @@
 
   <footer>
     <span>Real human data: OpenNeuro ds004080 (74 CCEP patients, CC0), OpenNeuro ds008037 (46 TMS-EEG + 123 WM adults, CC0), MICA-MICs (50 individual dMRI connectomes, CC0), Hansen et al. 2022 (19 PET receptors), HCP MEG.</span>
-    <span><a href="/papers/prosthetic-cortex.html">Read Paper 3 (v2.0)</a> · <a href="https://github.com/MuhammadFarhantahir/threebits-research" target="_blank" rel="noopener">Open Code on GitHub</a></span>
+    <span><a href="/papers/prosthetic-cortex.html">Read Paper 3 (v3.0)</a> · <a href="https://github.com/MuhammadFarhantahir/threebits-research" target="_blank" rel="noopener">Open Code on GitHub</a></span>
   </footer>
 </div>
 
@@ -1034,6 +1037,107 @@ function drawBenchChart(){
     });
     benchCtx.fillStyle = "#7dd8c5"; benchCtx.textAlign = "left"; benchCtx.font = "9px IBM Plex Mono,monospace";
     benchCtx.fillText(`N=50 MICA-MICs dMRI | Stroke p=${st.lesion_wilcoxon_p.toExponential(1)} | Med/Max |Δsync|=${(st.median_abs_dsync||0).toFixed(3)}/${st.max_abs_dsync.toFixed(3)} (${st.dsync_below_010_count||50}/50 <0.10)`, pad.l, h - 5);
+  } else if(activeBench === "scaling1e9" && D.bench_scaling1e9){
+    const sc = D.bench_scaling1e9;
+    const g39 = sc.curves.distilled_B39.slice(-1)[0], g320 = sc.curves.distilled_B320.slice(-1)[0], g1M = sc.curves.distilled_B1M.slice(-1)[0], gn1M = sc.curves.naive_B1M.slice(-1)[0];
+    document.getElementById("bench-desc").textContent = `Amdahl–Shannon Scaling Law (Layer-0 100-region brain, 64-D private values ↔ B-bps Layer-1 ↔ M× silicon, R²=${sc.amdahl_shannon_fit.r2_log}): At M=10⁶×, Speech caps at ${g39.toFixed(0)}× (43% agency), 320 bps → ${(g320/1e3).toFixed(0)}k×, 10⁶ bps → ${(g1M/1e3).toFixed(0)}k× (91.9% agency) vs Naive ${(gn1M/1e3).toFixed(1)}k×.`;
+    // Re-draw custom log10 y-axis (1x .. 10^6x) cleanly over cleared canvas
+    benchCtx.clearRect(0, 0, w, h);
+    benchCtx.strokeStyle = "#26241f"; benchCtx.lineWidth = 1;
+    benchCtx.fillStyle = "#8f8a7d"; benchCtx.font = "10px IBM Plex Mono,monospace"; benchCtx.textAlign = "right";
+    for(let p = 0; p <= 6; p += 2){
+      const y = pad.t + ph * (1 - p / 6);
+      benchCtx.beginPath(); benchCtx.moveTo(pad.l, y); benchCtx.lineTo(w - pad.r, y); benchCtx.stroke();
+      benchCtx.fillText(p === 0 ? "1×" : `10^${p}`, pad.l - 6, y + 3.5);
+    }
+    const series = [
+      ["distilled_B1M",  "#3aa68f", "Distilled 1M bps (223k×)"],
+      ["distilled_B10k", "#4f86f7", "Distilled 10k bps (208k×)"],
+      ["distilled_B320", "#0d9488", "Distilled 320 bps (60k×)"],
+      ["naive_B1M",      "#dc4c4c", "Naive Uncomp (27.5k×)"],
+      ["distilled_B39",  "#e8a838", "Speech 39 bps (109×)"],
+    ];
+    for(const [key, col] of series){
+      const arr = sc.curves[key];
+      if(!arr) continue;
+      benchCtx.strokeStyle = col; benchCtx.lineWidth = key === "distilled_B1M" ? 2.6 : 1.7;
+      benchCtx.beginPath();
+      arr.forEach((v, i) => {
+        const x = pad.l + (i / (arr.length - 1)) * pw;
+        const lv = Math.max(0, Math.min(6, Math.log10(Math.max(v, 1))));
+        const y = pad.t + ph * (1 - lv / 6);
+        if(i === 0) benchCtx.moveTo(x, y); else benchCtx.lineTo(x, y);
+      });
+      benchCtx.stroke();
+    }
+    benchCtx.fillStyle = "#c5c0b3"; benchCtx.textAlign = "center"; benchCtx.font = "10px IBM Plex Mono,monospace";
+    ["1×","10×","10²","10³","10⁴","10⁵","10⁶"].forEach((lbl, i) => benchCtx.fillText(lbl, pad.l + (i / 6) * pw, h - 22));
+    let lx = pad.l;
+    series.forEach(([_, col, txt]) => {
+      benchCtx.fillStyle = col; benchCtx.fillRect(lx, h - 10, 7, 4);
+      benchCtx.fillStyle = "#b5b0a2"; benchCtx.textAlign = "left"; benchCtx.font = "8.2px Inter,sans-serif";
+      benchCtx.fillText(txt, lx + 9, h - 5);
+      lx += 102;
+    });
+  } else if(activeBench === "collective8" && D.bench_collective8){
+    const c = D.bench_collective8;
+    const c8 = c.regimes.collective_8, sp = c.regimes.speech_team_8, ai = c.regimes.standalone_ai;
+    document.getElementById("bench-desc").textContent = `Multi-Human Collective Superintelligence (8 real MICA-MICs brains HC001–HC008 on 600 unseen coupled nonlinear ODEs + 8-brain private policy): 8-Brain Collective hits ${c8.joint_mean.toFixed(1)}% (ODE ${c8.ode_mean.toFixed(1)}%, Policy ${c8.priv_mean.toFixed(0)}%) vs ${ai.joint_mean.toFixed(1)}% Standalone AI & ${sp.joint_mean.toFixed(1)}% 8-Human 39 bps Speech Team.`;
+    const bars = [
+      ["single_bio",    "1 Bio",     "#64748b"],
+      ["sham_mesh",     "Sham 8",    "#94a3b8"],
+      ["single_r101",   "1+R101",    "#4f86f7"],
+      ["speech_team_8", "8 Speech",  "#e8a838"],
+      ["standalone_ai", "AI Oracle", "#9d7cf4"],
+      ["collective_8",  "8-Brain+",  "#3aa68f"],
+    ];
+    const stepW = pw / bars.length;
+    bars.forEach(([k, lbl, col], i) => {
+      const m = c.regimes[k]?.joint_mean ?? 0;
+      const cx = pad.l + stepW * (i + 0.5);
+      const bh = ph * (m / 100);
+      benchCtx.fillStyle = col;
+      benchCtx.fillRect(cx - 20, pad.t + ph - Math.max(bh, 2), 40, Math.max(bh, 2));
+      benchCtx.fillStyle = "#efece3"; benchCtx.textAlign = "center"; benchCtx.font = "600 9.5px IBM Plex Mono,monospace";
+      benchCtx.fillText(`${m.toFixed(1)}%`, cx, pad.t + ph - bh - 5);
+      benchCtx.fillStyle = "#c5c0b3"; benchCtx.font = "9px Inter,sans-serif";
+      benchCtx.fillText(lbl, cx, h - 22);
+    });
+    benchCtx.fillStyle = "#7dd8c5"; benchCtx.textAlign = "left"; benchCtx.font = "9px IBM Plex Mono,monospace";
+    benchCtx.fillText(`N_mesh [1→2→4→8]: ${c.n_brain_sweep.joint_mean.map(v=>v.toFixed(0)+"%").join(" → ")} | Bus BW ≥320 bps unlocks hive-mind (${c.bus_bw_sweep.joint_mean[2].toFixed(0)}%)`, pad.l, h - 5);
+  } else if(activeBench === "laminar_sleep" && D.bench_laminar_sleep){
+    const ls = D.bench_laminar_sleep;
+    const eeg = ls.scalp_eeg_validation, iu = ls.sleep_consolidation.arms.interleaved_upstate_swr;
+    document.getElementById("bench-desc").textContent = `Biophysical Laminar L2/3+L5/6 Spiking Brain + Zero-Shot 62-Ch ds008037 Scalp EEG (n=15 WM adults: Load ERP ρ=+${eeg.wm_load_erp_0_250ms_rho.toFixed(3)}, p=${eeg.wm_load_erp_0_250ms_perm_p.toFixed(3)}, 13/15 adults) + Night-1 NREM Up-State SWR Consolidation: Day-2 CHIP UNPLUGGED transfers Skill B (${ls.sleep_consolidation.day1_B_unplugged_mean.toFixed(0)}% → ${iu.day2_B_mean.toFixed(1)}%) while retaining Old Skill A (${iu.day2_A_mean.toFixed(1)}%).`;
+    const arms = [
+      ["no_sleep", "No Sleep"],
+      ["sham_downstate", "Sham Down-St"],
+      ["uninterleaved_swr", "Uninterleaved"],
+      ["interleaved_upstate_swr", "Interl. Up-SWR"],
+    ];
+    const stepW = pw / arms.length;
+    arms.forEach(([k, lbl], i) => {
+      const a = ls.sleep_consolidation.arms[k];
+      const cx = pad.l + stepW * (i + 0.5);
+      const bhB = ph * (a.day2_B_mean / 100);
+      const bhA = ph * (a.day2_A_mean / 100);
+      benchCtx.fillStyle = "#3aa68f";
+      benchCtx.fillRect(cx - 26, pad.t + ph - Math.max(bhB, 2), 24, Math.max(bhB, 2));
+      benchCtx.fillStyle = "#4f86f7";
+      benchCtx.fillRect(cx + 2, pad.t + ph - Math.max(bhA, 2), 24, Math.max(bhA, 2));
+      benchCtx.fillStyle = "#7dd8c5"; benchCtx.textAlign = "center"; benchCtx.font = "600 9px IBM Plex Mono,monospace";
+      benchCtx.fillText(`${a.day2_B_mean.toFixed(0)}%`, cx - 14, pad.t + ph - bhB - 5);
+      benchCtx.fillStyle = "#93c5fd";
+      benchCtx.fillText(`${a.day2_A_mean.toFixed(0)}%`, cx + 14, pad.t + ph - bhA - 5);
+      benchCtx.fillStyle = "#c5c0b3"; benchCtx.font = "9px Inter,sans-serif";
+      benchCtx.fillText(lbl, cx, h - 22);
+    });
+    benchCtx.fillStyle = "#3aa68f"; benchCtx.fillRect(pad.l, h - 10, 8, 4);
+    benchCtx.fillStyle = "#b5b0a2"; benchCtx.textAlign = "left"; benchCtx.font = "8.8px Inter,sans-serif";
+    benchCtx.fillText("Left: New Skill B (CHIP OFF!)", pad.l + 10, h - 5);
+    benchCtx.fillStyle = "#4f86f7"; benchCtx.fillRect(pad.l + 165, h - 10, 8, 4);
+    benchCtx.fillStyle = "#b5b0a2";
+    benchCtx.fillText("Right: Old Skill A Retained | 160-LIF PAC MI: 0.011 → 0.019", pad.l + 175, h - 5);
   } else {
     benchCtx.fillStyle = "#8f8a7d"; benchCtx.textAlign = "center"; benchCtx.font = "12px Inter,sans-serif";
     benchCtx.fillText("Benchmark data loading...", w / 2, h / 2);

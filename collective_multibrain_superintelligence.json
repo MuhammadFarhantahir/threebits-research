@@ -1,0 +1,121 @@
+{
+  "protocol": "Multi-Human Collective Superintelligence Across 8 Real MICA-MICs Human Brains (HC001..HC008) on Continuous 8-Variable Nonlinear ODE Scientific Causal-Law Discovery (5 seeds x 120 unseen worlds = 600 ODEs)",
+  "brain_ids": [
+    "HC001",
+    "HC002",
+    "HC003",
+    "HC004",
+    "HC005",
+    "HC006",
+    "HC007",
+    "HC008"
+  ],
+  "n_seeds": 5,
+  "n_worlds_per_seed": 120,
+  "regimes": {
+    "single_bio": {
+      "joint_mean": 0.83,
+      "joint_sd": 0.75,
+      "ode_mean": 4.67,
+      "priv_mean": 22.67,
+      "max_dsync": 0.0
+    },
+    "sham_mesh": {
+      "joint_mean": 0.0,
+      "joint_sd": 0.0,
+      "ode_mean": 0.17,
+      "priv_mean": 24.5,
+      "max_dsync": 0.0668
+    },
+    "single_r101": {
+      "joint_mean": 0.0,
+      "joint_sd": 0.0,
+      "ode_mean": 0.0,
+      "priv_mean": 24.67,
+      "max_dsync": 0.0672
+    },
+    "speech_team_8": {
+      "joint_mean": 0.5,
+      "joint_sd": 0.41,
+      "ode_mean": 0.5,
+      "priv_mean": 58.5,
+      "max_dsync": 0.0705
+    },
+    "standalone_ai": {
+      "joint_mean": 26.17,
+      "joint_sd": 4.07,
+      "ode_mean": 96.5,
+      "priv_mean": 27.0,
+      "max_dsync": 0.0
+    },
+    "collective_8": {
+      "joint_mean": 85.17,
+      "joint_sd": 4.61,
+      "ode_mean": 85.17,
+      "priv_mean": 100.0,
+      "max_dsync": 0.0634
+    }
+  },
+  "n_brain_sweep": {
+    "N_values": [
+      1,
+      2,
+      4,
+      8
+    ],
+    "joint_mean": [
+      0.17,
+      0.0,
+      36.33,
+      81.0
+    ],
+    "joint_sd": [
+      0.33,
+      0.0,
+      2.72,
+      2.2
+    ],
+    "ode_mean": [
+      0.17,
+      0.17,
+      73.83,
+      81.0
+    ],
+    "priv_mean": [
+      25.67,
+      25.5,
+      49.83,
+      100.0
+    ]
+  },
+  "bus_bw_sweep": {
+    "B_values": [
+      39,
+      160,
+      320,
+      1024,
+      4096
+    ],
+    "joint_mean": [
+      0.5,
+      19.0,
+      79.83,
+      82.67,
+      82.0
+    ],
+    "joint_sd": [
+      0.67,
+      1.11,
+      3.22,
+      3.99,
+      0.85
+    ],
+    "ode_mean": [
+      0.67,
+      24.5,
+      79.83,
+      82.67,
+      82.0
+    ]
+  }
+}

@@ -170,6 +170,9 @@ def main():
         "bench_coadapt": load_opt("zero_backprop_coadapt.json"),
         "bench_arc": load_opt("arc_program_brain.json"),
         "bench_patients50": load_opt("personalized_50brain_rescue.json"),
+        "bench_scaling1e9": load_opt("scaling_law_1e9x.json"),
+        "bench_collective8": load_opt("collective_multibrain_superintelligence.json"),
+        "bench_laminar_sleep": load_opt("laminar_spiking_sleep_eeg.json"),
     }
 
     OUT_JS.parent.mkdir(parents=True, exist_ok=True)
