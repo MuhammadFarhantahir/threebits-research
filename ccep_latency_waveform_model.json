@@ -1,0 +1,822 @@
+{
+  "part_a_ftract_360_latency": {
+    "onset_latency": {
+      "n_pairs": 15691,
+      "median_ms": 26.0,
+      "models": {
+        "Euclidean distance only": {
+          "spearman": 0.3597,
+          "pearson": 0.3352,
+          "mae_ms": 8.84,
+          "rmse_ms": 10.86,
+          "beta": [
+            19.73321,
+            0.24671
+          ]
+        },
+        "Real white-matter fiber length": {
+          "spearman": 0.31,
+          "pearson": 0.278,
+          "mae_ms": 9.01,
+          "rmse_ms": 11.07,
+          "beta": [
+            21.20265,
+            0.18125
+          ],
+          "implied_tau_syn_ms": 21.2,
+          "implied_velocity_m_per_s": 5.52
+        },
+        "Connectome hops + weighted path": {
+          "spearman": 0.2527,
+          "pearson": 0.2538,
+          "mae_ms": 9.12,
+          "rmse_ms": 11.14,
+          "beta": [
+            21.30713,
+            1.2081,
+            0.08436
+          ]
+        },
+        "Biophysical fiber + hops + inter-hemi + hubness": {
+          "spearman": 0.3594,
+          "pearson": 0.3474,
+          "mae_ms": 8.8,
+          "rmse_ms": 10.8,
+          "beta": [
+            19.30617,
+            -0.01282,
+            0.27909,
+            0.90358,
+            -0.01373,
+            -4.88771,
+            -2.89834,
+            -1.82977
+          ]
+        }
+      }
+    },
+    "peak_latency": {
+      "n_pairs": 15772,
+      "median_ms": 33.59,
+      "models": {
+        "Euclidean distance only": {
+          "spearman": 0.3474,
+          "pearson": 0.3231,
+          "mae_ms": 9.78,
+          "rmse_ms": 11.98,
+          "beta": [
+            26.29336,
+            0.26111
+          ]
+        },
+        "Real white-matter fiber length": {
+          "spearman": 0.2946,
+          "pearson": 0.2619,
+          "mae_ms": 9.98,
+          "rmse_ms": 12.22,
+          "beta": [
+            27.99268,
+            0.18807
+          ],
+          "implied_tau_syn_ms": 27.99,
+          "implied_velocity_m_per_s": 5.32
+        },
+        "Connectome hops + weighted path": {
+          "spearman": 0.2373,
+          "pearson": 0.2376,
+          "mae_ms": 10.07,
+          "rmse_ms": 12.3,
+          "beta": [
+            28.43648,
+            0.90718,
+            0.0931
+          ]
+        },
+        "Biophysical fiber + hops + inter-hemi + hubness": {
+          "spearman": 0.3505,
+          "pearson": 0.3341,
+          "mae_ms": 9.74,
+          "rmse_ms": 11.93,
+          "beta": [
+            26.90294,
+            -0.03257,
+            0.32253,
+            0.55627,
+            -0.01623,
+            -4.53202,
+            -3.8897,
+            -3.5624
+          ]
+        }
+      }
+    }
+  },
+  "part_b_utrecht_developmental_and_transfer": {
+    "n_patients_developmental": 74,
+    "age_range": [
+      4.0,
+      51.0
+    ],
+    "speed_vs_age_rho": 0.3867,
+    "speed_vs_age_p": 0.0006653841205675043,
+    "latency_vs_age_rho": -0.4258,
+    "latency_vs_age_p": 0.00015534812080235125,
+    "pediatric_lt15_median_m_s": 1.392,
+    "adult_ge25_median_m_s": 1.748,
+    "pediatric_vs_adult_p": 0.002270684666490749,
+    "lpo_latency_cv": {
+      "n_patients": 74,
+      "age_blind_mae_ms": 12.05,
+      "age_conditioned_mae_ms": 11.79,
+      "patients_improved": 45,
+      "wilcoxon_p": 0.025195208355339675,
+      "mean_patient_rho": 0.3804
+    },
+    "zero_shot_utrecht_to_ftract_latency": {
+      "ftract_peak_latency_100": {
+        "n_pairs": 3006,
+        "spearman": 0.3132,
+        "pearson": 0.2776,
+        "mae_ms": 9.44
+      },
+      "ftract_onset_latency_100": {
+        "n_pairs": 2993,
+        "spearman": 0.3177,
+        "pearson": 0.2816,
+        "mae_ms": 12.81
+      }
+    },
+    "patient_velocities": [
+      {
+        "id": "sub-ccepAgeUMCU01",
+        "age": 15.0,
+        "n_n1": 920,
+        "v_eff_m_s": 1.131,
+        "med_lat_ms": 37.11
+      },
+      {
+        "id": "sub-ccepAgeUMCU02",
+        "age": 35.0,
+        "n_n1": 383,
+        "v_eff_m_s": 2.42,
+        "med_lat_ms": 23.44
+      },
+      {
+        "id": "sub-ccepAgeUMCU03",
+        "age": 25.0,
+        "n_n1": 163,
+        "v_eff_m_s": 2.25,
+        "med_lat_ms": 20.02
+      },
+      {
+        "id": "sub-ccepAgeUMCU04",
+        "age": 4.0,
+        "n_n1": 494,
+        "v_eff_m_s": 1.263,
+        "med_lat_ms": 37.84
+      },
+      {
+        "id": "sub-ccepAgeUMCU05",
+        "age": 17.0,
+        "n_n1": 270,
+        "v_eff_m_s": 1.587,
+        "med_lat_ms": 31.25
+      },
+      {
+        "id": "sub-ccepAgeUMCU06",
+        "age": 26.0,
+        "n_n1": 239,
+        "v_eff_m_s": 2.976,
+        "med_lat_ms": 19.04
+      },
+      {
+        "id": "sub-ccepAgeUMCU07",
+        "age": 10.0,
+        "n_n1": 412,
+        "v_eff_m_s": 1.093,
+        "med_lat_ms": 40.53
+      },
+      {
+        "id": "sub-ccepAgeUMCU08",
+        "age": 9.0,
+        "n_n1": 232,
+        "v_eff_m_s": 1.087,
+        "med_lat_ms": 41.02
+      },
+      {
+        "id": "sub-ccepAgeUMCU09",
+        "age": 21.0,
+        "n_n1": 193,
+        "v_eff_m_s": 1.152,
+        "med_lat_ms": 32.71
+      },
+      {
+        "id": "sub-ccepAgeUMCU10",
+        "age": 15.0,
+        "n_n1": 924,
+        "v_eff_m_s": 1.063,
+        "med_lat_ms": 46.39
+      },
+      {
+        "id": "sub-ccepAgeUMCU11",
+        "age": 5.0,
+        "n_n1": 193,
+        "v_eff_m_s": 1.088,
+        "med_lat_ms": 38.57
+      },
+      {
+        "id": "sub-ccepAgeUMCU12",
+        "age": 14.0,
+        "n_n1": 368,
+        "v_eff_m_s": 1.366,
+        "med_lat_ms": 31.25
+      },
+      {
+        "id": "sub-ccepAgeUMCU13",
+        "age": 45.0,
+        "n_n1": 232,
+        "v_eff_m_s": 1.442,
+        "med_lat_ms": 30.03
+      },
+      {
+        "id": "sub-ccepAgeUMCU14",
+        "age": 10.0,
+        "n_n1": 284,
+        "v_eff_m_s": 1.427,
+        "med_lat_ms": 33.69
+      },
+      {
+        "id": "sub-ccepAgeUMCU15",
+        "age": 15.0,
+        "n_n1": 224,
+        "v_eff_m_s": 1.328,
+        "med_lat_ms": 31.25
+      },
+      {
+        "id": "sub-ccepAgeUMCU16",
+        "age": 42.0,
+        "n_n1": 357,
+        "v_eff_m_s": 1.462,
+        "med_lat_ms": 34.67
+      },
+      {
+        "id": "sub-ccepAgeUMCU17",
+        "age": 4.0,
+        "n_n1": 149,
+        "v_eff_m_s": 1.019,
+        "med_lat_ms": 35.16
+      },
+      {
+        "id": "sub-ccepAgeUMCU18",
+        "age": 15.0,
+        "n_n1": 158,
+        "v_eff_m_s": 1.725,
+        "med_lat_ms": 22.46
+      },
+      {
+        "id": "sub-ccepAgeUMCU19",
+        "age": 25.0,
+        "n_n1": 247,
+        "v_eff_m_s": 1.589,
+        "med_lat_ms": 34.18
+      },
+      {
+        "id": "sub-ccepAgeUMCU20",
+        "age": 11.0,
+        "n_n1": 815,
+        "v_eff_m_s": 1.478,
+        "med_lat_ms": 33.69
+      },
+      {
+        "id": "sub-ccepAgeUMCU21",
+        "age": 12.0,
+        "n_n1": 61,
+        "v_eff_m_s": 1.642,
+        "med_lat_ms": 26.37
+      },
+      {
+        "id": "sub-ccepAgeUMCU22",
+        "age": 9.0,
+        "n_n1": 583,
+        "v_eff_m_s": 1.335,
+        "med_lat_ms": 36.13
+      },
+      {
+        "id": "sub-ccepAgeUMCU23",
+        "age": 14.0,
+        "n_n1": 473,
+        "v_eff_m_s": 1.502,
+        "med_lat_ms": 30.27
+      },
+      {
+        "id": "sub-ccepAgeUMCU24",
+        "age": 17.0,
+        "n_n1": 987,
+        "v_eff_m_s": 0.88,
+        "med_lat_ms": 50.29
+      },
+      {
+        "id": "sub-ccepAgeUMCU25",
+        "age": 16.0,
+        "n_n1": 240,
+        "v_eff_m_s": 0.997,
+        "med_lat_ms": 39.06
+      },
+      {
+        "id": "sub-ccepAgeUMCU26",
+        "age": 7.0,
+        "n_n1": 221,
+        "v_eff_m_s": 1.353,
+        "med_lat_ms": 34.67
+      },
+      {
+        "id": "sub-ccepAgeUMCU27",
+        "age": 49.0,
+        "n_n1": 26,
+        "v_eff_m_s": 1.198,
+        "med_lat_ms": 29.05
+      },
+      {
+        "id": "sub-ccepAgeUMCU28",
+        "age": 11.0,
+        "n_n1": 517,
+        "v_eff_m_s": 1.745,
+        "med_lat_ms": 31.25
+      },
+      {
+        "id": "sub-ccepAgeUMCU29",
+        "age": 13.0,
+        "n_n1": 158,
+        "v_eff_m_s": 1.614,
+        "med_lat_ms": 28.56
+      },
+      {
+        "id": "sub-ccepAgeUMCU30",
+        "age": 14.0,
+        "n_n1": 312,
+        "v_eff_m_s": 1.672,
+        "med_lat_ms": 32.96
+      },
+      {
+        "id": "sub-ccepAgeUMCU31",
+        "age": 41.0,
+        "n_n1": 181,
+        "v_eff_m_s": 1.506,
+        "med_lat_ms": 26.86
+      },
+      {
+        "id": "sub-ccepAgeUMCU32",
+        "age": 8.0,
+        "n_n1": 195,
+        "v_eff_m_s": 0.919,
+        "med_lat_ms": 37.6
+      },
+      {
+        "id": "sub-ccepAgeUMCU33",
+        "age": 18.0,
+        "n_n1": 214,
+        "v_eff_m_s": 1.945,
+        "med_lat_ms": 25.88
+      },
+      {
+        "id": "sub-ccepAgeUMCU34",
+        "age": 7.0,
+        "n_n1": 158,
+        "v_eff_m_s": 1.392,
+        "med_lat_ms": 27.83
+      },
+      {
+        "id": "sub-ccepAgeUMCU35",
+        "age": 22.0,
+        "n_n1": 243,
+        "v_eff_m_s": 1.328,
+        "med_lat_ms": 33.69
+      },
+      {
+        "id": "sub-ccepAgeUMCU36",
+        "age": 8.0,
+        "n_n1": 164,
+        "v_eff_m_s": 1.892,
+        "med_lat_ms": 28.32
+      },
+      {
+        "id": "sub-ccepAgeUMCU37",
+        "age": 28.0,
+        "n_n1": 83,
+        "v_eff_m_s": 2.145,
+        "med_lat_ms": 21.48
+      },
+      {
+        "id": "sub-ccepAgeUMCU38",
+        "age": 21.0,
+        "n_n1": 111,
+        "v_eff_m_s": 1.96,
+        "med_lat_ms": 26.86
+      },
+      {
+        "id": "sub-ccepAgeUMCU39",
+        "age": 14.0,
+        "n_n1": 212,
+        "v_eff_m_s": 1.602,
+        "med_lat_ms": 30.76
+      },
+      {
+        "id": "sub-ccepAgeUMCU40",
+        "age": 42.0,
+        "n_n1": 85,
+        "v_eff_m_s": 1.63,
+        "med_lat_ms": 33.2
+      },
+      {
+        "id": "sub-ccepAgeUMCU41",
+        "age": 34.0,
+        "n_n1": 692,
+        "v_eff_m_s": 1.927,
+        "med_lat_ms": 27.83
+      },
+      {
+        "id": "sub-ccepAgeUMCU42",
+        "age": 17.0,
+        "n_n1": 172,
+        "v_eff_m_s": 1.238,
+        "med_lat_ms": 35.16
+      },
+      {
+        "id": "sub-ccepAgeUMCU43",
+        "age": 18.0,
+        "n_n1": 373,
+        "v_eff_m_s": 1.821,
+        "med_lat_ms": 28.81
+      },
+      {
+        "id": "sub-ccepAgeUMCU44",
+        "age": 34.0,
+        "n_n1": 231,
+        "v_eff_m_s": 0.948,
+        "med_lat_ms": 36.13
+      },
+      {
+        "id": "sub-ccepAgeUMCU45",
+        "age": 22.0,
+        "n_n1": 241,
+        "v_eff_m_s": 1.338,
+        "med_lat_ms": 34.18
+      },
+      {
+        "id": "sub-ccepAgeUMCU46",
+        "age": 36.0,
+        "n_n1": 141,
+        "v_eff_m_s": 1.289,
+        "med_lat_ms": 33.2
+      },
+      {
+        "id": "sub-ccepAgeUMCU47",
+        "age": 30.0,
+        "n_n1": 134,
+        "v_eff_m_s": 1.777,
+        "med_lat_ms": 28.81
+      },
+      {
+        "id": "sub-ccepAgeUMCU48",
+        "age": 18.0,
+        "n_n1": 278,
+        "v_eff_m_s": 3.171,
+        "med_lat_ms": 23.44
+      },
+      {
+        "id": "sub-ccepAgeUMCU49",
+        "age": 14.0,
+        "n_n1": 286,
+        "v_eff_m_s": 2.001,
+        "med_lat_ms": 23.93
+      },
+      {
+        "id": "sub-ccepAgeUMCU50",
+        "age": 7.0,
+        "n_n1": 327,
+        "v_eff_m_s": 1.217,
+        "med_lat_ms": 35.16
+      },
+      {
+        "id": "sub-ccepAgeUMCU51",
+        "age": 17.0,
+        "n_n1": 98,
+        "v_eff_m_s": 1.661,
+        "med_lat_ms": 26.12
+      },
+      {
+        "id": "sub-ccepAgeUMCU52",
+        "age": 44.0,
+        "n_n1": 148,
+        "v_eff_m_s": 1.755,
+        "med_lat_ms": 26.37
+      },
+      {
+        "id": "sub-ccepAgeUMCU53",
+        "age": 26.0,
+        "n_n1": 361,
+        "v_eff_m_s": 1.146,
+        "med_lat_ms": 37.11
+      },
+      {
+        "id": "sub-ccepAgeUMCU54",
+        "age": 9.0,
+        "n_n1": 333,
+        "v_eff_m_s": 1.658,
+        "med_lat_ms": 27.83
+      },
+      {
+        "id": "sub-ccepAgeUMCU55",
+        "age": 14.0,
+        "n_n1": 41,
+        "v_eff_m_s": 2.179,
+        "med_lat_ms": 20.02
+      },
+      {
+        "id": "sub-ccepAgeUMCU56",
+        "age": 30.0,
+        "n_n1": 430,
+        "v_eff_m_s": 1.601,
+        "med_lat_ms": 31.74
+      },
+      {
+        "id": "sub-ccepAgeUMCU57",
+        "age": 30.0,
+        "n_n1": 114,
+        "v_eff_m_s": 1.65,
+        "med_lat_ms": 30.27
+      },
+      {
+        "id": "sub-ccepAgeUMCU58",
+        "age": 15.0,
+        "n_n1": 191,
+        "v_eff_m_s": 1.645,
+        "med_lat_ms": 31.25
+      },
+      {
+        "id": "sub-ccepAgeUMCU59",
+        "age": 50.0,
+        "n_n1": 64,
+        "v_eff_m_s": 1.761,
+        "med_lat_ms": 21.0
+      },
+      {
+        "id": "sub-ccepAgeUMCU60",
+        "age": 15.0,
+        "n_n1": 248,
+        "v_eff_m_s": 1.186,
+        "med_lat_ms": 36.87
+      },
+      {
+        "id": "sub-ccepAgeUMCU61",
+        "age": 5.0,
+        "n_n1": 161,
+        "v_eff_m_s": 0.887,
+        "med_lat_ms": 38.57
+      },
+      {
+        "id": "sub-ccepAgeUMCU62",
+        "age": 8.0,
+        "n_n1": 194,
+        "v_eff_m_s": 2.571,
+        "med_lat_ms": 22.46
+      },
+      {
+        "id": "sub-ccepAgeUMCU63",
+        "age": 33.0,
+        "n_n1": 92,
+        "v_eff_m_s": 2.388,
+        "med_lat_ms": 21.24
+      },
+      {
+        "id": "sub-ccepAgeUMCU64",
+        "age": 36.0,
+        "n_n1": 95,
+        "v_eff_m_s": 1.927,
+        "med_lat_ms": 23.44
+      },
+      {
+        "id": "sub-ccepAgeUMCU65",
+        "age": 17.0,
+        "n_n1": 83,
+        "v_eff_m_s": 1.831,
+        "med_lat_ms": 28.81
+      },
+      {
+        "id": "sub-ccepAgeUMCU66",
+        "age": 35.0,
+        "n_n1": 338,
+        "v_eff_m_s": 2.293,
+        "med_lat_ms": 24.41
+      },
+      {
+        "id": "sub-ccepAgeUMCU67",
+        "age": 6.0,
+        "n_n1": 471,
+        "v_eff_m_s": 0.881,
+        "med_lat_ms": 50.78
+      },
+      {
+        "id": "sub-ccepAgeUMCU68",
+        "age": 6.0,
+        "n_n1": 180,
+        "v_eff_m_s": 1.278,
+        "med_lat_ms": 32.47
+      },
+      {
+        "id": "sub-ccepAgeUMCU69",
+        "age": 51.0,
+        "n_n1": 235,
+        "v_eff_m_s": 1.577,
+        "med_lat_ms": 26.37
+      },
+      {
+        "id": "sub-ccepAgeUMCU70",
+        "age": 38.0,
+        "n_n1": 246,
+        "v_eff_m_s": 2.607,
+        "med_lat_ms": 20.51
+      },
+      {
+        "id": "sub-ccepAgeUMCU71",
+        "age": 21.0,
+        "n_n1": 350,
+        "v_eff_m_s": 2.86,
+        "med_lat_ms": 19.53
+      },
+      {
+        "id": "sub-ccepAgeUMCU72",
+        "age": 27.0,
+        "n_n1": 368,
+        "v_eff_m_s": 1.742,
+        "med_lat_ms": 30.76
+      },
+      {
+        "id": "sub-ccepAgeUMCU73",
+        "age": 23.0,
+        "n_n1": 229,
+        "v_eff_m_s": 1.876,
+        "med_lat_ms": 21.48
+      },
+      {
+        "id": "sub-ccepAgeUMCU74",
+        "age": 50.0,
+        "n_n1": 366,
+        "v_eff_m_s": 2.086,
+        "med_lat_ms": 26.86
+      }
+    ]
+  },
+  "part_c_waveform_ram": {
+    "n_ram_sessions": 40,
+    "n_stim_events": 4567,
+    "freq_sweep_1mA_300us": {
+      "1Hz": {
+        "charge_nc": 300.0,
+        "recruit_frac": 0.5902,
+        "tm_per_pulse_efficacy": 0.3845,
+        "depol_block_factor": 1.0,
+        "effective_net_drive": 0.092
+      },
+      "5Hz": {
+        "charge_nc": 300.0,
+        "recruit_frac": 0.5902,
+        "tm_per_pulse_efficacy": 0.2873,
+        "depol_block_factor": 1.0,
+        "effective_net_drive": 0.2124
+      },
+      "10Hz": {
+        "charge_nc": 300.0,
+        "recruit_frac": 0.5902,
+        "tm_per_pulse_efficacy": 0.2525,
+        "depol_block_factor": 0.9996,
+        "effective_net_drive": 0.2669
+      },
+      "25Hz": {
+        "charge_nc": 300.0,
+        "recruit_frac": 0.5902,
+        "tm_per_pulse_efficacy": 0.1427,
+        "depol_block_factor": 0.9943,
+        "effective_net_drive": 0.2179
+      },
+      "50Hz": {
+        "charge_nc": 300.0,
+        "recruit_frac": 0.5902,
+        "tm_per_pulse_efficacy": 0.0777,
+        "depol_block_factor": 0.9564,
+        "effective_net_drive": 0.1429
+      },
+      "100Hz": {
+        "charge_nc": 300.0,
+        "recruit_frac": 0.5902,
+        "tm_per_pulse_efficacy": 0.0407,
+        "depol_block_factor": 0.7329,
+        "effective_net_drive": 0.0692
+      },
+      "130Hz": {
+        "charge_nc": 300.0,
+        "recruit_frac": 0.5902,
+        "tm_per_pulse_efficacy": 0.0316,
+        "depol_block_factor": 0.5554,
+        "effective_net_drive": 0.0434
+      },
+      "200Hz": {
+        "charge_nc": 300.0,
+        "recruit_frac": 0.5902,
+        "tm_per_pulse_efficacy": 0.0207,
+        "depol_block_factor": 0.2554,
+        "effective_net_drive": 0.0144
+      }
+    },
+    "top_ram_settings": [
+      {
+        "amp_ua": 1000,
+        "pw_us": 300,
+        "freq_hz": 200,
+        "n_events": 1164,
+        "charge_nc": 300.0,
+        "recruit_frac": 0.5902,
+        "tm_per_pulse_efficacy": 0.0207,
+        "depol_block_factor": 0.2554,
+        "effective_net_drive": 0.0144
+      },
+      {
+        "amp_ua": 750,
+        "pw_us": 300,
+        "freq_hz": 200,
+        "n_events": 994,
+        "charge_nc": 225.0,
+        "recruit_frac": 0.4475,
+        "tm_per_pulse_efficacy": 0.0207,
+        "depol_block_factor": 0.2554,
+        "effective_net_drive": 0.0109
+      },
+      {
+        "amp_ua": 500,
+        "pw_us": 300,
+        "freq_hz": 200,
+        "n_events": 514,
+        "charge_nc": 150.0,
+        "recruit_frac": 0.2647,
+        "tm_per_pulse_efficacy": 0.0207,
+        "depol_block_factor": 0.2554,
+        "effective_net_drive": 0.0065
+      },
+      {
+        "amp_ua": 1000,
+        "pw_us": 300,
+        "freq_hz": 50,
+        "n_events": 350,
+        "charge_nc": 300.0,
+        "recruit_frac": 0.5902,
+        "tm_per_pulse_efficacy": 0.0777,
+        "depol_block_factor": 0.9564,
+        "effective_net_drive": 0.1429
+      },
+      {
+        "amp_ua": 500,
+        "pw_us": 300,
+        "freq_hz": 10,
+        "n_events": 269,
+        "charge_nc": 150.0,
+        "recruit_frac": 0.2647,
+        "tm_per_pulse_efficacy": 0.2525,
+        "depol_block_factor": 0.9996,
+        "effective_net_drive": 0.1197
+      },
+      {
+        "amp_ua": 1000,
+        "pw_us": 300,
+        "freq_hz": 10,
+        "n_events": 266,
+        "charge_nc": 300.0,
+        "recruit_frac": 0.5902,
+        "tm_per_pulse_efficacy": 0.2525,
+        "depol_block_factor": 0.9996,
+        "effective_net_drive": 0.2669
+      },
+      {
+        "amp_ua": 250,
+        "pw_us": 300,
+        "freq_hz": 200,
+        "n_events": 230,
+        "charge_nc": 75.0,
+        "recruit_frac": 0.0826,
+        "tm_per_pulse_efficacy": 0.0207,
+        "depol_block_factor": 0.2554,
+        "effective_net_drive": 0.002
+      },
+      {
+        "amp_ua": 500,
+        "pw_us": 300,
+        "freq_hz": 25,
+        "n_events": 159,
+        "charge_nc": 150.0,
+        "recruit_frac": 0.2647,
+        "tm_per_pulse_efficacy": 0.1427,
+        "depol_block_factor": 0.9943,
+        "effective_net_drive": 0.0977
+      }
+    ]
+  }
+}

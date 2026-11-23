@@ -35,8 +35,8 @@ SPECS = [
         "tag": "Whole-Brain Causal Simulation & Safe Control",
         "highlights": [
             "74 UMCU ECoG patients (316,366 trials) + 780 multi-center F-TRACT SEEG patients: resting-fMRI tuning degrades causal ρ (+0.62 → +0.18 Utrecht; +0.286 → +0.239 prob & +0.273 → +0.220 amp on Glasser-360 F-TRACT)",
-            "Multi-scale 19-receptor PET + MEG + Mesulam twin reaches ρ = +0.716 on Utrecht unseen pairs (+0.366 unseen-region partial) and transfers strictly ZERO-SHOT out-of-hospital to 780-patient F-TRACT (ρ = +0.350 all 4,307 pairs, matching empirical Utrecht↔F-TRACT +0.343; partial +0.224 vs permuted +0.145 on 1,681 Utrecht-unmeasured pairs, p = 0.0010)",
-            "Zero-shot transfer to 44/46 healthy TMS-EEG adults + 160/160 Lyapunov BRL certificates + 15-patient RAM memory policy",
+            "Multi-scale 19-receptor PET + MEG + Mesulam twin hits ρ = +0.716 (unseen pairs), transfers zero-shot out-of-hospital to 780-pt F-TRACT (ρ = +0.350, partial +0.224 vs permuted +0.145 on 1,681 Utrecht-unmeasured pairs, p = 0.0010), and hits 0.810 per-patient AUROC across 74/74 unseen LPO patients with 3D bipolar E-field VTA (p = 7.7e-14)",
+            "Human axonal conduction-delay physics (v = 5.3–5.5 m/s, ages 4–51 myelination p = 6.7e-4, zero-shot F-TRACT peak latency MAE = 9.4 ms), 114-region cortico-subcortical twin (228-state BRL Lyapunov certified + BIDS VTA RAM harm stratification p = 0.0381), and 44/46 healthy TMS-EEG zero-shot transfer",
         ],
         "bibkey": "tahir2026causal",
         "bibtex_title": "Observational Resting-State Tuning Degrades Causal Electrical-Stimulation Accuracy in Human Whole-Brain Models",
@@ -98,7 +98,7 @@ def tex_to_html(expr: str) -> str:
         (r"\sigma", "σ"), (r"\eta", "η"), (r"\lambda", "λ"), (r"\Delta", "Δ"),
         (r"\tau", "τ"), (r"\theta", "θ"), (r"\pi", "π"), (r"\infty", "∞"),
         (r"\to", "→"), (r"\mapsto", "↦"), (r"\mid", " | "), (r"\le", "≤"), (r"\ge", "≥"),
-        (r"\ne", "≠"), (r"\approx", "≈"), (r"\sim", "~"), (r"\times", "×"), (r"\pm", "±"), (r"\propto", "∝"),
+        (r"\ne", "≠"), (r"\approx", "≈"), (r"\sim", "~"), (r"\times", "×"), (r"\cdot", "·"), (r"\pm", "±"), (r"\propto", "∝"),
         (r"\prec", "≺"), (r"\succ", "≻"), (r"\forall", "∀"), (r"\in", "∈"), (r"\dots", "…"),
         (r"\circ", "°"), (r"\|", "‖"), (r"\;", " "), (r"\,", " "), (r"\ ", " "),
     ]

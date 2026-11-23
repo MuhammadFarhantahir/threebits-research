@@ -492,6 +492,29 @@ class TestReproducibilityInvariants(unittest.TestCase):
             self.assertGreater(float(cb["minival_r2_c99_w4a8_int"]), 0.80)
             self.assertLess(abs(float(cb["minival_gap"])), 0.01)
 
+        lpo_path = ROOT / "validate_patient_level_ccep.json"
+        if lpo_path.exists():
+            lpo = json.loads(lpo_path.read_text())
+            self.assertEqual(lpo["n_evaluated_patients"], 74)
+            self.assertGreater(lpo["summary"]["Multi-Scale Bio+CCEP + Bipolar VTA (LPO)"]["mean_auc"], 0.80)
+            self.assertEqual(
+                lpo["wilcoxon_tests"]["Multi-Scale Bio+CCEP + Bipolar VTA (LPO) vs fMRI-tuned Hopf"]["wins_auc"],
+                74,
+            )
+
+        lat_path = ROOT / "ccep_latency_waveform_model.json"
+        if lat_path.exists():
+            lat = json.loads(lat_path.read_text())
+            self.assertGreater(lat["part_b_utrecht_developmental_and_transfer"]["speed_vs_age_rho"], 0.30)
+            self.assertLess(lat["part_b_utrecht_developmental_and_transfer"]["lpo_latency_cv"]["wilcoxon_p"], 0.05)
+
+        sub_path = ROOT / "subcortical_clinical_pipeline.json"
+        if sub_path.exists():
+            sub = json.loads(sub_path.read_text())
+            self.assertEqual(sub["n_regions"], 114)
+            self.assertTrue(sub["brl_lyapunov_228_state"]["certified_exponentially_stable"])
+            self.assertGreater(sub["cortical_ccep_preservation"]["ccep_114_rho"], 0.70)
+
     def test_web_js_syntax(self):
         node = shutil.which("node")
         if not node:
