@@ -515,6 +515,17 @@ class TestReproducibilityInvariants(unittest.TestCase):
             self.assertTrue(sub["brl_lyapunov_228_state"]["certified_exponentially_stable"])
             self.assertGreater(sub["cortical_ccep_preservation"]["ccep_114_rho"], 0.70)
 
+        hyp_path = ROOT / "patient_weight_hypernet.json"
+        if hyp_path.exists():
+            hyp = json.loads(hyp_path.read_text())
+            self.assertEqual(hyp["n_evaluated_patients"], 74)
+            self.assertGreater(hyp["lpo_ccep_summary"]["Graph-Transformer HyperNet + VTA (Utrecht LPO)"]["mean_auc"], 0.80)
+            self.assertLess(hyp["lpo_latency_wilcoxon"]["ftract_split_head_hypernet_vs_linear"]["p"], 1e-3)
+            self.assertLess(
+                hyp["lpo_latency_summary"]["Graph-Transformer HyperNet Latency (F-TRACT Split-Head Lat)"]["mean_mae_ms"],
+                hyp["lpo_latency_summary"]["Linear Age-Conditioned Delay (v1.3 LPO)"]["mean_mae_ms"] - 0.8,
+            )
+
     def test_web_js_syntax(self):
         node = shutil.which("node")
         if not node:

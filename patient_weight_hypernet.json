@@ -1,0 +1,148 @@
+{
+  "n_evaluated_patients": 74,
+  "n_params_hypernet_pure": 48862,
+  "n_params_hypernet_full": 51176,
+  "lpo_ccep_summary": {
+    "fMRI-tuned Hopf": {
+      "mean_auc": 0.595,
+      "sd_auc": 0.0542,
+      "mean_partial": 0.0215,
+      "sd_partial": 0.0568,
+      "n_partial_pos": 50
+    },
+    "Linear Bio+CCEP + VTA (v1.3 LPO)": {
+      "mean_auc": 0.8097,
+      "sd_auc": 0.0439,
+      "mean_partial": 0.0429,
+      "sd_partial": 0.0399,
+      "n_partial_pos": 66
+    },
+    "Permuted-Bio HyperNet + VTA (LPO)": {
+      "mean_auc": 0.8096,
+      "sd_auc": 0.0447,
+      "mean_partial": 0.0398,
+      "sd_partial": 0.0408,
+      "n_partial_pos": 64
+    },
+    "Graph-Transformer HyperNet + VTA (Utrecht LPO)": {
+      "mean_auc": 0.8114,
+      "sd_auc": 0.0428,
+      "mean_partial": 0.0433,
+      "sd_partial": 0.0415,
+      "n_partial_pos": 67
+    },
+    "Graph-Transformer HyperNet + VTA (F-TRACT Joint Pretrain)": {
+      "mean_auc": 0.7947,
+      "sd_auc": 0.0455,
+      "mean_partial": 0.0392,
+      "sd_partial": 0.0467,
+      "n_partial_pos": 62
+    },
+    "Graph-Transformer HyperNet + VTA (F-TRACT Split-Head Lat)": {
+      "mean_auc": 0.8093,
+      "sd_auc": 0.0445,
+      "mean_partial": 0.0406,
+      "sd_partial": 0.0424,
+      "n_partial_pos": 62
+    }
+  },
+  "lpo_ccep_wilcoxon": {
+    "Graph-Transformer HyperNet + VTA (Utrecht LPO) vs Linear Bio+CCEP + VTA (v1.3 LPO)": {
+      "delta_auc": 0.0016,
+      "wins_auc": 38,
+      "p_auc": 0.27531016529482655,
+      "delta_partial": 0.0004,
+      "wins_partial": 35,
+      "p_partial": 0.676304838002775
+    },
+    "Graph-Transformer HyperNet + VTA (F-TRACT Split-Head Lat) vs Linear Bio+CCEP + VTA (v1.3 LPO)": {
+      "delta_auc": -0.0004,
+      "wins_auc": 31,
+      "p_auc": 0.4426766559959958,
+      "delta_partial": -0.0023,
+      "wins_partial": 29,
+      "p_partial": 0.0852105693135955
+    },
+    "Graph-Transformer HyperNet + VTA (F-TRACT Split-Head Lat) vs Graph-Transformer HyperNet + VTA (F-TRACT Joint Pretrain)": {
+      "delta_auc": 0.0146,
+      "wins_auc": 63,
+      "p_auc": 7.260530007315849e-10,
+      "delta_partial": 0.0014,
+      "wins_partial": 34,
+      "p_partial": 0.6182589904803732
+    },
+    "Graph-Transformer HyperNet + VTA (F-TRACT Joint Pretrain) vs Graph-Transformer HyperNet + VTA (Utrecht LPO)": {
+      "delta_auc": -0.0167,
+      "wins_auc": 9,
+      "p_auc": 1.0756518188940849e-11,
+      "delta_partial": -0.0041,
+      "wins_partial": 37,
+      "p_partial": 0.6296939836236191
+    },
+    "Graph-Transformer HyperNet + VTA (F-TRACT Split-Head Lat) vs fMRI-tuned Hopf": {
+      "delta_auc": 0.2143,
+      "wins_auc": 74,
+      "p_auc": 7.732733053009577e-14,
+      "delta_partial": 0.0191,
+      "wins_partial": 49,
+      "p_partial": 0.010913106136551064
+    }
+  },
+  "lpo_latency_summary": {
+    "Linear Age-Conditioned Delay (v1.3 LPO)": {
+      "n_patients": 74,
+      "mean_mae_ms": 11.7,
+      "mean_rho": 0.3797
+    },
+    "Graph-Transformer HyperNet Latency (Utrecht LPO)": {
+      "n_patients": 74,
+      "mean_mae_ms": 10.83,
+      "mean_rho": 0.4194
+    },
+    "Graph-Transformer HyperNet Latency (F-TRACT Joint Pretrain)": {
+      "n_patients": 74,
+      "mean_mae_ms": 10.67,
+      "mean_rho": 0.4225
+    },
+    "Graph-Transformer HyperNet Latency (F-TRACT Split-Head Lat)": {
+      "n_patients": 74,
+      "mean_mae_ms": 10.7,
+      "mean_rho": 0.4323
+    }
+  },
+  "lpo_latency_wilcoxon": {
+    "utrecht_hypernet_vs_linear": {
+      "delta_mae_ms": -0.87,
+      "wins": 53,
+      "p": 0.00040512833743454183
+    },
+    "ftract_joint_hypernet_vs_linear": {
+      "delta_mae_ms": -1.03,
+      "wins": 55,
+      "p": 5.650291567032148e-05
+    },
+    "ftract_split_head_hypernet_vs_linear": {
+      "delta_mae_ms": -1.0,
+      "wins": 53,
+      "p": 3.23510253326139e-05
+    }
+  },
+  "zero_shot_external": {
+    "HyperNet Full (Utrecht-only ZS)": {
+      "ftract_all_4307_rho": 0.3333,
+      "ftract_all_4307_partial": 0.0919,
+      "ftract_unseen_1681_rho": 0.3102,
+      "ftract_unseen_1681_partial": 0.17,
+      "tmseeg_n46_partial": 0.219,
+      "tmseeg_n46_pos": 43
+    },
+    "HyperNet Pure-Gen 0-Residuals (Utrecht-only ZS)": {
+      "ftract_all_4307_rho": 0.3405,
+      "ftract_all_4307_partial": 0.1031,
+      "ftract_unseen_1681_rho": 0.3267,
+      "ftract_unseen_1681_partial": 0.1952,
+      "tmseeg_n46_partial": 0.1978,
+      "tmseeg_n46_pos": 43
+    }
+  }
+}

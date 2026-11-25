@@ -2,7 +2,7 @@
 
 **Muhammad Farhan Tahir**  
 Threebits Research · https://threebits.si · https://github.com/MuhammadFarhantahir/threebits-research  
-Preprint v1.3 · 23 November 2026
+Preprint v1.4 · 25 November 2026
 
 ---
 
@@ -187,6 +187,25 @@ To extend beyond cortex-only modeling toward clinical DBS, epilepsy RNS, and mem
 2. **Automated Per-Patient Clinical BIDS Electrode & Bipolar E-Field VTA Pipeline (`15` DARPA RAM Patients):** Ingesting raw BIDS `*_electrodes.tsv` and `*_events.tsv` (exact anode/cathode MNI coordinates, amplitude, pulse width, and frequency) with **zero manual anatomical labels**, continuous 114-region bipolar E-field VTA automatically assigns the three highest subcortical VTA fractions in the cohort (`R1161E`: `89.9%` `L_Amygdala/Hippocampus`, `−9.27 pp`; `R1247P`: `69.8%` `L_Hippocampus`, `−6.25 pp`; `R1145J`: `18.2%` deep insula/putamen border, `−9.85 pp`, vs. `≤ 1.5%` across all `12` cortical targets). Continuous subcortical VTA correlates negatively with recall outcome ($\rho = -0.487$, $p = 0.0654$) and significantly separates high subcortical VTA ($\ge 25\%$, `−7.76 pp`) from cortical-dominant VTA (`−0.53 pp`, Mann-Whitney $p = 0.0381$).
 
 ![Figure 8: 114-region cortico-subcortical digital twin built from 50 MICA-MICs adults + 74 CCEP patients (Panel A), automated zero-label BIDS bipolar E-field VTA harm stratification across 15 DARPA RAM patients (Panel B), and formal 228-state BRL Lyapunov stability audit (Panel C).](figures/fig_subcortical_clinical.png)
+
+### 3.11 Graph-Transformer Connectome Weight Hypernetwork & Split-Head Cross-Hospital Pretraining
+Finally, we tested whether a **2-layer Graph-Attention Transformer Hypernetwork** (`d = 48`, `4` heads, learnable structural/spatial attention bias, `46k` params; `patient_weight_hypernet.py`) can read a new unseen patient's cortical biology (`19` PET receptors, `6`-band MEG, Mesulam hierarchy, 3D white-matter geometry) and **age (`4–51`)** to **generate patient-specific physical connectome weights** $(W_{\text{patient}}, d_{\text{patient}})$ and **regional axonal conduction velocities $v_i(\text{age})$ / synaptic delays $\tau_i(\text{age})$** in a single forward pass (Table 6, Figure 9).
+
+| Model (5-Fold Leave-Patients-Out, `n = 74/74` unseen `ds004080` patients) | Per-Patient Electrode N1 AUROC | Partial $\rho \mid d_{\text{elec}}$ (`mm`) | Held-Out N1 Latency MAE (`ms`) | Per-Patient Latency $\rho$ |
+| :--- | :---: | :---: | :---: | :---: |
+| fMRI-tuned Hopf (observational baseline) | `0.5950 ± 0.0542` | `+0.0215` (`50/74 > 0`) | — | — |
+| Linear Bio+CCEP + VTA (`v1.3` static baseline) | `0.8097 ± 0.0439` | `+0.0429` (`66/74 > 0`) | `11.70 ms` | `+0.3797` |
+| Permuted-Bio HyperNet + VTA (matched control) | `0.8096 ± 0.0447` | `+0.0398` (`64/74 > 0`) | — | — |
+| **Graph-Transformer HyperNet + VTA (Utrecht LPO)** | **`0.8114 ± 0.0428`** | **`+0.0433`** (`67/74 > 0`) | **`10.83 ms`** (`53/74` win, $p = 4.05 \times 10^{-4}$) | `+0.4194` |
+| Graph-Transformer HyperNet (F-TRACT Joint Pretrain) | `0.7947 ± 0.0455` | `+0.0392` (`62/74 > 0`) | `10.67 ms` (`55/74` win, $p = 5.65 \times 10^{-5}$) | `+0.4225` |
+| **Graph-Transformer HyperNet (F-TRACT Split-Head Lat)** | **`0.8093 ± 0.0445`** | `+0.0406` (`62/74 > 0`) | **`10.70 ms`** (`53/74` win, $p = 3.24 \times 10^{-5}$) | **`+0.4323`** |
+
+Three clear empirical findings emerge:
+1. **Substantial timing gain from generated regional myelination speeds:** Generating region-specific, age-conditioned velocities $v_i(\text{age})$ and synaptic delays $\tau_i(\text{age})$ cuts unseen-patient millisecond latency error by **`−0.87 ms`** (Utrecht-only, `53/74` patients, paired Wilcoxon $p = 4.05 \times 10^{-4}$) and **`−1.00 ms`** under Split-Head 780-patient F-TRACT latency pretraining (`11.70 → 10.70 ms`, `53/74` patients, **$p = 3.24 \times 10^{-5}$**, lifting per-patient latency correlation from `+0.380` to **`+0.432`**).
+2. **Protocol-shift lesson in cross-hospital pretraining:** Naively pretraining both probability and latency jointly on F-TRACT SEEG *degrades* Utrecht ECoG N1 probability AUROC (`0.8114 → 0.7947`, $p = 1.08 \times 10^{-11}$) because F-TRACT `sr_8.40` probability is ceiling-saturated (`38.3% == 1.0`) under a different clinical detection rule. **Split-Head pretraining** — transferring only universal millisecond F-TRACT latencies while keeping the ECoG probability head hospital-specific — recovers **`+0.0146` AUROC across `63/74` patients ($p = 7.26 \times 10^{-10}$)** back to `0.8093` while retaining the full latency improvement.
+3. **Pure zero-residual weight generation & honest parity on probability AUROC:** While Utrecht-only HyperNet achieves the highest point-estimate AUROC (`0.8114`, `67/74 > 0` partial $\rho \mid d_{\text{elec}}$), the `+0.0016` AUROC margin over our compact `v1.3` linear biological model (`0.8097`) is not statistically significant ($p = 0.275$). Even with **zero per-edge residual table** (100% weights generated purely by the Transformer from biology + anatomy), the Utrecht-only HyperNet transfers zero-shot to 780-patient F-TRACT ($\rho = +0.3405$ all `4,307` pairs; $+0.3267$ / partial $+0.1952$ on `1,681` Utrecht-unmeasured pairs) and `43/46` healthy TMS-EEG adults (`+0.198–+0.219`).
+
+![Figure 9: Graph-Transformer Connectome Weight Hypernetwork evaluated strictly 5-fold Leave-Patients-Out across all 74/74 unseen ds004080 patients. Split-Head 780-patient F-TRACT latency pretraining avoids cross-hospital probability protocol clash (recovering +0.0146 AUROC in 63/74 patients, p = 7.3e-10) while cutting unseen-patient millisecond latency error from 11.70 to 10.70 ms (p = 3.2e-5, rho = +0.432).](figures/fig_weight_hypernet.png)
 
 ---
 
